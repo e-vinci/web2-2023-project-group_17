@@ -12,7 +12,7 @@ import logo from '../../img/logo_nekocafe.png';
 const Navbar = () => {
   const navbarWrapper = document.querySelector('#navbarWrapper');
   const navbar = `
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light bg-pink">
         <div class="container-fluid">
           <a class="navbar-brand" href="#" data-uri="/">
             <img src="${logo}" alt="logo" width="67" height="73.166" data-uri="/">
