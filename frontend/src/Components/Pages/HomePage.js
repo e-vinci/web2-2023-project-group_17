@@ -9,6 +9,7 @@ import tutorielIcone from '../../img/tutoriel_icone.png';
 
 const HomePage = () => {
   const main = document.querySelector('main');
+  document.title='Neko café'
   const homePage = `
   <div style="height: 100vh; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: cover; background-repeat: no-repeat; background-position: center;">
     <div style="height:100%; width:100%;">
