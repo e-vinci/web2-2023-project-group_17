@@ -1,5 +1,10 @@
+/* eslint-disable no-unused-vars */
 import backgroundImg from '../../img/background_clouds.png';
 import logo from '../../img/logo_nekocafe.png';
+import connexionIcone from '../../img/connexion_icone.png';
+import meilleursScoresIcone from '../../img/meilleursScores_icone.png';
+import nvCompteIcone from '../../img/nouveauCompte_icone.png';
+import tutorielIcone from '../../img/tutoriel_icone.png';
 
 
 const HomePage = () => {
@@ -11,6 +16,21 @@ const HomePage = () => {
 
   <img src="${logo}" alt="Your Image" class="center-logo">
 
+  <div class="row mt-4">
+  <div class="col-md-3">
+    <img src="${connexionIcone}" alt="Bouton 1">
+  </div>
+  <div class="col-md-3">
+    <img src="${nvCompteIcone}" alt="Bouton 2">
+  </div>
+  <div class="col-md-3">
+    <img src="${meilleursScoresIcone}" alt="Bouton 3">
+  </div>
+  <div class="col-md-3">
+    <img src="${tutorielIcone}" alt="Bouton 4">
+  </div>
+</div>
+</div>
   `
   main.innerHTML = homePage;
 };

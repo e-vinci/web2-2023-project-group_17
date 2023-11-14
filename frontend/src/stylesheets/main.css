@@ -1,10 +1,28 @@
 .bg-pink {
   background-color: rgb(255, 235, 240) !important;
 }
+
 .center-logo{
-  display: block;
-  margin-left: 50%;
-  margin-right: 50%;
-  margin-bottom: 20%;
+  display:flex;
+  margin: auto;
   width: 16%;
+  margin-right:15%;
+  margin-bottom: 28%;
+}
+
+.move-icon{
+  
+  width: 15%;
+  margin: auto;
+  margin-top: 28%;
+
+  
+}
+
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-right: 80%;
 }
