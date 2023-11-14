@@ -2,27 +2,24 @@
   background-color: rgb(255, 235, 240) !important;
 }
 
-.center-logo{
-  display:flex;
-  margin: auto;
-  width: 16%;
-  margin-right:15%;
-  margin-bottom: 28%;
-}
-
-.move-icon{
-  
-  width: 15%;
-  margin: auto;
-  margin-top: 28%;
-
-  
-}
-
-
 img {
-  display: block;
-  max-width: 100%;
+  display: flex;
+  max-width: 88%;
   height: auto;
-  margin-right: 80%;
 }
+
+.logo-move{
+  display: flex;
+  width: 18%;
+  margin-bottom: 25%;
+  margin-left: 24%;
+  
+}
+
+.icon-move{
+  display: flex;
+  margin-bottom: -12%;
+  margin-left: -58%;
+
+}
+

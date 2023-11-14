@@ -14,9 +14,11 @@ const HomePage = () => {
     <div style="height:100%; width:100%;">
   </div>
 
-  <img src="${logo}" alt="Your Image" class="center-logo">
-
-  <div class="row mt-4">
+  <div class="col-md-2 logo-move">
+  <img src="${logo}" alt="logo">
+</div>
+<div></div>
+  <div class="row mt-4 icon-move">
   <div class="col-md-3">
     <img src="${connexionIcone}" alt="Bouton 1">
   </div>
