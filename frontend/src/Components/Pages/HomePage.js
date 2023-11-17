@@ -65,7 +65,7 @@ function redirectToRegister() {
 }
 
 function redirectToLeaderboard() {
-  Navigate('/register');
+  Navigate('/leaderboard');
 }
 
 function redirectToTutoriel() {
