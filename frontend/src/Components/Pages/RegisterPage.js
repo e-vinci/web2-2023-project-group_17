@@ -81,7 +81,7 @@ function renderLoginForm(){
 
   const submitButton = document.createElement('input');
   submitButton.type = 'submit';
-  submitButton.value = 'Login';
+  submitButton.value = 'Register';
   submitButton.style.backgroundColor = '#ffebf0';  
   submitButton.style.fontSize='30px'
   form.appendChild(submitButton);
