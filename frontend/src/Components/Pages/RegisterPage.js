@@ -1,5 +1,5 @@
 import backgroundImg from '../../img/background_clouds.png';
-import loginTxt from '../../img/login_txt.png';
+import registerTxt from '../../img/register_txt.png';
 
 import { clearPage} from '../../utils/render';
 
@@ -27,13 +27,13 @@ function renderLoginForm(){
   const section = document.createElement('section');
   section.className = 'section';
   section.style.position = 'absolute';
-  section.style.top = '20%';
+  section.style.top = '15%';
 
   const title = document.createElement('div');
   title.style.backgroundSize = 'cover';
-  title.style.backgroundImage=`url('${loginTxt}')`;
-  title.style.width = '250px';  
-  title.style.height = '175px';  
+  title.style.backgroundImage=`url('${registerTxt}')`;
+  title.style.width = '320px';  
+  title.style.height = '210px';  
   section.appendChild(title);
 
   // Create form
