@@ -1,17 +1,32 @@
 import backgroundImg from '../../img/background_clouds.png';
 import registerTxt from '../../img/register_txt.png';
 
-import { clearPage} from '../../utils/render';
+import { setAutenticatedUser, isAuthenticated } from '../../utils/auths';
+import { clearPage } from '../../utils/render';
+import Navigate from '../Router/Navigate';
 
 const RegisterPage = () => {
 
   clearPage();
+
   renderLoginForm();
 
+  // get form and adding listener
+  const form = document.querySelector('form');
+
+  // get home button and adding listener
+  form.addEventListener('submit', onRegister);
+ 
 };
   
 function renderLoginForm(){
   const main = document.querySelector('main');
+
+  if (isAuthenticated()) {
+    main.innerHTML +=
+      '<div class="max-h-screen max-w-screen"> You are already register and login </div>';
+    return;
+  }
 
   const outerDiv = document.createElement('div');
   outerDiv.style.height = '100vh';
@@ -43,6 +58,7 @@ function renderLoginForm(){
   usernameInput.type = 'text';
   usernameInput.name = 'username';
   usernameInput.placeholder = 'Username';
+  usernameInput.required ='required';
   usernameInput.style.fontSize = '30px';
   usernameInput.style.height='50px';
   usernameInput.style.backgroundColor = '#ffebf0';  
@@ -57,6 +73,7 @@ function renderLoginForm(){
   passwordInput.type = 'password';
   passwordInput.name = 'password';
   passwordInput.placeholder = 'Password';
+  passwordInput.required ='required';
   passwordInput.style.fontSize = '30px';
   passwordInput.style.height='50px';
   passwordInput.style.backgroundColor = '#ffebf0';  
@@ -70,6 +87,7 @@ function renderLoginForm(){
   passwordConfirmInput.type = 'password';
   passwordConfirmInput.name = 'passwordConfirm';
   passwordConfirmInput.placeholder = 'Confirm Password';
+  passwordConfirmInput.required = 'required';
   passwordConfirmInput.style.fontSize = '30px';
   passwordConfirmInput.style.height='50px';
   passwordConfirmInput.style.backgroundColor = '#ffebf0';  
@@ -93,6 +111,42 @@ function renderLoginForm(){
   main.appendChild(outerDiv);
   
 
+}
+
+async function onRegister(event) {
+  event.preventDefault();
+
+  const username = event.target.username.value;
+  const password = event.target.password.value;
+  const passwordConfirm = event.target.passwordConfirm.value;
+
+  if(password !== passwordConfirm) {
+    RegisterPage();
+    const errorArea = document.querySelector('#error-passwprd');
+    const error =  '<div class="font-mono text-red"> Les mots de passe doivent correspondre</div>';
+    errorArea.innerHTML += error;
+    return;
+  }
+
+  const response = await fetch(`${process.env.API_BASE_URL}/auths/register`, {
+    method: 'POST',
+    body: JSON.stringify({ username, password }),
+    mode: 'cors',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) {throw new Error(`fetch error : ${response.status} : ${response.statusText}`);}
+
+  const authenticatedUser = await response.json();
+
+  setAutenticatedUser(authenticatedUser);
+
+  redirectToHomePage();
+}
+
+function redirectToHomePage() {
+  Navigate('/');
 }
 
 
