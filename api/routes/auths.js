@@ -14,6 +14,9 @@ router.post('/register', async (req, res) => {
 
   if (!authenticatedUser) return res.sendStatus(409); // 409 Conflict
 
+  req.session.username = authenticatedUser.username;
+  req.session.token = authenticatedUser.token;
+
   return res.json(authenticatedUser);
 });
 
@@ -28,7 +31,16 @@ router.post('/login', async (req, res) => {
 
   if (!authenticatedUser) return res.sendStatus(401); // 401 Unauthorized
 
+  req.session.username = authenticatedUser.username;
+  req.session.token = authenticatedUser.token;
+
   return res.json(authenticatedUser);
+});
+
+/* Logout a user */
+router.get('/logout', (req, res) => {
+  req.session = null;
+  return res.sendStatus(200);
 });
 
 module.exports = router;
