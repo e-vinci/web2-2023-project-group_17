@@ -79,7 +79,7 @@ function renderLoginForm(){
   passwordInput.style.height='50px';
   passwordInput.style.backgroundColor = '#ffebf0';  
   form.appendChild(passwordInput);
-
+  
   const spacer2 = document.createElement('div');
   spacer2.style.height='30px';
   form.appendChild(spacer2);
