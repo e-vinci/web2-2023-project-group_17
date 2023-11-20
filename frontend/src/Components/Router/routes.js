@@ -6,6 +6,7 @@ import RegisterPage from '../Pages/RegisterPage';
 import LeaderboardPage from '../Pages/LeaderboardPage';
 import TutorielPage from '../Pages/TutorielPage';
 import MenuPage from '../Pages/MenuPage'
+import CoffeeMenuPage from '../Pages/MenuCoffee'
 
 
 const routes = {
@@ -16,7 +17,8 @@ const routes = {
   '/register': RegisterPage,
   '/leaderboard': LeaderboardPage,
   '/tutoriel': TutorielPage,
-  '/menu' : MenuPage
+  '/menu' : MenuPage,
+  '/menucoffee' : CoffeeMenuPage
 
 };
 
