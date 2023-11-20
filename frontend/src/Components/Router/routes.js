@@ -5,6 +5,7 @@ import LoginPage from '../Pages/loginPage';
 import RegisterPage from '../Pages/RegisterPage';
 import LeaderboardPage from '../Pages/LeaderboardPage';
 import TutorielPage from '../Pages/TutorielPage';
+import MenuPage from '../Pages/MenuPage'
 
 
 const routes = {
@@ -14,7 +15,8 @@ const routes = {
   '/login': LoginPage,
   '/register': RegisterPage,
   '/leaderboard': LeaderboardPage,
-  '/tutoriel': TutorielPage
+  '/tutoriel': TutorielPage,
+  '/menu' : MenuPage
 
 };
 
