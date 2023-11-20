@@ -23,12 +23,7 @@ const MenuCat = () => {
     });
     const catButton = document.querySelector('#cat-button');
     catButton?.addEventListener('click', redirectToMenuCat);
-    catButton?.addEventListener('mouseover', () => {
-      catButton.style.backgroundColor = 'pink';
-    });
-    catButton?.addEventListener('mouseout', () => {
-      catButton.style.backgroundColor = 'white';
-    });
+    catButton.style.backgroundColor = 'pink';
   };
 
   function redirectToMenuCat () {

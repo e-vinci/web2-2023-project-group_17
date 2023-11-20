@@ -22,7 +22,7 @@ const MenuPage = () => {
     coffeeButton.style.backgroundColor = 'white';
   });
   const catButton = document.querySelector('#cat-button');
-  catButton?.addEventListener('click', redirectToMenu);
+  catButton?.addEventListener('click', redirectToMenuCat);
   catButton?.addEventListener('mouseover', () => {
     catButton.style.backgroundColor = 'pink';
   });
@@ -33,6 +33,9 @@ const MenuPage = () => {
 
 function redirectToMenu() {
     Navigate('/menu');
+  }
+function redirectToMenuCat() {
+    Navigate('/menucat');
   }
   
   export default MenuPage;
