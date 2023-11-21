@@ -14,7 +14,7 @@ const MenuPage = () => {
   main.innerHTML = menuPage;
 
   const coffeeButton = document.querySelector('#coffee-button');
-  coffeeButton?.addEventListener('click', redirectToMenu);
+  coffeeButton?.addEventListener('click', redirectToMenuCoffee);
   coffeeButton?.addEventListener('mouseover', () => {
     coffeeButton.style.backgroundColor = 'pink';
   });
@@ -31,11 +31,11 @@ const MenuPage = () => {
   });
 };
 
-function redirectToMenu() {
-    Navigate('/menu');
+  function redirectToMenuCoffee() {
+    Navigate('/menucoffee');
   }
-function redirectToMenuCat() {
+
+  function redirectToMenuCat() {
     Navigate('/menucat');
   }
-  
   export default MenuPage;
