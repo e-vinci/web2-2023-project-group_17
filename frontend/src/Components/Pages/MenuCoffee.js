@@ -74,7 +74,12 @@ const MenuCoffee = () => {
   });
   const catButton = document.querySelector('#cat-button');
   catButton?.addEventListener('click', redirectToMenuCat);
-  catButton.style.backgroundColor = 'pink';
+  catButton?.addEventListener('mouseover', () => {
+    catButton.style.backgroundColor = 'pink';
+  });
+  catButton?.addEventListener('mouseout', () => {
+    catButton.style.backgroundColor = 'white';
+  });
   
   const quitButton = document.querySelector('#quit-button');
   quitButton?.addEventListener('click',redirectToMenu);
