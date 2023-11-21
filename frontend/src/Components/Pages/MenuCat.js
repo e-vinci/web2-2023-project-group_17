@@ -47,8 +47,8 @@ const MenuCat = () => {
               <img src="${quitImg}" alt="Bouton quitter" id="quit-button" style="width: 50px; height: 50px;">
             </div>
             <div style="display: flex; justify-content: center; margin-bottom: 20px;">
-              <button id="coffee-button" style="padding: 10px; font-size: 16px;">Coffee Button</button>
-              <button id="cat-button" style="padding: 10px; font-size: 16px;">Cat Button</button>
+              <button id="coffee-button" style="padding: 10px; font-size: 16px;">Cafés</button>
+              <button id="cat-button" style="padding: 10px; font-size: 16px;">Chats</button>
             </div>
             <div style="display: flex; justify-content: center;"> 
               ${catHTML}
