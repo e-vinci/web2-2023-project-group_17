@@ -6,6 +6,9 @@ import walkLeftSprite from '../../assets/walk_left.png';
 import walkRightSprite from '../../assets/walk_right.png';
 import obstacleImg from '../../assets/obstacles.png';
 import Navigate from '../Router/Navigate';
+import accueilButton from '../../img/accueil_button.png';
+import hoveredAccueil from '../../img/hovered_accueil.png';
+
 
 
 
@@ -41,6 +44,8 @@ class GameScene extends Phaser.Scene {
       frameWidth: 24,
       frameHeight: 21.5,
     });
+    this.load.image('homeButton', accueilButton);
+    this.load.image('hoveredButtonHome', hoveredAccueil);
   }
 
     create() {
@@ -63,13 +68,22 @@ class GameScene extends Phaser.Scene {
     // graphics.lineStyle(2, 0xff0000); 
     // graphics.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);
 
-    const buttonBackground = this.add.graphics();
-    buttonBackground.fillStyle(0xFFB6C1, 1); 
-    buttonBackground.fillRect(20, 30, 150, 50);
-    // eslint-disable-next-line no-unused-vars
-    const homeButton = this.add.text(26, 40, 'Accueil', { fontSize: '32px', fill: '#fff' })
-    .setInteractive()
-    .on('pointerdown', () => this.goToHomePage());
+    // bouton home
+    const buttonHome = this.add.image(20, 30, 'homeButton');
+    buttonHome.setScale(0.09, 0.09);
+    buttonHome.setOrigin(-0.8, -0.5);
+    buttonHome.setInteractive();
+
+    buttonHome.on('pointerdown', () => {
+      this.goToHomePage();
+  });
+    buttonHome.on('pointerover', () => {
+    buttonHome.setTexture('hoveredButtonHome'); 
+});
+
+    buttonHome.on('pointerout', () => {
+    buttonHome.setTexture('homeButton'); 
+});
 
     this.player = this.createPlayer();
     this.cursors = this.input.keyboard.createCursorKeys();      
@@ -112,7 +126,6 @@ class GameScene extends Phaser.Scene {
       this.player.setVelocityY(0);
       this.player.anims.play('idleAnim', true);
     }
-    console.log(this.physics.overlap(this.player, this.obstacles));
 
   }
 
