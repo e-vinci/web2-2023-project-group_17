@@ -52,14 +52,6 @@ class GameScene extends Phaser.Scene {
 
     const map = this.add.image(0, 0, 'map').setOrigin(-0.45, -0.1);
     map.setScale(0.39);
-
-
-      this.obstacles = this.physics.add.image(0, 0, OBSTACLE_KEY).setAlpha(0).setOrigin(-0.45, 0);
-    // this.obstacles = this.physics.add.sprite(0, 0, OBSTACLE_KEY).setOrigin(-0.45, 0);
-    this.obstacles.setScale(0.39);
-    this.obstacles.body.setAllowGravity(false);
-    this.physics.world.enable(this.obstacles);
-    this.obstacles.body.setImmovable(true);
     
     // add a rectangle with bounds
     const bounds = new Phaser.Geom.Rectangle(370, 230, 770, 350); 
@@ -70,11 +62,8 @@ class GameScene extends Phaser.Scene {
     // graphics.lineStyle(2, 0xff0000); 
     // graphics.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);
 
-
     this.player = this.createPlayer();
-    this.cursors = this.input.keyboard.createCursorKeys();
-    // this.physics.add.collider(this.player, this.obstacles, this.handleCollision, null, this)
-      
+    this.cursors = this.input.keyboard.createCursorKeys();      
   }
 
  
@@ -116,11 +105,6 @@ class GameScene extends Phaser.Scene {
     }
     console.log(this.physics.overlap(this.player, this.obstacles));
 
-    
-   /* if (this.physics.overlap(this.player, this.obstacles)) {
-      this.player.setVelocity(0);
-     console.log('Collision with obstacle!');
-    } */
   }
 
 createPlayer(){
