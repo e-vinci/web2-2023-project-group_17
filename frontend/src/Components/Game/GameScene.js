@@ -61,6 +61,14 @@ class GameScene extends Phaser.Scene {
     this.physics.world.enable(this.obstacles);
     this.obstacles.body.setImmovable(true);
     
+    // add a rectangle with bounds
+    const bounds = new Phaser.Geom.Rectangle(370, 230, 770, 350); 
+    this.physics.world.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
+
+      // make the rectangle appear on the map (easier to code position)
+    // const graphics = this.add.graphics();
+    // graphics.lineStyle(2, 0xff0000); 
+    // graphics.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);
 
 
     this.player = this.createPlayer();
