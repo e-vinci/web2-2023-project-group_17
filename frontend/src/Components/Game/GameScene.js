@@ -130,7 +130,7 @@ class GameScene extends Phaser.Scene {
   }
 
 createPlayer(){
-  const player = this.physics.add.sprite(750, 450, IDLE_KEY);
+  const player = this.physics.add.sprite(750, 520, IDLE_KEY);
   player.setScale(3.2);
   player.setCollideWorldBounds(true);
   player.body.setAllowGravity(false);
