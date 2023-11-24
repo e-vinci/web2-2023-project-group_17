@@ -5,6 +5,7 @@ import idleSprite from '../../assets/idle.png';
 import walkLeftSprite from '../../assets/walk_left.png';
 import walkRightSprite from '../../assets/walk_right.png';
 import obstacleImg from '../../assets/obstacles.png';
+import Navigate from '../Router/Navigate';
 
 
 
@@ -61,6 +62,14 @@ class GameScene extends Phaser.Scene {
     // const graphics = this.add.graphics();
     // graphics.lineStyle(2, 0xff0000); 
     // graphics.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);
+
+    const buttonBackground = this.add.graphics();
+    buttonBackground.fillStyle(0xFFB6C1, 1); 
+    buttonBackground.fillRect(20, 30, 150, 50);
+    // eslint-disable-next-line no-unused-vars
+    const homeButton = this.add.text(26, 40, 'Accueil', { fontSize: '32px', fill: '#fff' })
+    .setInteractive()
+    .on('pointerdown', () => this.goToHomePage());
 
     this.player = this.createPlayer();
     this.cursors = this.input.keyboard.createCursorKeys();      
@@ -137,6 +146,11 @@ createPlayer(){
   return player;
 }
   
+
+// eslint-disable-next-line class-methods-use-this
+goToHomePage() {
+ Navigate('/');
+}
 
 }
 
