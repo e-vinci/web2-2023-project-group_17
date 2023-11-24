@@ -52,27 +52,41 @@ class GameScene extends Phaser.Scene {
 
  
   update() {
-    if (this.cursors.left.isDown) {
+    this.player.setVelocityX(0);
+    this.player.setVelocityY(0);
+    if (this.cursors.left.isDown && this.cursors.up.isDown) {
+      this.player.setVelocityX(-160);
+      this.player.setVelocityY(-160);
+      this.player.anims.play('left', true);
+    } else if (this.cursors.right.isDown && this.cursors.up.isDown) {
+      this.player.setVelocityX(160);
+      this.player.setVelocityY(-160);
+      this.player.anims.play('right', true);
+    } else if (this.cursors.left.isDown && this.cursors.down.isDown) {
+      this.player.setVelocityX(-160);
+      this.player.setVelocityY(160);
+      this.player.anims.play('left', true);
+    } else if (this.cursors.right.isDown && this.cursors.down.isDown) {
+      this.player.setVelocityX(160);
+      this.player.setVelocityY(160);
+      this.player.anims.play('right', true);
+    } else if (this.cursors.left.isDown) {
       this.player.setVelocityX(-160);
       this.player.anims.play('left', true);
     } else if (this.cursors.right.isDown) {
       this.player.setVelocityX(160);
-     
       this.player.anims.play('right', true);
     } else if (this.cursors.down.isDown) {
       this.player.setVelocityY(160);
       this.player.anims.play('right', true);
-    } 
-    else if (this.cursors.up.isDown) {
+    } else if (this.cursors.up.isDown) {
       this.player.setVelocityY(-160);
       this.player.anims.play('right', true);
-    } 
-    else {
+    } else {
       this.player.setVelocityX(0);
       this.player.setVelocityY(0);
       this.player.anims.play('idleAnim', true);
     }
-    
   }
 
 createPlayer(){
