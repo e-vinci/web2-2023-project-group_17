@@ -50,7 +50,7 @@ class GameScene extends Phaser.Scene {
     bgImage.setScale(scale);
 
 
-    const map = this.add.image(0, 0, 'map').setOrigin(-0.45, 0);
+    const map = this.add.image(0, 0, 'map').setOrigin(-0.45, -0.1);
     map.setScale(0.39);
 
 
