@@ -14,8 +14,9 @@ const LoginPage = () => {
   const form = document.querySelector('form');
 
   // get home button and adding listener
-  form.addEventListener('submit', onLogin);
-
+  if(!isAuthenticated()) {
+    form.addEventListener('submit', onLogin);
+  }
 };
 
 function renderLoginForm(){
@@ -24,6 +25,18 @@ function renderLoginForm(){
   if (isAuthenticated()) {
     console.log('access denied');
     main.innerHTML += '<div class="max-h-screen max-w-screen"> You are already login </div>';
+    const form = document.createElement('form');
+    const submitButton = document.createElement('input');
+    submitButton.type = 'submit';
+    submitButton.value = 'Logout';
+    submitButton.style.backgroundColor = '#ffebf0';  
+    submitButton.style.fontSize='30px'
+    form.appendChild(submitButton);
+
+    form.addEventListener('submit', onLogout);
+
+    main.appendChild(form);
+
     return;
   }
 
@@ -130,6 +143,20 @@ async function onLogin(event) {
 
   redirectToHomePage();
 };
+
+async function onLogout(event) {
+  event.preventDefault();
+  setAutenticatedUser(null);
+  const response = await fetch(`${process.env.API_BASE_URL}/auths/logout`, {
+    method: 'GET',
+    mode: 'cors',
+    credentials: 'include',
+  });
+
+  if (!response.ok) {throw new Error(`fetch error : ${response.status} : ${response.statusText}`);}
+
+  redirectToHomePage();
+}
 
 function redirectToHomePage() {
   Navigate('/');
