@@ -9,7 +9,7 @@ import Navigate from '../Router/Navigate';
 import accueilButton from '../../img/accueil_button.png';
 import hoveredAccueil from '../../img/hovered_accueil.png';
 // import catSittingBlack from '../../assets/black_sitting.png';
-import catSittingBrown from '../../assets/brown_sitting.png';
+import catSittingBrown from '../../assets/brown_v2.png';
 import bunnyIdle from '../../assets/bunny.png';
 import catSittingBlackv2 from '../../assets/black_sitting_v2.png';
 
@@ -240,10 +240,10 @@ createCatTwo(){
 
   this.anims.create({
     key: 'sittingBrown',
-    frames: this.anims.generateFrameNumbers(SITTING_BROWN_CAT, { start: 0, end: 4 }),
-    frameRate: 4,
+    frames: this.anims.generateFrameNumbers(SITTING_BROWN_CAT, { start: 0, end: 2 }),
+    frameRate: 1,
     repeat: -1,
-    repeatDelay: 1000,
+    repeatDelay: 2000,
   });
 
   return cat;
