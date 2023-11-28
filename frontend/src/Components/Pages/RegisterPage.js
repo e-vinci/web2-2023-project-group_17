@@ -1,7 +1,7 @@
 import backgroundImg from '../../img/background_clouds.png';
 import registerTxt from '../../img/register_txt.png';
 
-import { setAutenticatedUser, isAuthenticated } from '../../utils/auths';
+import { setAutenticatedUser, isAuthenticated, logout } from '../../utils/auths';
 import { clearPage } from '../../utils/render';
 import Navigate from '../Router/Navigate';
 
@@ -165,20 +165,7 @@ async function onRegister(event) {
 
 async function onLogout(event) {
   event.preventDefault();
-  setAutenticatedUser(null);
-  const response = await fetch(`${process.env.API_BASE_URL}/auths/logout`, {
-    method: 'GET',
-    mode: 'cors',
-    credentials: 'include',
-  });
-
-  if (!response.ok) {throw new Error(`fetch error : ${response.status} : ${response.statusText}`);}
-
-  redirectToHomePage();
-}
-
-function redirectToHomePage() {
-  Navigate('/');
+  logout();
 }
 
 function redirectToGame() {
