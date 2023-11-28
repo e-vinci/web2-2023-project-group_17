@@ -39,6 +39,7 @@ class GameScene extends Phaser.Scene {
     this.money=0;// same
     this.bunny=undefined; 
     this.boundsInterior = undefined;
+    this.moneyText = undefined;
      }
 
   
@@ -146,6 +147,16 @@ class GameScene extends Phaser.Scene {
     this.bunny.play('bunnyIdle');
 
     this.player = this.createPlayer();
+
+    
+    // eslint-disable-next-line no-unused-vars
+    this.moneyText = this.add.text(20, 20, this.money, {
+      fontSize: '32px',
+      fill: '#fff',
+    
+
+    });
+    this.moneyText.setPosition(400, 50); 
   }
 
  
