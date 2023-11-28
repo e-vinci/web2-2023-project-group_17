@@ -40,6 +40,7 @@ class GameScene extends Phaser.Scene {
     this.bunny=undefined; 
     this.boundsInterior = undefined;
     this.moneyText = undefined;
+    this.scoreText = undefined;
      }
 
   
@@ -148,7 +149,6 @@ class GameScene extends Phaser.Scene {
 
     this.player = this.createPlayer();
 
-    
     this.moneyText = this.add.text(20, 20, `money : ${  this.money}`, {
       fontSize: '25px',
       fill: '#ffc0CB',
@@ -156,7 +156,20 @@ class GameScene extends Phaser.Scene {
   
     });
     this.moneyText.setPosition(950, 50); 
+
+    
+    this.scoreText = this.add.text(20, 20, `score : ${  this.score}`, {
+      fontSize: '25px',
+      fill: '#ffc0CB',
+      backgroundColor: '#fff', 
+  
+    });
+    this.scoreText.setPosition(790, 50);
+
+
   }
+    
+    
 
  
   update() {
