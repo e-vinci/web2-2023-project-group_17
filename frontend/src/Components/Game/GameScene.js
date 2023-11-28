@@ -149,14 +149,13 @@ class GameScene extends Phaser.Scene {
     this.player = this.createPlayer();
 
     
-    // eslint-disable-next-line no-unused-vars
-    this.moneyText = this.add.text(20, 20, this.money, {
-      fontSize: '32px',
-      fill: '#fff',
-    
-
+    this.moneyText = this.add.text(20, 20, `money : ${  this.money}`, {
+      fontSize: '25px',
+      fill: '#ffc0CB',
+      backgroundColor: '#fff', 
+  
     });
-    this.moneyText.setPosition(400, 50); 
+    this.moneyText.setPosition(950, 50); 
   }
 
  
@@ -263,8 +262,9 @@ createCatTwo(){
 
 touchCat(){
   // TODO a changer :)
-  this.money += 10;
+  this.money += 1;
   console.log(this.money);
+  this.moneyText.setText(`money : ${  this.money}`);
 }
 
 createBunny(){
