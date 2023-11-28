@@ -8,9 +8,11 @@ import obstacleImg from '../../assets/obstacles.png';
 import Navigate from '../Router/Navigate';
 import accueilButton from '../../img/accueil_button.png';
 import hoveredAccueil from '../../img/hovered_accueil.png';
-import catSittingBlack from '../../assets/black_sitting.png';
+// import catSittingBlack from '../../assets/black_sitting.png';
 import catSittingBrown from '../../assets/brown_sitting.png';
 import bunnyIdle from '../../assets/bunny.png';
+import catSittingBlackv2 from '../../assets/black_sitting_v2.png';
+
 
 
 
@@ -59,7 +61,7 @@ class GameScene extends Phaser.Scene {
     this.load.image('homeButton', accueilButton);
     this.load.image('hoveredButtonHome', hoveredAccueil);
 
-    this.load.spritesheet(SITTING_BLACK_CAT, catSittingBlack, {
+    this.load.spritesheet(SITTING_BLACK_CAT, catSittingBlackv2, {
       frameWidth: 32,
       frameHeight: 22,
     });
@@ -222,7 +224,7 @@ createCatOne(){
 
   this.anims.create({
     key: 'sitting',
-    frames: this.anims.generateFrameNumbers(SITTING_BLACK_CAT, { start: 4, end: 7 }),
+    frames: this.anims.generateFrameNumbers(SITTING_BLACK_CAT, { start: 0, end: 14 }),
     frameRate: 4,
     repeat: -1,
     repeatDelay: 500,
