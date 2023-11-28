@@ -15,8 +15,9 @@ const RegisterPage = () => {
   const form = document.querySelector('form');
 
   // get home button and adding listener
-  form.addEventListener('submit', onRegister);
- 
+  if(!isAuthenticated()) {
+    form.addEventListener('submit', onRegister);
+  }
 };
   
 function renderLoginForm(){
@@ -25,6 +26,17 @@ function renderLoginForm(){
   if (isAuthenticated()) {
     main.innerHTML +=
       '<div class="max-h-screen max-w-screen"> You are already register and login </div>';
+      const form = document.createElement('form');
+      const submitButton = document.createElement('input');
+      submitButton.type = 'submit';
+      submitButton.value = 'Logout';
+      submitButton.style.backgroundColor = '#ffebf0';  
+      submitButton.style.fontSize='30px'
+      form.appendChild(submitButton);
+  
+      form.addEventListener('submit', onLogout);
+  
+      main.appendChild(form);
     return;
   }
 
@@ -78,6 +90,12 @@ function renderLoginForm(){
   passwordInput.style.height='50px';
   passwordInput.style.backgroundColor = '#ffebf0';  
   form.appendChild(passwordInput);
+
+  const errorMessage = document.createElement('div');
+  errorMessage.id = 'error-passwprd';
+  errorMessage.className = 'font-mono text-red';
+  errorMessage.style.fontSize = '30px';
+  form.appendChild(errorMessage);
 
   const spacer2 = document.createElement('div');
   spacer2.style.height='30px';
@@ -141,6 +159,20 @@ async function onRegister(event) {
   const authenticatedUser = await response.json();
 
   setAutenticatedUser(authenticatedUser);
+
+  redirectToHomePage();
+}
+
+async function onLogout(event) {
+  event.preventDefault();
+  setAutenticatedUser(null);
+  const response = await fetch(`${process.env.API_BASE_URL}/auths/logout`, {
+    method: 'GET',
+    mode: 'cors',
+    credentials: 'include',
+  });
+
+  if (!response.ok) {throw new Error(`fetch error : ${response.status} : ${response.statusText}`);}
 
   redirectToHomePage();
 }

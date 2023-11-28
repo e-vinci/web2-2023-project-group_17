@@ -8,6 +8,7 @@ import Navigate from '../Router/Navigate';
 const LoginPage = () => {
   
   clearPage();
+  
   renderLoginForm();
 
   // get form and adding listener
@@ -23,7 +24,6 @@ function renderLoginForm(){
   const main = document.querySelector('main');
 
   if (isAuthenticated()) {
-    console.log('access denied');
     main.innerHTML += '<div class="max-h-screen max-w-screen"> You are already login </div>';
     const form = document.createElement('form');
     const submitButton = document.createElement('input');
@@ -93,6 +93,12 @@ function renderLoginForm(){
   passwordInput.style.backgroundColor = '#ffebf0';  
   form.appendChild(passwordInput);
   
+  const errorMessage = document.createElement('div');
+  errorMessage.id = 'error-area';
+  errorMessage.className = 'font-mono text-red';
+  errorMessage.style.fontSize = '30px';
+  form.appendChild(errorMessage);  
+  
   const spacer2 = document.createElement('div');
   spacer2.style.height='30px';
   form.appendChild(spacer2);
@@ -133,9 +139,7 @@ async function onLogin(event) {
     errorMessage401.innerHTML = 'Your password is incorrect';
     errorMessage401.className = 'font-mono text-red';
     errorArea.appendChild(errorMessage401);
-  }
-
-  if (!response.ok) {throw new Error(`fetch error : ${response.status} : ${response.statusText}`);}
+  }else if (!response.ok) {throw new Error(`fetch error : ${response.status} : ${response.statusText}`);}
 
   const authenticatedUser = await response.json();
 

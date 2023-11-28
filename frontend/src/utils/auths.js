@@ -1,6 +1,5 @@
 const STORE_NAME = 'users';
 let currentUser = JSON.parse(localStorage.getItem(STORE_NAME)) ?? undefined;
-
 const getAutenticatedUser = () => {
     if (currentUser !== undefined) {return currentUser;}
 
@@ -18,7 +17,7 @@ const setAutenticatedUser = (authenticatedUser) => {
     currentUser = authenticatedUser;
 };
 
-const isAuthenticated = () => currentUser !== undefined;
+const isAuthenticated = () => currentUser !== undefined && currentUser!== null;
 
 const clearAuthenticatedUser = () => {
     localStorage.removeItem(STORE_NAME);
