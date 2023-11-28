@@ -1,7 +1,7 @@
 import backgroundImg from '../../img/background_clouds.png';
 import loginTxt from '../../img/login_txt.png';
 
-import { setAutenticatedUser, isAuthenticated, logout } from '../../utils/auths';
+import { setAutenticatedUser, getAutenticatedUser ,isAuthenticated, logout } from '../../utils/auths';
 import { clearPage } from '../../utils/render';
 import Navigate from '../Router/Navigate';
 
@@ -141,7 +141,10 @@ async function onLogin(event) {
     errorArea.appendChild(errorMessage401);
   }else if (!response.ok) {throw new Error(`fetch error : ${response.status} : ${response.statusText}`);}
 
-  const authenticatedUser = await response.json();
+  const responseJson = await response.json();
+  const authenticatedUser = getAutenticatedUser();
+  authenticatedUser.username = responseJson.username;
+  authenticatedUser.token = responseJson.token;
 
   setAutenticatedUser(authenticatedUser);
 

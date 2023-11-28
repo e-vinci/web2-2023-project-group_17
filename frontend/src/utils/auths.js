@@ -19,7 +19,7 @@ const setAutenticatedUser = (authenticatedUser) => {
     currentUser = authenticatedUser;
 };
 
-const isAuthenticated = () => currentUser !== undefined && currentUser!== null;
+const isAuthenticated = () => currentUser !== undefined;
 
 const clearAuthenticatedUser = () => {
     localStorage.removeItem(STORE_NAME);
@@ -27,7 +27,7 @@ const clearAuthenticatedUser = () => {
 };
 
 const logout = async () => {
-    clearAuthenticatedUser();
+    currentUser = undefined;
     const response = await fetch(`${process.env.API_BASE_URL}/auths/logout`, {
     method: 'GET',
     mode: 'cors',
