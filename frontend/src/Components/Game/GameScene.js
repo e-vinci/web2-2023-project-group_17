@@ -30,7 +30,9 @@ class GameScene extends Phaser.Scene {
     this.obstacles = undefined;
     this.cat1=undefined;
     this.cat2=undefined;
-  }
+    this.score=0; // récup le score du joueur quand possible
+    this.money=0;// same
+    }
 
   
   preload() {
@@ -102,13 +104,25 @@ class GameScene extends Phaser.Scene {
     buttonHome.setTexture('homeButton'); 
 });
 
-    this.player = this.createPlayer();
+    
     this.cursors = this.input.keyboard.createCursorKeys();  
 
     this.cat1 = this.createCatOne();    
     this.cat1.play('sitting');
+    this.cat1.setInteractive();
     this.cat2=this.createCatTwo();
     this.cat2.play('sittingBrown');
+    this.cat2.setInteractive();
+
+    this.cat1.on('pointerdown', () => {
+      this.touchCat();
+    });
+
+    this.cat2.on('pointerdown', () => {
+      this.touchCat();
+    });
+
+    this.player = this.createPlayer();
   }
 
  
@@ -211,6 +225,12 @@ createCatTwo(){
   });
 
   return cat;
+}
+
+touchCat(){
+  // TODO a changer :)
+  this.money += 10;
+  console.log(this.money);
 }
   
 
