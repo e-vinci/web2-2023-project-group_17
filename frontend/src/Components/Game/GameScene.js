@@ -35,8 +35,8 @@ class GameScene extends Phaser.Scene {
     this.obstacles = undefined;
     this.cat1 = undefined;
     this.cat2 = undefined;
-    this.score = user?.score !== undefined ? user.score : 0; // récup le score du joueur quand possible
-    this.money = user?.money !== undefined ? user.money : 0; // same
+    this.score = user?.score !== undefined ? user.score : 0;
+    this.money = user?.money !== undefined ? user.money : 0;
     this.bunny = undefined;
     this.boundsInterior = undefined;
     this.moneyText = undefined;
