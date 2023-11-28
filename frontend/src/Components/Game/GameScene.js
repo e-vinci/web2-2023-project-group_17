@@ -13,6 +13,9 @@ import catSittingBrown from '../../assets/brown_v2.png';
 import bunnyIdle from '../../assets/bunny.png';
 import catSittingBlackv2 from '../../assets/black_sitting_v2.png';
 import { getAutenticatedUser, setAutenticatedUser, logout } from '../../utils/auths';
+import hoveredMenu from '../../img/hoveredMenuIcon.png';
+import menuButton from '../../img/menuIcon.png';
+
 
 
 
@@ -63,6 +66,8 @@ class GameScene extends Phaser.Scene {
     });
     this.load.image('homeButton', accueilButton);
     this.load.image('hoveredButtonHome', hoveredAccueil);
+    this.load.image('menuButton', menuButton);
+    this.load.image('hoveredButtonMenu', hoveredMenu);
 
     this.load.spritesheet(SITTING_BLACK_CAT, catSittingBlackv2, {
       frameWidth: 32,
@@ -112,7 +117,7 @@ class GameScene extends Phaser.Scene {
     // bouton home
     const buttonHome = this.add.image(20, 30, 'homeButton');
     buttonHome.setScale(0.09, 0.09);
-    buttonHome.setOrigin(-0.8, -0.5);
+    buttonHome.setOrigin(-0.8, -1);
     buttonHome.setInteractive();
 
     buttonHome.on('pointerdown', () => {
@@ -125,6 +130,23 @@ class GameScene extends Phaser.Scene {
 
     buttonHome.on('pointerout', () => {
       buttonHome.setTexture('homeButton');
+    });
+
+    // bouton menu
+    const buttonMenu = this.add.image(20, 30, 'menuButton');
+    buttonMenu.setScale(0.09, 0.09);
+    buttonMenu.setOrigin(-0.8, -2.3);
+    buttonMenu.setInteractive();
+
+    buttonMenu.on('pointerdown', () => {
+      Navigate('/'); // TODO change it to menu
+    });
+    buttonMenu.on('pointerover', () => {
+      buttonMenu.setTexture('hoveredButtonMenu');
+    });
+
+    buttonMenu.on('pointerout', () => {
+      buttonMenu.setTexture('menuButton');
     });
 
 
