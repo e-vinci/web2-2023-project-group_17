@@ -145,7 +145,7 @@ async function onLogin(event) {
 
   setAutenticatedUser(authenticatedUser);
 
-  redirectToHomePage();
+  redirectToGame();
 };
 
 async function onLogout(event) {
@@ -165,5 +165,11 @@ async function onLogout(event) {
 function redirectToHomePage() {
   Navigate('/');
 }
+
+function redirectToGame() {
+  Navigate('/game')
+}
+
+
 
 export default LoginPage;
