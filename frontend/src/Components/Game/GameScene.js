@@ -10,6 +10,7 @@ import accueilButton from '../../img/accueil_button.png';
 import hoveredAccueil from '../../img/hovered_accueil.png';
 import catSittingBlack from '../../assets/black_sitting.png';
 import catSittingBrown from '../../assets/brown_sitting.png';
+import bunnyIdle from '../../assets/bunny.png';
 
 
 
@@ -21,6 +22,7 @@ const MOVE_LEFT_KEY = 'walkLeft';
 const OBSTACLE_KEY = 'obstacle';
 const SITTING_BLACK_CAT = 'blackSitting';
 const SITTING_BROWN_CAT = 'brownSitting';
+const BUNNY_IDLE = 'bunnyIdle';
 
 class GameScene extends Phaser.Scene {
   constructor() {
@@ -32,7 +34,9 @@ class GameScene extends Phaser.Scene {
     this.cat2=undefined;
     this.score=0; // récup le score du joueur quand possible
     this.money=0;// same
-    }
+    this.bunny=undefined; 
+    this.boundsInterior = undefined;
+     }
 
   
   preload() {
@@ -65,6 +69,12 @@ class GameScene extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 21,
     });
+
+    this.load.spritesheet(BUNNY_IDLE, bunnyIdle, {
+      frameWidth: 16.5,
+      frameHeight: 17,
+    });
+  
   }
 
     create() {
@@ -82,10 +92,17 @@ class GameScene extends Phaser.Scene {
     const bounds = new Phaser.Geom.Rectangle(370, 230, 770, 350); 
     this.physics.world.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
 
+    // this.boundsInterior = new Phaser.Geom.Rectangle(500, 380, 100, 100); 
+    // this.physics.world.enable(this.boundsInterior);
+
       // make the rectangle appear on the map (easier to code position)
     // const graphics = this.add.graphics();
     // graphics.lineStyle(2, 0xff0000); 
     // graphics.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);
+
+    // const graphics = this.add.graphics();
+    // graphics.lineStyle(2, 0xff0000); 
+    // graphics.strokeRect(this.boundsInterior.x, this.boundsInterior.y, this.boundsInterior.width, this.boundsInterior.height);
 
     // bouton home
     const buttonHome = this.add.image(20, 30, 'homeButton');
@@ -121,6 +138,9 @@ class GameScene extends Phaser.Scene {
     this.cat2.on('pointerdown', () => {
       this.touchCat();
     });
+
+    this.bunny=this.createBunny();
+    this.bunny.play('bunnyIdle');
 
     this.player = this.createPlayer();
   }
@@ -231,6 +251,21 @@ touchCat(){
   // TODO a changer :)
   this.money += 10;
   console.log(this.money);
+}
+
+createBunny(){
+  const bunny = this.add.sprite(857, 290, BUNNY_IDLE);
+ 
+  bunny.setScale(3.5);
+
+  this.anims.create({
+    key: 'bunnyIdle',
+    frames: this.anims.generateFrameNumbers(BUNNY_IDLE, { start: 0, end: 1 }),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  return bunny;
 }
   
 
