@@ -12,6 +12,7 @@ import hoveredAccueil from '../../img/hovered_accueil.png';
 import catSittingBrown from '../../assets/brown_v2.png';
 import bunnyIdle from '../../assets/bunny.png';
 import catSittingBlackv2 from '../../assets/black_sitting_v2.png';
+import { logout } from '../../utils/auths';
 
 
 
@@ -113,7 +114,7 @@ class GameScene extends Phaser.Scene {
     buttonHome.setInteractive();
 
     buttonHome.on('pointerdown', () => {
-      this.goToHomePage();
+      logout();
   });
     buttonHome.on('pointerover', () => {
     buttonHome.setTexture('hoveredButtonHome'); 
