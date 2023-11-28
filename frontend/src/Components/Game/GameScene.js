@@ -8,6 +8,8 @@ import obstacleImg from '../../assets/obstacles.png';
 import Navigate from '../Router/Navigate';
 import accueilButton from '../../img/accueil_button.png';
 import hoveredAccueil from '../../img/hovered_accueil.png';
+import catSittingBlack from '../../assets/black_sitting.png';
+import catSittingBrown from '../../assets/brown_sitting.png';
 
 
 
@@ -17,6 +19,8 @@ const IDLE_KEY = 'idle';
 const MOVE_RIGHT_KEY = 'walkRight';
 const MOVE_LEFT_KEY = 'walkLeft';
 const OBSTACLE_KEY = 'obstacle';
+const SITTING_BLACK_CAT = 'blackSitting';
+const SITTING_BROWN_CAT = 'brownSitting';
 
 class GameScene extends Phaser.Scene {
   constructor() {
@@ -24,6 +28,8 @@ class GameScene extends Phaser.Scene {
     this.player = undefined;
     this.cursors = undefined;
     this.obstacles = undefined;
+    this.cat1=undefined;
+    this.cat2=undefined;
   }
 
   
@@ -46,10 +52,21 @@ class GameScene extends Phaser.Scene {
     });
     this.load.image('homeButton', accueilButton);
     this.load.image('hoveredButtonHome', hoveredAccueil);
+
+    this.load.spritesheet(SITTING_BLACK_CAT, catSittingBlack, {
+      frameWidth: 32,
+      frameHeight: 22,
+    });
+
+    
+    this.load.spritesheet(SITTING_BROWN_CAT, catSittingBrown, {
+      frameWidth: 32,
+      frameHeight: 21,
+    });
   }
 
     create() {
-      const bgImage = this.add.image(0, 0, 'background').setOrigin(0, 0);
+    const bgImage = this.add.image(0, 0, 'background').setOrigin(0, 0);
     const scaleX = this.scale.width / bgImage.width;
     const scaleY = this.scale.height / bgImage.height;
     const scale = Math.max(scaleX, scaleY);
@@ -86,7 +103,12 @@ class GameScene extends Phaser.Scene {
 });
 
     this.player = this.createPlayer();
-    this.cursors = this.input.keyboard.createCursorKeys();      
+    this.cursors = this.input.keyboard.createCursorKeys();  
+
+    this.cat1 = this.createCatOne();    
+    this.cat1.play('sitting');
+    this.cat2=this.createCatTwo();
+    this.cat2.play('sittingBrown');
   }
 
  
@@ -157,6 +179,38 @@ createPlayer(){
   });
 
   return player;
+}
+
+createCatOne(){
+  const cat = this.add.sprite(480, 400, SITTING_BLACK_CAT);
+ 
+  cat.setScale(2);
+
+  this.anims.create({
+    key: 'sitting',
+    frames: this.anims.generateFrameNumbers(SITTING_BLACK_CAT, { start: 4, end: 7 }),
+    frameRate: 4,
+    repeat: -1,
+    repeatDelay: 500,
+  });
+
+  return cat;
+}
+
+createCatTwo(){
+  const cat = this.add.sprite(1080, 400, SITTING_BROWN_CAT);
+ 
+  cat.setScale(2);
+
+  this.anims.create({
+    key: 'sittingBrown',
+    frames: this.anims.generateFrameNumbers(SITTING_BROWN_CAT, { start: 0, end: 4 }),
+    frameRate: 4,
+    repeat: -1,
+    repeatDelay: 1000,
+  });
+
+  return cat;
 }
   
 
