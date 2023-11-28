@@ -1,170 +1,281 @@
 import Phaser from 'phaser';
-import ScoreLabel from './ScoreLabel';
-import BombSpawner from './BombSpawner';
-import skyAsset from '../../assets/sky.png';
-import platformAsset from '../../assets/platform.png';
-import starAsset from '../../assets/star.png';
-import bombAsset from '../../assets/bomb.png';
-import dudeAsset from '../../assets/dude.png';
+import bgScene from '../../assets/background_scene.png';
+import backgroundImg from '../../img/background_clouds.png';
+import idleSprite from '../../assets/idle.png';
+import walkLeftSprite from '../../assets/walk_left.png';
+import walkRightSprite from '../../assets/walk_right.png';
+import obstacleImg from '../../assets/obstacles.png';
+import Navigate from '../Router/Navigate';
+import accueilButton from '../../img/accueil_button.png';
+import hoveredAccueil from '../../img/hovered_accueil.png';
+// import catSittingBlack from '../../assets/black_sitting.png';
+import catSittingBrown from '../../assets/brown_v2.png';
+import bunnyIdle from '../../assets/bunny.png';
+import catSittingBlackv2 from '../../assets/black_sitting_v2.png';
 
-const GROUND_KEY = 'ground';
-const DUDE_KEY = 'dude';
-const STAR_KEY = 'star';
-const BOMB_KEY = 'bomb';
+
+
+
+
+
+const IDLE_KEY = 'idle';
+const MOVE_RIGHT_KEY = 'walkRight';
+const MOVE_LEFT_KEY = 'walkLeft';
+const OBSTACLE_KEY = 'obstacle';
+const SITTING_BLACK_CAT = 'blackSitting';
+const SITTING_BROWN_CAT = 'brownSitting';
+const BUNNY_IDLE = 'bunnyIdle';
 
 class GameScene extends Phaser.Scene {
   constructor() {
     super('game-scene');
     this.player = undefined;
     this.cursors = undefined;
-    this.scoreLabel = undefined;
-    this.stars = undefined;
-    this.bombSpawner = undefined;
-    this.gameOver = false;
-  }
+    this.obstacles = undefined;
+    this.cat1=undefined;
+    this.cat2=undefined;
+    this.score=0; // récup le score du joueur quand possible
+    this.money=0;// same
+    this.bunny=undefined; 
+    this.boundsInterior = undefined;
+     }
 
+  
   preload() {
-    this.load.image('sky', skyAsset);
-    this.load.image(GROUND_KEY, platformAsset);
-    this.load.image(STAR_KEY, starAsset);
-    this.load.image(BOMB_KEY, bombAsset);
-
-    this.load.spritesheet(DUDE_KEY, dudeAsset, {
-      frameWidth: 32,
-      frameHeight: 48,
+    this.load.image('map', bgScene);
+    
+    this.load.image('background', backgroundImg);
+    this.load.image(OBSTACLE_KEY, obstacleImg);
+    this.load.spritesheet(IDLE_KEY, idleSprite, {
+      frameWidth: 24,
+      frameHeight: 22,
     });
+    this.load.spritesheet(MOVE_RIGHT_KEY, walkRightSprite, {
+      frameWidth: 24,
+      frameHeight: 23,
+    });
+    this.load.spritesheet(MOVE_LEFT_KEY, walkLeftSprite, {
+      frameWidth: 24,
+      frameHeight: 21.5,
+    });
+    this.load.image('homeButton', accueilButton);
+    this.load.image('hoveredButtonHome', hoveredAccueil);
+
+    this.load.spritesheet(SITTING_BLACK_CAT, catSittingBlackv2, {
+      frameWidth: 32,
+      frameHeight: 22,
+    });
+
+    
+    this.load.spritesheet(SITTING_BROWN_CAT, catSittingBrown, {
+      frameWidth: 32,
+      frameHeight: 21,
+    });
+
+    this.load.spritesheet(BUNNY_IDLE, bunnyIdle, {
+      frameWidth: 16.5,
+      frameHeight: 17,
+    });
+  
   }
 
-  create() {
-    this.add.image(400, 300, 'sky');
-    const platforms = this.createPlatforms();
+    create() {
+    const bgImage = this.add.image(0, 0, 'background').setOrigin(0, 0);
+    const scaleX = this.scale.width / bgImage.width;
+    const scaleY = this.scale.height / bgImage.height;
+    const scale = Math.max(scaleX, scaleY);
+    bgImage.setScale(scale);
+
+
+    const map = this.add.image(0, 0, 'map').setOrigin(-0.45, -0.1);
+    map.setScale(0.39);
+    
+    // add a rectangle with bounds
+    const bounds = new Phaser.Geom.Rectangle(370, 230, 770, 350); 
+    this.physics.world.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
+
+    // this.boundsInterior = new Phaser.Geom.Rectangle(500, 380, 100, 100); 
+    // this.physics.world.enable(this.boundsInterior);
+
+      // make the rectangle appear on the map (easier to code position)
+    // const graphics = this.add.graphics();
+    // graphics.lineStyle(2, 0xff0000); 
+    // graphics.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);
+
+    // const graphics = this.add.graphics();
+    // graphics.lineStyle(2, 0xff0000); 
+    // graphics.strokeRect(this.boundsInterior.x, this.boundsInterior.y, this.boundsInterior.width, this.boundsInterior.height);
+
+    // bouton home
+    const buttonHome = this.add.image(20, 30, 'homeButton');
+    buttonHome.setScale(0.09, 0.09);
+    buttonHome.setOrigin(-0.8, -0.5);
+    buttonHome.setInteractive();
+
+    buttonHome.on('pointerdown', () => {
+      this.goToHomePage();
+  });
+    buttonHome.on('pointerover', () => {
+    buttonHome.setTexture('hoveredButtonHome'); 
+});
+
+    buttonHome.on('pointerout', () => {
+    buttonHome.setTexture('homeButton'); 
+});
+
+    
+    this.cursors = this.input.keyboard.createCursorKeys();  
+
+    this.cat1 = this.createCatOne();    
+    this.cat1.play('sitting');
+    this.cat1.setInteractive();
+    this.cat2=this.createCatTwo();
+    this.cat2.play('sittingBrown');
+    this.cat2.setInteractive();
+
+    this.cat1.on('pointerdown', () => {
+      this.touchCat();
+    });
+
+    this.cat2.on('pointerdown', () => {
+      this.touchCat();
+    });
+
+    this.bunny=this.createBunny();
+    this.bunny.play('bunnyIdle');
+
     this.player = this.createPlayer();
-    this.stars = this.createStars();
-    this.scoreLabel = this.createScoreLabel(16, 16, 0);
-    this.bombSpawner = new BombSpawner(this, BOMB_KEY);
-    const bombsGroup = this.bombSpawner.group;
-    this.physics.add.collider(this.stars, platforms);
-    this.physics.add.collider(this.player, platforms);
-    this.physics.add.collider(bombsGroup, platforms);
-    this.physics.add.collider(this.player, bombsGroup, this.hitBomb, null, this);
-    this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
-    this.cursors = this.input.keyboard.createCursorKeys();
-
-    /* The Collider takes two objects and tests for collision and performs separation against them.
-    Note that we could call a callback in case of collision... */
   }
 
+ 
   update() {
-    if (this.gameOver) {
-      return;
-    }
-
-    if (this.cursors.left.isDown) {
+    this.player.setVelocityX(0);
+    this.player.setVelocityY(0);
+    if (this.cursors.left.isDown && this.cursors.up.isDown) {
+      this.player.setVelocityX(-160);
+      this.player.setVelocityY(-160);
+      this.player.anims.play('left', true);
+    } else if (this.cursors.right.isDown && this.cursors.up.isDown) {
+      this.player.setVelocityX(160);
+      this.player.setVelocityY(-160);
+      this.player.anims.play('right', true);
+    } else if (this.cursors.left.isDown && this.cursors.down.isDown) {
+      this.player.setVelocityX(-160);
+      this.player.setVelocityY(160);
+      this.player.anims.play('left', true);
+    } else if (this.cursors.right.isDown && this.cursors.down.isDown) {
+      this.player.setVelocityX(160);
+      this.player.setVelocityY(160);
+      this.player.anims.play('right', true);
+    } else if (this.cursors.left.isDown) {
       this.player.setVelocityX(-160);
       this.player.anims.play('left', true);
     } else if (this.cursors.right.isDown) {
       this.player.setVelocityX(160);
       this.player.anims.play('right', true);
+    } else if (this.cursors.down.isDown) {
+      this.player.setVelocityY(160);
+      this.player.anims.play('right', true);
+    } else if (this.cursors.up.isDown) {
+      this.player.setVelocityY(-160);
+      this.player.anims.play('right', true);
     } else {
       this.player.setVelocityX(0);
-      this.player.anims.play('turn');
+      this.player.setVelocityY(0);
+      this.player.anims.play('idleAnim', true);
     }
 
-    if (this.cursors.up.isDown && this.player.body.touching.down) {
-      this.player.setVelocityY(-330);
-    }
   }
 
-  createPlatforms() {
-    const platforms = this.physics.add.staticGroup();
+createPlayer(){
+  const player = this.physics.add.sprite(750, 520, IDLE_KEY);
+  player.setScale(3.2);
+  player.setCollideWorldBounds(true);
+  player.body.setAllowGravity(false);
 
-    platforms
-      .create(400, 568, GROUND_KEY)
-      .setScale(2)
-      .refreshBody();
+  this.anims.create({
+    key: 'left',
+    frames: this.anims.generateFrameNumbers(MOVE_LEFT_KEY, { start: 0, end: 7 }),
+    frameRate: 10,
+    repeat: -1,
+  });
 
-    platforms.create(600, 400, GROUND_KEY);
-    platforms.create(50, 250, GROUND_KEY);
-    platforms.create(750, 220, GROUND_KEY);
-    return platforms;
-  }
 
-  createPlayer() {
-    const player = this.physics.add.sprite(100, 450, DUDE_KEY);
-    player.setBounce(0.2);
-    player.setCollideWorldBounds(true);
-    /* The 'left' animation uses frames 0, 1, 2 and 3 and runs at 10 frames per second.
-    The 'repeat -1' value tells the animation to loop.
-    */
-    this.anims.create({
-      key: 'left',
-      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 0, end: 3 }),
-      frameRate: 10,
-      repeat: -1,
-    });
+  this.anims.create({
+    key: 'right',
+    frames: this.anims.generateFrameNumbers(MOVE_RIGHT_KEY, { start: 0, end: 7 }),
+    frameRate: 10,
+    repeat: -1,
+  });
+  this.anims.create({
+    key: 'idleAnim',
+    frames: this.anims.generateFrameNumbers(IDLE_KEY, { start: 0, end: 1}),
+    frameRate: 3,
+    repeat: -1,
+  });
 
-    this.anims.create({
-      key: 'turn',
-      frames: [{ key: DUDE_KEY, frame: 4 }],
-      frameRate: 20,
-    });
+  return player;
+}
 
-    this.anims.create({
-      key: 'right',
-      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 5, end: 8 }),
-      frameRate: 10,
-      repeat: -1,
-    });
+createCatOne(){
+  const cat = this.add.sprite(480, 400, SITTING_BLACK_CAT);
+ 
+  cat.setScale(2);
 
-    return player;
-  }
+  this.anims.create({
+    key: 'sitting',
+    frames: this.anims.generateFrameNumbers(SITTING_BLACK_CAT, { start: 0, end: 14 }),
+    frameRate: 4,
+    repeat: -1,
+    repeatDelay: 500,
+  });
 
-  createStars() {
-    const stars = this.physics.add.group({
-      key: STAR_KEY,
-      repeat: 11,
-      setXY: { x: 12, y: 0, stepX: 70 },
-    });
+  return cat;
+}
 
-    stars.children.iterate((child) => {
-      child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-    });
+createCatTwo(){
+  const cat = this.add.sprite(1080, 400, SITTING_BROWN_CAT);
+ 
+  cat.setScale(2);
 
-    return stars;
-  }
+  this.anims.create({
+    key: 'sittingBrown',
+    frames: this.anims.generateFrameNumbers(SITTING_BROWN_CAT, { start: 0, end: 2 }),
+    frameRate: 1,
+    repeat: -1,
+    repeatDelay: 2000,
+  });
 
-  collectStar(player, star) {
-    star.disableBody(true, true);
-    this.scoreLabel.add(10);
-    if (this.stars.countActive(true) === 0) {
-      //  A new batch of stars to collect
-      this.stars.children.iterate((child) => {
-        child.enableBody(true, child.x, 0, true, true);
-      });
-    }
+  return cat;
+}
 
-    this.bombSpawner.spawn(player.x);
-  }
+touchCat(){
+  // TODO a changer :)
+  this.money += 10;
+  console.log(this.money);
+}
 
-  createScoreLabel(x, y, score) {
-    const style = { fontSize: '32px', fill: '#000' };
-    const label = new ScoreLabel(this, x, y, score, style);
-    console.log('score:', label);
-    this.add.existing(label);
+createBunny(){
+  const bunny = this.add.sprite(857, 290, BUNNY_IDLE);
+ 
+  bunny.setScale(3.5);
 
-    return label;
-  }
+  this.anims.create({
+    key: 'bunnyIdle',
+    frames: this.anims.generateFrameNumbers(BUNNY_IDLE, { start: 0, end: 1 }),
+    frameRate: 3,
+    repeat: -1,
+  });
 
-  hitBomb(player) {
-    this.scoreLabel.setText(`GAME OVER : ( \nYour Score = ${this.scoreLabel.score}`);
-    this.physics.pause();
+  return bunny;
+}
+  
 
-    player.setTint(0xff0000);
+// eslint-disable-next-line class-methods-use-this
+goToHomePage() {
+ Navigate('/');
+}
 
-    player.anims.play('turn');
-
-    this.gameOver = true;
-  }
 }
 
 export default GameScene;
