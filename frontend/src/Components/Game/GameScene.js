@@ -4,11 +4,9 @@ import backgroundImg from '../../img/background_clouds.png';
 import idleSprite from '../../assets/idle.png';
 import walkLeftSprite from '../../assets/walk_left.png';
 import walkRightSprite from '../../assets/walk_right.png';
-import obstacleImg from '../../assets/obstacles.png';
 import Navigate from '../Router/Navigate';
 import accueilButton from '../../img/accueil_button.png';
 import hoveredAccueil from '../../img/hovered_accueil.png';
-// import catSittingBlack from '../../assets/black_sitting.png';
 import catSittingBrown from '../../assets/brown_v2.png';
 import bunnyIdle from '../../assets/bunny.png';
 import catSittingBlackv2 from '../../assets/black_sitting_v2.png';
@@ -25,7 +23,6 @@ const user = getAutenticatedUser();
 const IDLE_KEY = 'idle';
 const MOVE_RIGHT_KEY = 'walkRight';
 const MOVE_LEFT_KEY = 'walkLeft';
-const OBSTACLE_KEY = 'obstacle';
 const SITTING_BLACK_CAT = 'blackSitting';
 const SITTING_BROWN_CAT = 'brownSitting';
 const BUNNY_IDLE = 'bunnyIdle';
@@ -35,7 +32,6 @@ class GameScene extends Phaser.Scene {
     super('game-scene');
     this.player = undefined;
     this.cursors = undefined;
-    this.obstacles = undefined;
     this.cat1 = undefined;
     this.cat2 = undefined;
     this.score = user?.score !== undefined ? user.score : 0;
@@ -50,7 +46,6 @@ class GameScene extends Phaser.Scene {
     this.load.image('map', bgScene);
 
     this.load.image('background', backgroundImg);
-    this.load.image(OBSTACLE_KEY, obstacleImg);
     this.load.spritesheet(IDLE_KEY, idleSprite, {
       frameWidth: 24,
       frameHeight: 22,
@@ -101,10 +96,6 @@ class GameScene extends Phaser.Scene {
     const bounds = new Phaser.Geom.Rectangle(370, 230, 770, 350);
     this.physics.world.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
     
-    
-
-   // this.boundsInterior = new Phaser.Geom.Rectangle(500, 380, 100, 100); 
-    // this.physics.world.enable(this.boundsInterior);
      const boundsInterior = this.createBounds();
      boundsInterior.setAlpha(0);
 
@@ -113,11 +104,6 @@ class GameScene extends Phaser.Scene {
     // graphics.lineStyle(2, 0xff0000); 
     // graphics.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);
 
-    //  const graphics = this.add.graphics();
-     // graphics.lineStyle(2, 0xff0000); 
-    // graphics.strokeRect(this.boundsInterior.x, this.boundsInterior.y, this.boundsInterior.width, this.boundsInterior.height);
-
-    
     // bouton home
     const buttonHome = this.add.image(20, 30, 'homeButton');
     buttonHome.setScale(0.09, 0.09);
