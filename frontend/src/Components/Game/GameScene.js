@@ -41,7 +41,6 @@ class GameScene extends Phaser.Scene {
     this.score = user?.score !== undefined ? user.score : 0;
     this.money = user?.money !== undefined ? user.money : 0;
     this.bunny = undefined;
-    this.boundsInterior = undefined;
     this.moneyText = undefined;
     this.scoreText = undefined;
   }
@@ -101,19 +100,24 @@ class GameScene extends Phaser.Scene {
     // add a rectangle with bounds
     const bounds = new Phaser.Geom.Rectangle(370, 230, 770, 350);
     this.physics.world.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
+    
+    
 
-    // this.boundsInterior = new Phaser.Geom.Rectangle(500, 380, 100, 100); 
+   // this.boundsInterior = new Phaser.Geom.Rectangle(500, 380, 100, 100); 
     // this.physics.world.enable(this.boundsInterior);
+     const boundsInterior = this.createBounds();
+     boundsInterior.setAlpha(0);
 
     // make the rectangle appear on the map (easier to code position)
     // const graphics = this.add.graphics();
     // graphics.lineStyle(2, 0xff0000); 
     // graphics.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);
 
-    // const graphics = this.add.graphics();
-    // graphics.lineStyle(2, 0xff0000); 
+    //  const graphics = this.add.graphics();
+     // graphics.lineStyle(2, 0xff0000); 
     // graphics.strokeRect(this.boundsInterior.x, this.boundsInterior.y, this.boundsInterior.width, this.boundsInterior.height);
 
+    
     // bouton home
     const buttonHome = this.add.image(20, 30, 'homeButton');
     buttonHome.setScale(0.09, 0.09);
@@ -171,6 +175,9 @@ class GameScene extends Phaser.Scene {
     this.bunny.play('bunnyIdle');
 
     this.player = this.createPlayer();
+    
+    this.physics.add.collider(this.player, boundsInterior);
+
 
     this.moneyText = this.add.text(20, 20, `money : ${this.money}`, {
       fontSize: '25px',
@@ -332,6 +339,23 @@ class GameScene extends Phaser.Scene {
   goToHomePage() {
     Navigate('/');
   }
+
+  createBounds() {
+    const bounds = this.physics.add.staticGroup();
+
+    bounds
+      .create(10, 10)
+      .refreshBody();
+
+    bounds.create(535, 470, 'bounds').setDisplaySize(80, 40).setSize(90,40);
+    bounds.create(975, 470, 'bounds').setDisplaySize(80, 40).setSize(90,40);
+    bounds.create(720, 350, 'bounds').setDisplaySize(250, 40).setSize(340,40);
+    bounds.create(975, 300, 'bounds').setDisplaySize(40, 40).setSize(40,40);
+
+
+    return bounds;
+  }
+
 
 }
 export {user}
