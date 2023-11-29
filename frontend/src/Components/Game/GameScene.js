@@ -16,6 +16,7 @@ import menuButton from '../../img/menuIcon.png';
 
 
 
+document.title='Neko café'
 
 
 
