@@ -415,6 +415,8 @@ createClient(){
             duration: 4000,
             
             onComplete: () => {
+              this.money+=15;
+              this.moneyText.setText(`money : ${this.money}`);
               this.tweens.add({
                 targets: client,
                 x: 760,
