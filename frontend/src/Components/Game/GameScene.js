@@ -14,7 +14,7 @@ import { getAutenticatedUser, setAutenticatedUser, logout } from '../../utils/au
 import hoveredMenu from '../../img/hoveredMenuIcon.png';
 import menuButton from '../../img/menuIcon.png';
 import pnj1 from '../../assets/Girl-Sheet.png';
-
+import music from '../../assets/bgMusic.mp3';
 
 
 document.title='Neko café'
@@ -51,6 +51,7 @@ class GameScene extends Phaser.Scene {
 
   preload() {
     this.load.image('map', bgScene);
+    this.load.audio('bgMusic', music);
 
     this.load.image('background', backgroundImg);
     this.load.spritesheet(IDLE_KEY, idleSprite, {
@@ -100,6 +101,9 @@ class GameScene extends Phaser.Scene {
     const scaleY = this.scale.height / bgImage.height;
     const scale = Math.max(scaleX, scaleY);
     bgImage.setScale(scale);
+
+    const backgroundMusic = this.sound.add('bgMusic', { loop: true, volume: 0.5 });
+    backgroundMusic.play();
 
 
     const map = this.add.image(0, 0, 'map').setOrigin(-0.45, -0.1);
