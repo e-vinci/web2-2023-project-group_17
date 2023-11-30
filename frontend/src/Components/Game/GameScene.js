@@ -45,6 +45,7 @@ class GameScene extends Phaser.Scene {
     this.scoreText = undefined;
     this.client1=undefined;
     this.client2 = undefined;
+    this.client3 = undefined;
   }
 
 
@@ -175,12 +176,15 @@ class GameScene extends Phaser.Scene {
    this.client1 = this.createClient();
 
      this.time.addEvent({
-      delay: 18000,
+      delay: 7000,
       callback: () => {
-      if(this.client1.alpha===0){
+      if(this.client1===undefined || this.client1.alpha===0){
         this.client1 = this.createClient();
+      }else
+      if (this.client2===undefined || this.client2.alpha===0){
+        this.client2 = this.createClientTwo();
       }else{
-        this.client2 = this.createClient();
+        this.client3 = this.createClientThree();
       }
         
       },
@@ -460,6 +464,187 @@ createClient(){
   return client;
 }
 
+createClientTwo(){
+  const client = this.add.sprite(760, 590, 'pnj1');
+  client.setScale(3);
+
+    this.anims.create({
+    key: 'pnj1Anim',
+    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 0, end: 3 }),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: 'pnj1walkLeft',
+    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 4, end: 7}),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: 'pnj1walkRight',
+    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 8, end: 11}),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  client.anims.play('pnj1Anim', true);
+
+  this.tweens.add({
+    targets: client,
+    x: 760,
+    y: 500,
+    ease: 'Linear',
+    duration: 2000,
+    onComplete: () => {
+      client.anims.play('pnj1walkRight', true);
+      this.tweens.add({
+        targets: client,
+        x: 1080,
+        y: 500,
+        ease: 'Linear',
+        duration: 4000,
+        
+        onComplete: () => {
+          client.anims.play('pnj1Anim', true);
+          this.tweens.add({
+            targets: client,
+            x: 1080,
+            y: 500,
+            ease: 'Linear',
+            duration: 4000,
+            
+            onComplete: () => {
+              this.money+=15;
+              this.moneyText.setText(`money : ${this.money}`);
+              client.anims.play('pnj1walkLeft', true);
+              this.tweens.add({
+                targets: client,
+                x: 760,
+                y: 500,
+                ease: 'Linear',
+                duration: 4000,
+
+                onComplete: () => {
+                  client.anims.play('pnj1Anim', true);
+                  this.tweens.add({
+                    targets: client,
+                    x: 760,
+                    y: 590,
+                    ease: 'Linear',
+                    duration: 2000,
+                    onComplete: () => {
+                        client.setAlpha(0);
+                      
+                    }
+                  });
+                 
+                }
+              });
+              
+            },
+          });
+          
+        },
+      });
+    },
+  });
+    
+  return client;
+  
+}
+
+createClientThree(){
+  const client = this.add.sprite(760, 590, 'pnj1');
+  client.setScale(3);
+
+    this.anims.create({
+    key: 'pnj1Anim',
+    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 0, end: 3 }),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: 'pnj1walkLeft',
+    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 4, end: 7}),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: 'pnj1walkRight',
+    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 8, end: 11}),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  client.anims.play('pnj1Anim', true);
+
+  this.tweens.add({
+    targets: client,
+    x: 760,
+    y: 500,
+    ease: 'Linear',
+    duration: 2000,
+    onComplete: () => {
+      client.anims.play('pnj1walkLeft', true);
+      this.tweens.add({
+        targets: client,
+        x: 650,
+        y: 500,
+        ease: 'Linear',
+        duration: 1500,
+        
+        onComplete: () => {
+          client.anims.play('pnj1Anim', true);
+          this.tweens.add({
+            targets: client,
+            x: 650,
+            y: 500,
+            ease: 'Linear',
+            duration: 4000,
+            
+            onComplete: () => {
+              this.money+=15;
+              this.moneyText.setText(`money : ${this.money}`);
+              client.anims.play('pnj1walkRight', true);
+              this.tweens.add({
+                targets: client,
+                x: 760,
+                y: 500,
+                ease: 'Linear',
+                duration: 2000,
+
+                onComplete: () => {
+                  client.anims.play('pnj1Anim', true);
+                  this.tweens.add({
+                    targets: client,
+                    x: 760,
+                    y: 590,
+                    ease: 'Linear',
+                    duration: 2000,
+                    onComplete: () => {
+                        client.setAlpha(0);
+                      
+                    }
+                  });
+                 
+                }
+              });
+              
+            },
+          });
+          
+        },
+      });
+    },
+  });
+    
+  return client;
+
+}
 
 }
 export {user}
