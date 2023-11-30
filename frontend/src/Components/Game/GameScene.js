@@ -30,6 +30,7 @@ const SITTING_BROWN_CAT = 'brownSitting';
 const BUNNY_IDLE = 'bunnyIdle';
 const PNJ1_ANIM = 'pnj1Anim';
 
+
 class GameScene extends Phaser.Scene {
   constructor() {
     super('game-scene');
@@ -42,6 +43,8 @@ class GameScene extends Phaser.Scene {
     this.bunny = undefined;
     this.moneyText = undefined;
     this.scoreText = undefined;
+    this.client1=undefined;
+    this.client2 = undefined;
   }
 
 
@@ -169,11 +172,18 @@ class GameScene extends Phaser.Scene {
     this.bunny = this.createBunny();
     this.bunny.play('bunnyIdle');
 
-    this.createClient();
+   this.client1 = this.createClient();
 
-    this.time.addEvent({
+     this.time.addEvent({
       delay: 10000,
-      callback: this.createClient,
+      callback: () => {
+      if(this.client1.alpha===0){
+        this.client1 = this.createClient();
+      }else{
+        this.client2 = this.createClient();
+      }
+        
+      },
       callbackScope: this,
       loop: true 
     });
@@ -205,7 +215,6 @@ class GameScene extends Phaser.Scene {
   }
 
   handleBeforeUnload() {
-    // Appellez votre fonction gameSave ici
     this.gameSave();
   }
 
@@ -372,7 +381,15 @@ createClient(){
     repeat: -1,
   });
 
+  this.anims.create({
+    key: 'pnj1walkLeft',
+    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 4, end: 7}),
+    frameRate: 3,
+    repeat: -1,
+  });
+
   client.anims.play('pnj1Anim', true);
+
   this.tweens.add({
     targets: client,
     x: 760,
@@ -380,19 +397,55 @@ createClient(){
     ease: 'Linear',
     duration: 2000,
     onComplete: () => {
-     
+      client.anims.play('pnj1walkLeft', true);
       this.tweens.add({
         targets: client,
         x: 450,
         y: 500,
         ease: 'Linear',
         duration: 4000,
+        
         onComplete: () => {
+          client.anims.play('pnj1Anim', true);
+          this.tweens.add({
+            targets: client,
+            x: 450,
+            y: 500,
+            ease: 'Linear',
+            duration: 4000,
+            
+            onComplete: () => {
+              this.tweens.add({
+                targets: client,
+                x: 760,
+                y: 500,
+                ease: 'Linear',
+                duration: 4000,
+
+                onComplete: () => {
+                  this.tweens.add({
+                    targets: client,
+                    x: 760,
+                    y: 590,
+                    ease: 'Linear',
+                    duration: 2000,
+                    onComplete: () => {
+                        client.setAlpha(0);
+                      
+                    }
+                  });
+                 
+                }
+              });
+              
+            },
+          });
+          
         },
       });
     },
   });
-
+    
   return client;
 }
 
