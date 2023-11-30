@@ -13,6 +13,7 @@ import catSittingBlackv2 from '../../assets/black_sitting_v2.png';
 import { getAutenticatedUser, setAutenticatedUser, logout } from '../../utils/auths';
 import hoveredMenu from '../../img/hoveredMenuIcon.png';
 import menuButton from '../../img/menuIcon.png';
+import pnj1 from '../../assets/Girl-Sheet.png';
 
 
 
@@ -27,6 +28,7 @@ const MOVE_LEFT_KEY = 'walkLeft';
 const SITTING_BLACK_CAT = 'blackSitting';
 const SITTING_BROWN_CAT = 'brownSitting';
 const BUNNY_IDLE = 'bunnyIdle';
+const PNJ1_ANIM = 'pnj1Anim';
 
 class GameScene extends Phaser.Scene {
   constructor() {
@@ -80,6 +82,12 @@ class GameScene extends Phaser.Scene {
       frameHeight: 17,
     });
 
+    this.load.spritesheet(PNJ1_ANIM, pnj1, {
+      frameWidth: 24,
+      frameHeight: 24,
+    });
+
+    
   }
 
   create() {
@@ -160,6 +168,15 @@ class GameScene extends Phaser.Scene {
 
     this.bunny = this.createBunny();
     this.bunny.play('bunnyIdle');
+
+    this.createClient();
+
+    this.time.addEvent({
+      delay: 10000,
+      callback: this.createClient,
+      callbackScope: this,
+      loop: true 
+    });
 
     this.player = this.createPlayer();
     
@@ -342,6 +359,42 @@ class GameScene extends Phaser.Scene {
 
     return bounds;
   }
+
+// eslint-disable-next-line class-methods-use-this
+createClient(){
+  const client = this.add.sprite(760, 590, 'pnj1');
+  client.setScale(3);
+
+    this.anims.create({
+    key: 'pnj1Anim',
+    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 0, end: 2 }),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  client.anims.play('pnj1Anim', true);
+  this.tweens.add({
+    targets: client,
+    x: 760,
+    y: 500,
+    ease: 'Linear',
+    duration: 2000,
+    onComplete: () => {
+     
+      this.tweens.add({
+        targets: client,
+        x: 450,
+        y: 500,
+        ease: 'Linear',
+        duration: 4000,
+        onComplete: () => {
+        },
+      });
+    },
+  });
+
+  return client;
+}
 
 
 }
