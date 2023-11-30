@@ -173,6 +173,7 @@ class GameScene extends Phaser.Scene {
     this.bunny = this.createBunny();
     this.bunny.play('bunnyIdle');
 
+    // TODO mettre en commentaire dans la version finale
    this.client1 = this.createClient();
 
      this.time.addEvent({
