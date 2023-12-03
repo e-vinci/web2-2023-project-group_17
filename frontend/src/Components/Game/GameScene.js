@@ -296,8 +296,9 @@ createCatTwo(){
 
 touchCat(){
   // TODO a changer :)
-  this.money += 10;
+  this.money += 1;
   console.log(this.money);
+  this.moneyText.setText(`${this.money} CatCoin`);
 }
 
 createBunny(){
