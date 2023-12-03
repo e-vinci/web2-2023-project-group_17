@@ -1,13 +1,21 @@
 import backgroundImg from '../../img/background_clouds.png';
 import characterImg from '../../img/tutoriel_character.png';
 import bubbleImg from '../../img/speech_bubble.png';
+import homepageIcone from '../../img/accueil_button.png';
+import homepageIconeHover from '../../img/hovered_accueil.png';
+
+import Navigate from '../Router/Navigate';
 
 const TutorielPage = () => {
   const main = document.querySelector('main');
   document.title = 'Tutoriel';
+
   const tutorielPage = `
     <div style="height: 100vh; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: cover; background-repeat: no-repeat; background-position: center;">
-        <div style="position: absolute; bottom: 0; left: 10%;";>
+      <div style="position: absolute; width: 20%; top: 0; left: 0;">
+        <img src="${homepageIcone}" alt="homepage-icon" id="homepage-button">
+      </div>  
+        <div style="position: absolute; bottom: 0; left: 10%;">
           <img src="${characterImg}" alt="character-image" style="width: 400px;">
         </div>
         <div  style="position: absolute; width: 850px; z-index: 1; top: 50%; left: 70%; transform: translate(-50%, -50%);">
@@ -37,6 +45,19 @@ const TutorielPage = () => {
   `;
 
   main.innerHTML = tutorielPage;
+
+  const homepageButton = document.querySelector('#homepage-button');
+  homepageButton?.addEventListener('click', redirectToHomepage);
+  homepageButton?.addEventListener('mouseover', () => {
+    homepageButton.src = homepageIconeHover;
+  });
+  homepageButton?.addEventListener('mouseout', () => {
+    homepageButton.src = homepageIcone;
+  });
 };
+
+function redirectToHomepage() {
+  Navigate('/');
+}
 
 export default TutorielPage;
