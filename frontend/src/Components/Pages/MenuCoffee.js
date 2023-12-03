@@ -85,7 +85,7 @@ const coffee = [
 const coffeeHTML = `
 <style>
   .encadrement {
-    border: 2px solid black;
+    border: 4px solid white;
     padding: 10px;
     text-align: center;
     margin: 10px;
@@ -109,7 +109,7 @@ const coffeeHTML = `
   }
 
   .col-md-3 {
-    flex: 0 0 30%; /* Adjust the width based on your preference */
+    flex: 0 0 30%; 
   }
 </style>
 
@@ -137,7 +137,7 @@ const MenuCoffee = () => {
   const main = document.querySelector('main');
 
   const menuCoffee = `
-      <div style="height: 100vh; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: cover; background-repeat: repeat-y; background-position: center;">
+      <div style="height: 100%; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: contain; background-repeat: repeat; background-position: center;">
       <div style="height:100%; width:100%;">
         <div class="container mt-5">
         <div class="row justify-content-center">
