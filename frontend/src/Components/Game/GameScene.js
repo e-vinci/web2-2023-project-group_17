@@ -143,6 +143,39 @@ class GameScene extends Phaser.Scene {
       this.touchCat();
     });
 
+    // Cat name
+    this.cat1Name = this.add.text(this.cat1.x + 10, this.cat1.y - 20, 'Salem', {
+      fontSize: '15px',
+      fill: 'white',
+      backgroundColor: 'pink',
+    });
+    this.cat1Name.setOrigin(0.5, 1);
+    this.cat1Name.setVisible(false);
+
+    this.cat1.on('pointerover', () => {
+      this.cat1Name.setVisible(true);
+    });
+
+    this.cat1.on('pointerout', () => {
+      this.cat1Name.setVisible(false);
+    });
+
+    this.cat2Name = this.add.text(this.cat2.x - 10, this.cat2.y - 20, 'Coco', {
+      fontSize: '15px',
+      fill: 'white',
+      backgroundColor: 'pink',
+    });
+    this.cat2Name.setOrigin(0.5, 1);
+    this.cat2Name.setVisible(false);
+
+    this.cat2.on('pointerover', () => {
+      this.cat2Name.setVisible(true);
+    });
+
+    this.cat2.on('pointerout', () => {
+      this.cat2Name.setVisible(false);
+    });
+
     this.bunny=this.createBunny();
     this.bunny.play('bunnyIdle');
 
