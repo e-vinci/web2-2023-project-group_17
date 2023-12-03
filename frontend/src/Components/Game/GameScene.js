@@ -13,6 +13,7 @@ import catSittingBrown from '../../assets/brown_v2.png';
 import bunnyIdle from '../../assets/bunny.png';
 import catSittingBlackv2 from '../../assets/black_sitting_v2.png';
 import { logout } from '../../utils/auths';
+import moneySound from '../../assets/sounds/moneySound.mp3.mp3';
 
 
 
@@ -78,6 +79,7 @@ class GameScene extends Phaser.Scene {
       frameWidth: 16.5,
       frameHeight: 17,
     });
+    this.load.audio('moneySound', [moneySound]);
   
   }
 
@@ -190,6 +192,7 @@ class GameScene extends Phaser.Scene {
 
     });
     this.moneyText.setPosition(400, 50); 
+    this.moneySound = this.sound.add('moneySound')
   }
 
  
@@ -299,6 +302,7 @@ touchCat(){
   this.money += 1;
   console.log(this.money);
   this.moneyText.setText(`${this.money} CatCoin`);
+  this.moneySound.play();
 }
 
 createBunny(){
