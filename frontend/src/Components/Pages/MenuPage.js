@@ -23,7 +23,7 @@ const MenuPage = () => {
     </div>
     </div>
     </div>
-    <div style="position: absolute; top: 20%; right: 0; transform: translateY(-50%);">
+    <div style="position: absolute; top: 5%; right: 0; transform: translateY(-50%);">
       <img src="${quitImg}" alt="Bouton quitter" id="quit-button" style="width: 50px">
     </div>`;
   main.innerHTML = menuPage;
