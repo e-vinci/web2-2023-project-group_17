@@ -150,7 +150,8 @@ class GameScene extends Phaser.Scene {
     buttonMenu.setInteractive();
 
     buttonMenu.on('pointerdown', () => {
-      Navigate('/'); // TODO change it to menu
+      this.gameSave();
+      Navigate('/menucoffee');
     });
     buttonMenu.on('pointerover', () => {
       buttonMenu.setTexture('hoveredButtonMenu');

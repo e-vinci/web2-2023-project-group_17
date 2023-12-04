@@ -90,7 +90,7 @@ function redirectToMenuCoffee() {
   Navigate('/menucoffee');
 }
 function redirectToMenu() {
-  Navigate('/menu');
+  Navigate('/game');
 }
 
 export default MenuCat;
