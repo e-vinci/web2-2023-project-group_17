@@ -240,7 +240,7 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.player, boundsInterior);
 
 
-    this.moneyText = this.add.text(20, 20, `Catcoins : ${this.money}`, {
+    this.moneyText = this.add.text(20, 20, `CatCoins : ${this.money}`, {
       fontSize: '25px',
       fill: '#ffc0CB',
       backgroundColor: '#fff',
@@ -372,7 +372,7 @@ class GameScene extends Phaser.Scene {
 touchCat(){
   // TODO a changer :)
   this.money += 1;
-  this.moneyText.setText(`Catcoins : ${this.money}`);
+  this.moneyText.setText(`CatCoins : ${this.money}`);
   this.moneySound.play();
 }
 
@@ -473,7 +473,7 @@ createClient(){
             
             onComplete: () => {
               this.money+=15;
-              this.moneyText.setText(`Catcoins : ${this.money}`);
+              this.moneyText.setText(`CatCoins : ${this.money}`);
               client.anims.play('pnj1walkRight', true);
               this.tweens.add({
                 targets: client,
@@ -563,7 +563,7 @@ createClientTwo(){
             
             onComplete: () => {
               this.money+=15;
-              this.moneyText.setText(`catCoins : ${this.money}`);
+              this.moneyText.setText(`CatCoins : ${this.money}`);
               client.anims.play('pnj1walkLeft', true);
               this.tweens.add({
                 targets: client,
