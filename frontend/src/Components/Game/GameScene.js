@@ -239,13 +239,13 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.player, boundsInterior);
 
 
-    this.moneyText = this.add.text(20, 20, `money : ${this.money}`, {
+    this.moneyText = this.add.text(20, 20, `Catcoins : ${this.money}`, {
       fontSize: '25px',
       fill: '#ffc0CB',
       backgroundColor: '#fff',
 
     });
-    this.moneyText.setPosition(950, 50);
+    this.moneyText.setPosition(880, 50);
 
 
     this.scoreText = this.add.text(20, 20, `score : ${this.score}`, {
@@ -254,9 +254,9 @@ class GameScene extends Phaser.Scene {
       backgroundColor: '#fff',
 
     });
-    this.moneyText.setPosition(400, 50); 
+    this.moneyText.setPosition(880, 50);
     this.moneySound = this.sound.add('moneySound')
-    this.scoreText.setPosition(790, 50);
+    this.scoreText.setPosition(730, 50);
 
     window.addEventListener('beforeunload', this.handleBeforeUnload.bind(this));
 
@@ -371,7 +371,7 @@ class GameScene extends Phaser.Scene {
 touchCat(){
   // TODO a changer :)
   this.money += 1;
-  this.moneyText.setText(`${this.money} CatCoin`);
+  this.moneyText.setText(`Catcoins : ${this.money}`);
   this.moneySound.play();
 }
 
@@ -472,7 +472,7 @@ createClient(){
             
             onComplete: () => {
               this.money+=15;
-              this.moneyText.setText(`money : ${this.money}`);
+              this.moneyText.setText(`Catcoins : ${this.money}`);
               client.anims.play('pnj1walkRight', true);
               this.tweens.add({
                 targets: client,
@@ -562,7 +562,7 @@ createClientTwo(){
             
             onComplete: () => {
               this.money+=15;
-              this.moneyText.setText(`money : ${this.money}`);
+              this.moneyText.setText(`catCoins : ${this.money}`);
               client.anims.play('pnj1walkLeft', true);
               this.tweens.add({
                 targets: client,
@@ -653,7 +653,7 @@ createClientThree(){
             
             onComplete: () => {
               this.money+=15;
-              this.moneyText.setText(`money : ${this.money}`);
+              this.moneyText.setText(`CatCoins : ${this.money}`);
               client.anims.play('pnj1walkRight', true);
               this.tweens.add({
                 targets: client,
