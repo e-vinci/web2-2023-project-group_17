@@ -42,6 +42,7 @@ const catHTML = cats
 
 const MenuCat = () => {
   const main = document.querySelector('main');
+  document.title = 'Neko café';
 
   const menuCat = `
         <div style="height: 100vh; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: cover; background-repeat: no-repeat; background-position: center;">
