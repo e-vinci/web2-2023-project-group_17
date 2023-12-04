@@ -371,7 +371,6 @@ class GameScene extends Phaser.Scene {
 touchCat(){
   // TODO a changer :)
   this.money += 1;
-  console.log(this.money);
   this.moneyText.setText(`${this.money} CatCoin`);
   this.moneySound.play();
 }
