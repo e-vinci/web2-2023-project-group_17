@@ -4,18 +4,21 @@ import backgroundImg from '../../img/background_clouds.png';
 import idleSprite from '../../assets/idle.png';
 import walkLeftSprite from '../../assets/walk_left.png';
 import walkRightSprite from '../../assets/walk_right.png';
-import obstacleImg from '../../assets/obstacles.png';
 import Navigate from '../Router/Navigate';
 import accueilButton from '../../img/accueil_button.png';
 import hoveredAccueil from '../../img/hovered_accueil.png';
-// import catSittingBlack from '../../assets/black_sitting.png';
 import catSittingBrown from '../../assets/brown_v2.png';
 import bunnyIdle from '../../assets/bunny.png';
 import catSittingBlackv2 from '../../assets/black_sitting_v2.png';
 import { getAutenticatedUser, setAutenticatedUser, logout } from '../../utils/auths';
+import hoveredMenu from '../../img/hoveredMenuIcon.png';
+import menuButton from '../../img/menuIcon.png';
+import pnj1 from '../../assets/Girl-Sheet.png';
+import music from '../../assets/bgMusic.mp3';
 import moneySound from '../../assets/sounds/moneySound.mp3.mp3';
 
 
+document.title='Neko café'
 
 
 
@@ -23,33 +26,35 @@ const user = getAutenticatedUser();
 const IDLE_KEY = 'idle';
 const MOVE_RIGHT_KEY = 'walkRight';
 const MOVE_LEFT_KEY = 'walkLeft';
-const OBSTACLE_KEY = 'obstacle';
 const SITTING_BLACK_CAT = 'blackSitting';
 const SITTING_BROWN_CAT = 'brownSitting';
 const BUNNY_IDLE = 'bunnyIdle';
+const PNJ1_ANIM = 'pnj1Anim';
+
 
 class GameScene extends Phaser.Scene {
   constructor() {
     super('game-scene');
     this.player = undefined;
     this.cursors = undefined;
-    this.obstacles = undefined;
     this.cat1 = undefined;
     this.cat2 = undefined;
     this.score = user?.score !== undefined ? user.score : 0;
     this.money = user?.money !== undefined ? user.money : 0;
     this.bunny = undefined;
-    this.boundsInterior = undefined;
     this.moneyText = undefined;
     this.scoreText = undefined;
+    this.client1=undefined;
+    this.client2 = undefined;
+    this.client3 = undefined;
   }
 
 
   preload() {
     this.load.image('map', bgScene);
+    this.load.audio('bgMusic', music);
 
     this.load.image('background', backgroundImg);
-    this.load.image(OBSTACLE_KEY, obstacleImg);
     this.load.spritesheet(IDLE_KEY, idleSprite, {
       frameWidth: 24,
       frameHeight: 22,
@@ -64,6 +69,8 @@ class GameScene extends Phaser.Scene {
     });
     this.load.image('homeButton', accueilButton);
     this.load.image('hoveredButtonHome', hoveredAccueil);
+    this.load.image('menuButton', menuButton);
+    this.load.image('hoveredButtonMenu', hoveredMenu);
 
     this.load.spritesheet(SITTING_BLACK_CAT, catSittingBlackv2, {
       frameWidth: 32,
@@ -80,6 +87,13 @@ class GameScene extends Phaser.Scene {
       frameWidth: 16.5,
       frameHeight: 17,
     });
+
+    this.load.spritesheet(PNJ1_ANIM, pnj1, {
+      frameWidth: 24,
+      frameHeight: 24,
+    });
+
+    
     this.load.audio('moneySound', [moneySound]);
   
 
@@ -92,6 +106,9 @@ class GameScene extends Phaser.Scene {
     const scale = Math.max(scaleX, scaleY);
     bgImage.setScale(scale);
 
+    const backgroundMusic = this.sound.add('bgMusic', { loop: true, volume: 0.5 });
+    backgroundMusic.play();
+
 
     const map = this.add.image(0, 0, 'map').setOrigin(-0.45, -0.1);
     map.setScale(0.39);
@@ -99,23 +116,19 @@ class GameScene extends Phaser.Scene {
     // add a rectangle with bounds
     const bounds = new Phaser.Geom.Rectangle(370, 230, 770, 350);
     this.physics.world.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
-
-    // this.boundsInterior = new Phaser.Geom.Rectangle(500, 380, 100, 100); 
-    // this.physics.world.enable(this.boundsInterior);
+    
+     const boundsInterior = this.createBounds();
+     boundsInterior.setAlpha(0);
 
     // make the rectangle appear on the map (easier to code position)
     // const graphics = this.add.graphics();
     // graphics.lineStyle(2, 0xff0000); 
     // graphics.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);
 
-    // const graphics = this.add.graphics();
-    // graphics.lineStyle(2, 0xff0000); 
-    // graphics.strokeRect(this.boundsInterior.x, this.boundsInterior.y, this.boundsInterior.width, this.boundsInterior.height);
-
     // bouton home
     const buttonHome = this.add.image(20, 30, 'homeButton');
     buttonHome.setScale(0.09, 0.09);
-    buttonHome.setOrigin(-0.8, -0.5);
+    buttonHome.setOrigin(-0.8, -1);
     buttonHome.setInteractive();
 
     buttonHome.on('pointerdown', () => {
@@ -128,6 +141,23 @@ class GameScene extends Phaser.Scene {
 
     buttonHome.on('pointerout', () => {
       buttonHome.setTexture('homeButton');
+    });
+
+    // bouton menu
+    const buttonMenu = this.add.image(20, 30, 'menuButton');
+    buttonMenu.setScale(0.09, 0.09);
+    buttonMenu.setOrigin(-0.8, -2.3);
+    buttonMenu.setInteractive();
+
+    buttonMenu.on('pointerdown', () => {
+      Navigate('/'); // TODO change it to menu
+    });
+    buttonMenu.on('pointerover', () => {
+      buttonMenu.setTexture('hoveredButtonMenu');
+    });
+
+    buttonMenu.on('pointerout', () => {
+      buttonMenu.setTexture('menuButton');
     });
 
 
@@ -184,7 +214,30 @@ class GameScene extends Phaser.Scene {
     this.bunny=this.createBunny();
     this.bunny.play('bunnyIdle');
 
+    // TODO mettre en commentaire dans la version finale
+   this.client1 = this.createClient();
+
+     this.time.addEvent({
+      delay: 7000,
+      callback: () => {
+      if(this.client1===undefined || this.client1.alpha===0){
+        this.client1 = this.createClient();
+      }else
+      if (this.client2===undefined || this.client2.alpha===0){
+        this.client2 = this.createClientTwo();
+      }else{
+        this.client3 = this.createClientThree();
+      }
+        
+      },
+      callbackScope: this,
+      loop: true 
+    });
+
     this.player = this.createPlayer();
+    
+    this.physics.add.collider(this.player, boundsInterior);
+
 
     this.moneyText = this.add.text(20, 20, `money : ${this.money}`, {
       fontSize: '25px',
@@ -210,7 +263,6 @@ class GameScene extends Phaser.Scene {
   }
 
   handleBeforeUnload() {
-    // Appellez votre fonction gameSave ici
     this.gameSave();
   }
 
@@ -350,6 +402,295 @@ createBunny(){
   goToHomePage() {
     Navigate('/');
   }
+
+  createBounds() {
+    const bounds = this.physics.add.staticGroup();
+
+    bounds
+      .create(10, 10)
+      .refreshBody();
+
+    bounds.create(535, 470, 'bounds').setDisplaySize(80, 40).setSize(90,40);
+    bounds.create(975, 470, 'bounds').setDisplaySize(80, 40).setSize(90,40);
+    bounds.create(720, 350, 'bounds').setDisplaySize(250, 40).setSize(340,40);
+    bounds.create(975, 300, 'bounds').setDisplaySize(40, 40).setSize(40,40);
+
+
+    return bounds;
+  }
+
+// eslint-disable-next-line class-methods-use-this
+createClient(){
+  const client = this.add.sprite(760, 590, 'pnj1');
+  client.setScale(3);
+
+    this.anims.create({
+    key: 'pnj1Anim',
+    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 0, end: 3 }),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: 'pnj1walkLeft',
+    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 4, end: 7}),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: 'pnj1walkRight',
+    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 8, end: 11}),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  client.anims.play('pnj1Anim', true);
+
+  this.tweens.add({
+    targets: client,
+    x: 760,
+    y: 500,
+    ease: 'Linear',
+    duration: 2000,
+    onComplete: () => {
+      client.anims.play('pnj1walkLeft', true);
+      this.tweens.add({
+        targets: client,
+        x: 450,
+        y: 500,
+        ease: 'Linear',
+        duration: 4000,
+        
+        onComplete: () => {
+          client.anims.play('pnj1Anim', true);
+          this.tweens.add({
+            targets: client,
+            x: 450,
+            y: 500,
+            ease: 'Linear',
+            duration: 4000,
+            
+            onComplete: () => {
+              this.money+=15;
+              this.moneyText.setText(`money : ${this.money}`);
+              client.anims.play('pnj1walkRight', true);
+              this.tweens.add({
+                targets: client,
+                x: 760,
+                y: 500,
+                ease: 'Linear',
+                duration: 4000,
+
+                onComplete: () => {
+                  client.anims.play('pnj1Anim', true);
+                  this.tweens.add({
+                    targets: client,
+                    x: 760,
+                    y: 590,
+                    ease: 'Linear',
+                    duration: 2000,
+                    onComplete: () => {
+                        client.setAlpha(0);
+                      
+                    }
+                  });
+                 
+                }
+              });
+              
+            },
+          });
+          
+        },
+      });
+    },
+  });
+    
+  return client;
+}
+
+createClientTwo(){
+  const client = this.add.sprite(760, 590, 'pnj1');
+  client.setScale(3);
+
+    this.anims.create({
+    key: 'pnj1Anim',
+    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 0, end: 3 }),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: 'pnj1walkLeft',
+    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 4, end: 7}),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: 'pnj1walkRight',
+    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 8, end: 11}),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  client.anims.play('pnj1Anim', true);
+
+  this.tweens.add({
+    targets: client,
+    x: 760,
+    y: 500,
+    ease: 'Linear',
+    duration: 2000,
+    onComplete: () => {
+      client.anims.play('pnj1walkRight', true);
+      this.tweens.add({
+        targets: client,
+        x: 1080,
+        y: 500,
+        ease: 'Linear',
+        duration: 4000,
+        
+        onComplete: () => {
+          client.anims.play('pnj1Anim', true);
+          this.tweens.add({
+            targets: client,
+            x: 1080,
+            y: 500,
+            ease: 'Linear',
+            duration: 4000,
+            
+            onComplete: () => {
+              this.money+=15;
+              this.moneyText.setText(`money : ${this.money}`);
+              client.anims.play('pnj1walkLeft', true);
+              this.tweens.add({
+                targets: client,
+                x: 760,
+                y: 500,
+                ease: 'Linear',
+                duration: 4000,
+
+                onComplete: () => {
+                  client.anims.play('pnj1Anim', true);
+                  this.tweens.add({
+                    targets: client,
+                    x: 760,
+                    y: 590,
+                    ease: 'Linear',
+                    duration: 2000,
+                    onComplete: () => {
+                        client.setAlpha(0);
+                      
+                    }
+                  });
+                 
+                }
+              });
+              
+            },
+          });
+          
+        },
+      });
+    },
+  });
+    
+  return client;
+  
+}
+
+createClientThree(){
+  const client = this.add.sprite(760, 590, 'pnj1');
+  client.setScale(3);
+
+    this.anims.create({
+    key: 'pnj1Anim',
+    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 0, end: 3 }),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: 'pnj1walkLeft',
+    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 4, end: 7}),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: 'pnj1walkRight',
+    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 8, end: 11}),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  client.anims.play('pnj1Anim', true);
+
+  this.tweens.add({
+    targets: client,
+    x: 760,
+    y: 500,
+    ease: 'Linear',
+    duration: 2000,
+    onComplete: () => {
+      client.anims.play('pnj1walkLeft', true);
+      this.tweens.add({
+        targets: client,
+        x: 650,
+        y: 500,
+        ease: 'Linear',
+        duration: 1500,
+        
+        onComplete: () => {
+          client.anims.play('pnj1Anim', true);
+          this.tweens.add({
+            targets: client,
+            x: 650,
+            y: 500,
+            ease: 'Linear',
+            duration: 4000,
+            
+            onComplete: () => {
+              this.money+=15;
+              this.moneyText.setText(`money : ${this.money}`);
+              client.anims.play('pnj1walkRight', true);
+              this.tweens.add({
+                targets: client,
+                x: 760,
+                y: 500,
+                ease: 'Linear',
+                duration: 2000,
+
+                onComplete: () => {
+                  client.anims.play('pnj1Anim', true);
+                  this.tweens.add({
+                    targets: client,
+                    x: 760,
+                    y: 590,
+                    ease: 'Linear',
+                    duration: 2000,
+                    onComplete: () => {
+                        client.setAlpha(0);
+                      
+                    }
+                  });
+                 
+                }
+              });
+              
+            },
+          });
+          
+        },
+      });
+    },
+  });
+    
+  return client;
+
+}
 
 }
 export {user}
