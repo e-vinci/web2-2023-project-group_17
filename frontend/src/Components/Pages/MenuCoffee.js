@@ -135,6 +135,7 @@ const coffeeHTML = `
 
 const MenuCoffee = () => {
   const main = document.querySelector('main');
+  document.title = 'Neko café';
 
   const menuCoffee = `
       <div style="height: 100%; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: contain; background-repeat: repeat; background-position: center;">
