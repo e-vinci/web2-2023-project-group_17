@@ -9,6 +9,7 @@ import connexionIconeHover from '../../img/loginIcon_hover.png';
 import meilleursScoresIconeHover from '../../img/leaderboardIcon_hover.png';
 import nvCompteIconeHover from '../../img/registerIcon_hover.png';
 import tutorielIconeHover from '../../img/tutorialIcon_hover.png';
+import { isAuthenticated } from '../../utils/auths';
 
 
 
@@ -17,6 +18,12 @@ import Navigate from '../Router/Navigate';
 
 
 const HomePage = () => {
+  
+  if (isAuthenticated()) {
+    Navigate('/game');
+    return;
+  }
+
   const main = document.querySelector('main');
   document.title='Neko café'
 
