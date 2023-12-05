@@ -16,71 +16,76 @@ import coffeePinkButton from '../../img/cafespinkbutton.png';
 import catPurpleButton from '../../img/chatspurplebutton.png';
 import coffeePurpleButton from '../../img/cafespurplebutton.png';
 
+import { user } from '../Game/GameScene';
 
 import Navigate from '../Router/Navigate';
 
-const coffee = [
-  {
-    level: 1,
-    price: '3 CatCoin',
-    name: 'Meowcha Latte',
-    picture: meawchaImg,
-  },
-  {
-    level: 2,
-    price: '9 CatCoin',
-    name: 'Purrista Blend',
-    picture: purristaImg,
-  },
-  {
-    level: 3,
-    price: '13 CatCoin',
-    name: 'Pancat Stacks',
-    picture: pancatImg,
-  },
-  {
-    level: 4,
-    price: '20 CatCoin',
-    name: 'Tiramisu Tabby Treat',
-    picture: tiramisuImg,
-  },
-  {
-    level: 5,
-    price: '25 CatCoin',
-    name: 'Purrfectly Sweet Cookie Sundae',
-    picture: cookieImg,
-  },
-  {
-    level: 6,
-    price: '31 CatCoin',
-    name: 'Red Velvet Kitty Cake',
-    picture: redvelvetImg,
-  },
-  {
-    level: 7,
-    price: '36 CatCoin',
-    name: 'Lemon Mew Cheesecake',
-    picture: lemonImg,
-  },
-  {
-    level: 8,
-    price: '38 CatCoin',
-    name: 'Cinnamon Swirl Whiskers',
-    picture: cinnamonImg,
-  },
-  {
-    level: 9,
-    price: '44 CatCoin',
-    name: 'Meowy Christmas Log',
-    picture: chocologImg,
-  },
-  {
-    level: 10,
-    price: '50 CatCoin',
-    name: 'Catini Bliss',
-    picture: catiniImg,
-  },
+const coffeeToCreate = [
+  createCoffee('Meowcha Latte', meawchaImg, 5),
+  createCoffee('Purrista Blend', purristaImg, 10),
+  createCoffee('Pancat Stacks', pancatImg, 15),
+  createCoffee('Tiramisu Tabby Treat', tiramisuImg, 20),
+  createCoffee('Purrfectly Sweet Cookie Sundae', cookieImg, 25),
+  createCoffee('Red Velvet Kitty Cake', redvelvetImg, 30),
+  createCoffee('Lemon Mew Cheesecake', lemonImg, 35),
+  createCoffee('Cinnamon Swirl Whiskers', cinnamonImg, 40),
+  createCoffee('Meowy Christmas Log', chocologImg, 45),
+  createCoffee('Catini Bliss', catiniImg, 50)
 ];
+
+function createCoffee(name, picture, basePrice) {
+  return {
+    name,
+    picture,
+    level: 0,
+    price: basePrice,
+    setPrice() {
+      if (this.level === 0) {
+        this.price = basePrice;
+      } else {
+        this.price = basePrice * ((this.level * 5) / 2);
+      }
+    },
+    levelUp() {
+      if (user.money >= this.price) {
+        user.money -= this.price;
+        this.level += 1;
+        this.price = basePrice * ((this.level * 5) / 2);
+      }
+    },
+  };
+}
+
+const coffee = []
+
+for (let i = 0; i < coffeeToCreate.length; i += 1) {
+  coffee.push(coffeeToCreate[i]);
+  coffee[i].setPrice();
+}
+
+function initializeCoffeeData() {
+  const storedCoffeeData = localStorage.getItem('coffeeData');
+
+  if (storedCoffeeData) {
+    // Si des données sont stockées, chargez-les dans le tableau coffee
+    const parsedData = JSON.parse(storedCoffeeData);
+
+    for (let i = 0; i < coffee.length; i += 1) {
+      coffee[i].level = parsedData[i].level;
+      coffee[i].price = parsedData[i].price;
+    }
+  } else {
+    // Sinon, initialisez le tableau coffee et stockez-le dans le localStorage
+    for (let i = 0; i < coffeeToCreate.length; i += 1) {
+      coffee.push(coffeeToCreate[i]);
+      coffee[i].setPrice();
+    }
+
+    localStorage.setItem('coffeeData', JSON.stringify(coffee));
+  }
+}
+
+initializeCoffeeData();
 
 const coffeeHTML = `
 <style>
@@ -114,28 +119,29 @@ const coffeeHTML = `
 </style>
 
 <div class="container mt-3">
-  <div class="row justify-content-center">
-    ${coffee
-      .map(
-        (cof) => `
-          <div class="col-md-3">
-            <div class="encadrement">
-              <h4>Niveau ${cof.level}</h4>
-              <img src="${cof.picture}" alt="Photo de ${cof.name}" style="width: 60px; height: 60px;">
-              <h2>${cof.name}</h2>
-              <p>Cout amélioration : ${cof.price}</p>
-              <button id="coffee-upgrade" style="padding: 10px; font-size: 16px;">améliorer !</button>
-            </div>
-          </div>`
-      )
-      .join('')}
+    <div class="row justify-content-center">
+      ${coffee
+        .map(
+          (cof, index) => `
+            <div class="col-md-3">
+              <div class="encadrement">
+                <h4 id="level-display-${index}">Niveau ${cof.level}</h4>
+                <img src="${cof.picture}" alt="Photo de ${cof.name}" style="width: 60px; height: 60px;">
+                <h2>${cof.name}</h2>
+                <p id="price-display-${index}">Cout amélioration : ${cof.price} Catcoins</p>
+                <button id="coffee-upgrade-${index}" class="coffee-upgrade-button" style="padding: 10px; font-size: 16px;">améliorer !</button>
+              </div>
+            </div>`
+        )
+        .join('')}
+    </div>
   </div>
-</div>
 `;
 
 const MenuCoffee = () => {
   const main = document.querySelector('main');
   document.title = 'Neko café';
+  initializeCoffeeData();
 
   const menuCoffee = `
       <div style="height: 100%; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: contain; background-repeat: repeat; background-position: center;">
@@ -160,9 +166,42 @@ const MenuCoffee = () => {
         </div>`;
   main.innerHTML = menuCoffee;
 
+  coffee.forEach((cof, index) => {
+    const levelDisplay = document.getElementById(`level-display-${index}`);
+    const priceDisplay = document.getElementById(`price-display-${index}`);
+
+    if (levelDisplay && priceDisplay) {
+      levelDisplay.textContent = `Niveau ${cof.level}`;
+      priceDisplay.textContent = `Cout amélioration : ${cof.price} Catcoins`;
+    }
+  });
+
+  const coffeeUpgrade = []
+  for (let i = 0; i < coffee.length; i += 1) {
+    coffeeUpgrade.push(document.querySelector(`#coffee-upgrade-${i}`));
+  }
+  coffeeUpgrade.forEach(button => {
+    button.addEventListener('click', (event) => {
+      const index = parseInt(event.target.id.split('-')[2], 10);
+      // eslint-disable-next-line no-restricted-globals
+      if (!isNaN(index) && index >= 0 && index < coffee.length) {
+        const selectedCoffee = coffee[index];
+        if (user.money >= selectedCoffee.price) {
+          selectedCoffee.levelUp();
+          const levelDisplay = document.getElementById(`level-display-${index}`);
+          const priceDisplay = document.getElementById(`price-display-${index}`);
+          levelDisplay.textContent = `Niveau ${selectedCoffee.level}`;
+          priceDisplay.textContent = `Cout amélioration : ${selectedCoffee.price} Catcoins`;
+
+          localStorage.setItem('coffeeData', JSON.stringify(coffee));
+        } 
+      }
+    });
+  });
+
   const coffeeButton = document.querySelector('#coffee-button');
   coffeeButton?.addEventListener('click', redirectToMenuCoffee);
-  coffeeButton?.addEventListener('click', redirectToMenuCat);
+  coffeeButton?.addEventListener('click', redirectToMenuCoffee);
   coffeeButton.src = coffeePurpleButton;
   const catButton = document.querySelector('#cat-button');
   catButton?.addEventListener('click', redirectToMenuCat);
@@ -177,6 +216,8 @@ const MenuCoffee = () => {
   quitButton?.addEventListener('click', redirectToMenu);
 };
 
+
+
 function redirectToMenuCat() {
   Navigate('/menucat');
 }
@@ -184,7 +225,7 @@ function redirectToMenuCoffee() {
   Navigate('/menucoffee');
 }
 function redirectToMenu() {
-  Navigate('/menu');
+  Navigate('/game');
 }
 
 export default MenuCoffee;
