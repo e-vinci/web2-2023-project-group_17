@@ -66,9 +66,11 @@
 - Une fois votre projet soumis, vous devrez réaliser un minimum de 5 revues qui vous seront attribuées automatiquement via le site du cours.
 
 ## Crédits aux artistes
-- Boissons et nourriture : https://luminleveret.itch.io/desserts
+- Nourritures : https://luminleveret.itch.io/desserts
+- Boissons : https://www.freepik.com/free-vector/drinks-icons-pixel-art_29012370.htm
 - Personnage principal : https://butterymilk.itch.io/tiny-wonder-forest
 - Chats sur le jeu : https://pop-shop-packs.itch.io/cats-pixel-asset-pack
 - Clients : https://immunitys.itch.io/pixel-top-down-character
 - Boutons, background, scène de jeu, logo : https://github.com/Ysaline-Degols-Vinci
 - Musique du jeu : https://youtu.be/ox_T5Ia_Y0A?si=KqO8Oz8tcvAFuw0m
+- Son CatCoin : https://www.youtube.com/watch?v=88Icb7OKexU
