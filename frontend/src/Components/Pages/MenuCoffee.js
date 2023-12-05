@@ -16,6 +16,7 @@ import coffeePinkButton from '../../img/cafespinkbutton.png';
 import catPurpleButton from '../../img/chatspurplebutton.png';
 import coffeePurpleButton from '../../img/cafespurplebutton.png';
 
+import { user } from '../Game/GameScene';
 
 import Navigate from '../Router/Navigate';
 
@@ -46,8 +47,11 @@ function createCoffee(name, picture, basePrice) {
       }
     },
     levelUp() {
-      this.level += 1;
-      this.price = basePrice * ((this.level * 5) / 2);
+      if (user.money >= this.price) {
+        user.money -= this.price;
+        this.level += 1;
+        this.price = basePrice * ((this.level * 5) / 2);
+      }
     },
   };
 }
@@ -58,6 +62,30 @@ for (let i = 0; i < coffeeToCreate.length; i += 1) {
   coffee.push(coffeeToCreate[i]);
   coffee[i].setPrice();
 }
+
+function initializeCoffeeData() {
+  const storedCoffeeData = localStorage.getItem('coffeeData');
+
+  if (storedCoffeeData) {
+    // Si des données sont stockées, chargez-les dans le tableau coffee
+    const parsedData = JSON.parse(storedCoffeeData);
+
+    for (let i = 0; i < coffee.length; i += 1) {
+      coffee[i].level = parsedData[i].level;
+      coffee[i].price = parsedData[i].price;
+    }
+  } else {
+    // Sinon, initialisez le tableau coffee et stockez-le dans le localStorage
+    for (let i = 0; i < coffeeToCreate.length; i += 1) {
+      coffee.push(coffeeToCreate[i]);
+      coffee[i].setPrice();
+    }
+
+    localStorage.setItem('coffeeData', JSON.stringify(coffee));
+  }
+}
+
+initializeCoffeeData();
 
 const coffeeHTML = `
 <style>
@@ -91,28 +119,29 @@ const coffeeHTML = `
 </style>
 
 <div class="container mt-3">
-  <div class="row justify-content-center">
-    ${coffee
-      .map(
-        (cof) => `
-          <div class="col-md-3">
-            <div class="encadrement">
-              <h4>Niveau ${cof.level}</h4>
-              <img src="${cof.picture}" alt="Photo de ${cof.name}" style="width: 60px; height: 60px;">
-              <h2>${cof.name}</h2>
-              <p>Cout amélioration : ${cof.price} Catcoins</p>
-              <button id="coffee-upgrade" style="padding: 10px; font-size: 16px;">améliorer !</button>
-            </div>
-          </div>`
-      )
-      .join('')}
+    <div class="row justify-content-center">
+      ${coffee
+        .map(
+          (cof, index) => `
+            <div class="col-md-3">
+              <div class="encadrement">
+                <h4 id="level-display-${index}">Niveau ${cof.level}</h4>
+                <img src="${cof.picture}" alt="Photo de ${cof.name}" style="width: 60px; height: 60px;">
+                <h2>${cof.name}</h2>
+                <p id="price-display-${index}">Cout amélioration : ${cof.price} Catcoins</p>
+                <button id="coffee-upgrade-${index}" class="coffee-upgrade-button" style="padding: 10px; font-size: 16px;">améliorer !</button>
+              </div>
+            </div>`
+        )
+        .join('')}
+    </div>
   </div>
-</div>
 `;
 
 const MenuCoffee = () => {
   const main = document.querySelector('main');
   document.title = 'Neko café';
+  initializeCoffeeData();
 
   const menuCoffee = `
       <div style="height: 100%; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: contain; background-repeat: repeat; background-position: center;">
@@ -137,6 +166,39 @@ const MenuCoffee = () => {
         </div>`;
   main.innerHTML = menuCoffee;
 
+  coffee.forEach((cof, index) => {
+    const levelDisplay = document.getElementById(`level-display-${index}`);
+    const priceDisplay = document.getElementById(`price-display-${index}`);
+
+    if (levelDisplay && priceDisplay) {
+      levelDisplay.textContent = `Niveau ${cof.level}`;
+      priceDisplay.textContent = `Cout amélioration : ${cof.price} Catcoins`;
+    }
+  });
+
+  const coffeeUpgrade = []
+  for (let i = 0; i < coffee.length; i += 1) {
+    coffeeUpgrade.push(document.querySelector(`#coffee-upgrade-${i}`));
+  }
+  coffeeUpgrade.forEach(button => {
+    button.addEventListener('click', (event) => {
+      const index = parseInt(event.target.id.split('-')[2], 10);
+      // eslint-disable-next-line no-restricted-globals
+      if (!isNaN(index) && index >= 0 && index < coffee.length) {
+        const selectedCoffee = coffee[index];
+        if (user.money >= selectedCoffee.price) {
+          selectedCoffee.levelUp();
+          const levelDisplay = document.getElementById(`level-display-${index}`);
+          const priceDisplay = document.getElementById(`price-display-${index}`);
+          levelDisplay.textContent = `Niveau ${selectedCoffee.level}`;
+          priceDisplay.textContent = `Cout amélioration : ${selectedCoffee.price} Catcoins`;
+
+          localStorage.setItem('coffeeData', JSON.stringify(coffee));
+        } 
+      }
+    });
+  });
+
   const coffeeButton = document.querySelector('#coffee-button');
   coffeeButton?.addEventListener('click', redirectToMenuCoffee);
   coffeeButton?.addEventListener('click', redirectToMenuCoffee);
@@ -153,6 +215,8 @@ const MenuCoffee = () => {
   const quitButton = document.querySelector('#quit-button');
   quitButton?.addEventListener('click', redirectToMenu);
 };
+
+
 
 function redirectToMenuCat() {
   Navigate('/menucat');
