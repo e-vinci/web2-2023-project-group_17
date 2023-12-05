@@ -10,23 +10,34 @@ import coffeePurpleButton from '../../img/cafespurplebutton.png';
 
 import Navigate from '../Router/Navigate';
 
-const cats = [
-  {
-    name: 'Buddy',
-    bonus: 10,
-    photo: buddyImg,
-  },
-  {
-    name: 'Whiskers',
-    bonus: 5,
-    photo: whiskersImg,
-  },
-  {
-    name: 'Miaou',
-    bonus: 20,
-    photo: miaouImg,
-  },
-];
+const catsToCreate = [
+createCat('Salem', 0, 0, buddyImg, true, 0),
+createCat(null, 2, 0, whiskersImg, false, 100),
+createCat(null, 0, 2, miaouImg, false, 400),
+createCat(null, 2, 2, whiskersImg, false, 1000),
+createCat(null, 5, 0, whiskersImg, false, 5000),
+createCat(null, 0, 5, whiskersImg, false, 10000),
+]
+
+
+function createCat(name, bonusAppearing, bonusClick, photo, isAdopted, price){
+  return{
+    name,
+    bonusAppearing,
+    bonusClick,
+    photo,
+    isAdopted,
+    price,
+  }
+}
+
+
+
+const cats = []
+
+for (let i = 0; i < catsToCreate.length; i += 1) {
+  cats.push(catsToCreate[i]);
+}
 
 const catHTML = cats
   .map(
@@ -34,7 +45,9 @@ const catHTML = cats
     <div style="display: inline-block; text-align: center; margin: 10px;">
         <img src="${cat.photo}" alt="Photo de ${cat.name}" style="width: 100px; height: 100px;">
         <h2>${cat.name}</h2>
-        <p>Bonus: ${cat.bonus}</p>
+        <p>Bonus apparition clients: ${cat.bonusAppearing} %</p>
+        <p>Bonus CatCoins: ${cat.bonusClick} CatCoins/click</p>
+
     </div>
 `,
   )
