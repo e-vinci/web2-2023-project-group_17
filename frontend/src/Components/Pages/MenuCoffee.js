@@ -19,78 +19,45 @@ import coffeePurpleButton from '../../img/cafespurplebutton.png';
 
 import Navigate from '../Router/Navigate';
 
-const coffee = [
-  {
-    level: 1,
-    baseprice: 5,
-    price: 0,
-    name: 'Meowcha Latte',
-    picture: meawchaImg,
-  },
-  {
-    level: 0,
-    baseprice: 10,
-    price: 10,
-    name: 'Purrista Blend',
-    picture: purristaImg,
-  },
-  {
-    level: 0,
-    baseprice: 15,
-    price: 15,
-    name: 'Pancat Stacks',
-    picture: pancatImg,
-  },
-  {
-    level: 0,
-    baseprice: 20,
-    price: 20,
-    name: 'Tiramisu Tabby Treat',
-    picture: tiramisuImg,
-  },
-  {
-    level: 0,
-    baseprice: 25,
-    price: 25,
-    name: 'Purrfectly Sweet Cookie Sundae',
-    picture: cookieImg,
-  },
-  {
-    level: 0,
-    baseprice: 30,
-    price: 30,
-    name: 'Red Velvet Kitty Cake',
-    picture: redvelvetImg,
-  },
-  {
-    level: 0,
-    baseprice: 35,
-    price: 35,
-    name: 'Lemon Mew Cheesecake',
-    picture: lemonImg,
-  },
-  {
-    level: 0,
-    baseprice: 40,
-    price: 40,
-    name: 'Cinnamon Swirl Whiskers',
-    picture: cinnamonImg,
-  },
-  {
-    level: 0,
-    baseprice: 45,
-    price: 45,
-    name: 'Meowy Christmas Log',
-    picture: chocologImg,
-  },
-  {
-    level: 0,
-    baseprice: 50,
-    price: ,
-    name: 'Catini Bliss',
-    picture: catiniImg,
-  },
+const coffeeToCreate = [
+  createCoffee('Meowcha Latte', meawchaImg, 5),
+  createCoffee('Purrista Blend', purristaImg, 10),
+  createCoffee('Pancat Stacks', pancatImg, 15),
+  createCoffee('Tiramisu Tabby Treat', tiramisuImg, 20),
+  createCoffee('Purrfectly Sweet Cookie Sundae', cookieImg, 25),
+  createCoffee('Red Velvet Kitty Cake', redvelvetImg, 30),
+  createCoffee('Lemon Mew Cheesecake', lemonImg, 35),
+  createCoffee('Cinnamon Swirl Whiskers', cinnamonImg, 40),
+  createCoffee('Meowy Christmas Log', chocologImg, 45),
+  createCoffee('Catini Bliss', catiniImg, 50)
 ];
+
+function createCoffee(name, picture, basePrice) {
+  return {
+    name,
+    picture,
+    level: 0,
+    price: basePrice,
+    setPrice() {
+      if (this.level === 0) {
+        this.price = basePrice;
+      } else {
+        this.price = basePrice * ((this.level * 5) / 2);
+      }
+    },
+    levelUp() {
+      this.level += 1;
+      this.price = basePrice * ((this.level * 5) / 2);
+    },
+  };
+}
+
+const coffee = []
+
+for (let i = 0; i < coffeeToCreate.length; i += 1) {
+  coffee.push(coffeeToCreate[i]);
+  coffee[i].setPrice();
+}
 
 const coffeeHTML = `
 <style>
@@ -172,7 +139,7 @@ const MenuCoffee = () => {
 
   const coffeeButton = document.querySelector('#coffee-button');
   coffeeButton?.addEventListener('click', redirectToMenuCoffee);
-  coffeeButton?.addEventListener('click', redirectToMenuCat);
+  coffeeButton?.addEventListener('click', redirectToMenuCoffee);
   coffeeButton.src = coffeePurpleButton;
   const catButton = document.querySelector('#cat-button');
   catButton?.addEventListener('click', redirectToMenuCat);
