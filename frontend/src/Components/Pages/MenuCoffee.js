@@ -22,61 +22,71 @@ import Navigate from '../Router/Navigate';
 const coffee = [
   {
     level: 1,
-    price: '3 CatCoin',
+    baseprice: 5,
+    price: 0,
     name: 'Meowcha Latte',
     picture: meawchaImg,
   },
   {
-    level: 2,
-    price: '9 CatCoin',
+    level: 0,
+    baseprice: 10,
+    price: 10,
     name: 'Purrista Blend',
     picture: purristaImg,
   },
   {
-    level: 3,
-    price: '13 CatCoin',
+    level: 0,
+    baseprice: 15,
+    price: 15,
     name: 'Pancat Stacks',
     picture: pancatImg,
   },
   {
-    level: 4,
-    price: '20 CatCoin',
+    level: 0,
+    baseprice: 20,
+    price: 20,
     name: 'Tiramisu Tabby Treat',
     picture: tiramisuImg,
   },
   {
-    level: 5,
-    price: '25 CatCoin',
+    level: 0,
+    baseprice: 25,
+    price: 25,
     name: 'Purrfectly Sweet Cookie Sundae',
     picture: cookieImg,
   },
   {
-    level: 6,
-    price: '31 CatCoin',
+    level: 0,
+    baseprice: 30,
+    price: 30,
     name: 'Red Velvet Kitty Cake',
     picture: redvelvetImg,
   },
   {
-    level: 7,
-    price: '36 CatCoin',
+    level: 0,
+    baseprice: 35,
+    price: 35,
     name: 'Lemon Mew Cheesecake',
     picture: lemonImg,
   },
   {
-    level: 8,
-    price: '38 CatCoin',
+    level: 0,
+    baseprice: 40,
+    price: 40,
     name: 'Cinnamon Swirl Whiskers',
     picture: cinnamonImg,
   },
   {
-    level: 9,
-    price: '44 CatCoin',
+    level: 0,
+    baseprice: 45,
+    price: 45,
     name: 'Meowy Christmas Log',
     picture: chocologImg,
   },
   {
-    level: 10,
-    price: '50 CatCoin',
+    level: 0,
+    baseprice: 50,
+    price: ,
     name: 'Catini Bliss',
     picture: catiniImg,
   },
@@ -123,7 +133,7 @@ const coffeeHTML = `
               <h4>Niveau ${cof.level}</h4>
               <img src="${cof.picture}" alt="Photo de ${cof.name}" style="width: 60px; height: 60px;">
               <h2>${cof.name}</h2>
-              <p>Cout amélioration : ${cof.price}</p>
+              <p>Cout amélioration : ${cof.price} Catcoins</p>
               <button id="coffee-upgrade" style="padding: 10px; font-size: 16px;">améliorer !</button>
             </div>
           </div>`
