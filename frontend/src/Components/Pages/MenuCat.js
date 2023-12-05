@@ -1,37 +1,50 @@
 import backgroundImg from '../../img/background_clouds.png';
-import buddyImg from '../../img/cat_buddy.png';
-import whiskersImg from '../../img/cat_whiskers.png';
-import miaouImg from '../../img/cat_miaou.png';
 import quitImg from '../../img/close_button.png';
 import catPinkButton from '../../img/chatspinkbutton.png';
 import coffeePinkButton from '../../img/cafespinkbutton.png';
 import catPurpleButton from '../../img/chatspurplebutton.png';
 import coffeePurpleButton from '../../img/cafespurplebutton.png';
+import cat1Icon from '../../img/cat1_icon.png';
+import cat2Icon from '../../img/cat2_icon.png';
+import cat3Icon from '../../img/cat3_icon.png';
+import cat4Icon from '../../img/cat4_icon.png';
+import cat7Icon from '../../img/cat7_icon.png';
+import cat8Icon from '../../img/cat8_icon.png';
+
+
 
 import Navigate from '../Router/Navigate';
+// eslint-disable-next-line no-unused-vars
+import { user } from '../Game/GameScene';
+
 
 const catsToCreate = [
-createCat('Salem', 0, 0, buddyImg, true, 0),
-createCat(null, 2, 0, whiskersImg, false, 100),
-createCat(null, 0, 2, miaouImg, false, 400),
-createCat(null, 2, 2, whiskersImg, false, 1000),
-createCat(null, 5, 0, whiskersImg, false, 5000),
-createCat(null, 0, 5, whiskersImg, false, 10000),
+createCat('Salem', 0, 0, cat3Icon, true, 0, true),
+createCat('Rusty', 2, 0, cat7Icon, false, 100, false),
+createCat('Kali', 0, 2, cat1Icon, false, 400, false),
+createCat('Atchoum', 2, 2, cat2Icon, false, 5000, false),
+createCat('Bubbles', 5, 0, cat4Icon, false, 1000, false),
+createCat('Pinkie', 0, 5, cat8Icon, false, 10000, false),
 ]
 
 
-function createCat(name, bonusAppearing, bonusClick, photo, isAdopted, price){
+function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, isActive){
   return{
     name,
     bonusAppearing,
     bonusClick,
-    photo,
+    picture,
     isAdopted,
+    isActive,
     price,
+    adopter(){
+      if(user.money>=this.price){
+        this.isAdopted=true;
+        user.money -=this.price;
+      } 
+    }
   }
 }
-
-
 
 const cats = []
 
@@ -39,27 +52,101 @@ for (let i = 0; i < catsToCreate.length; i += 1) {
   cats.push(catsToCreate[i]);
 }
 
-const catHTML = cats
-  .map(
-    (cat) => `
-    <div style="display: inline-block; text-align: center; margin: 10px;">
-        <img src="${cat.photo}" alt="Photo de ${cat.name}" style="width: 100px; height: 100px;">
-        <h2>${cat.name}</h2>
-        <p>Bonus apparition clients: ${cat.bonusAppearing} %</p>
-        <p>Bonus CatCoins: ${cat.bonusClick} CatCoins/click</p>
+function initializeCatData() {
+  const storedCatData = localStorage.getItem('catData');
 
-    </div>
-`,
-  )
-  .join('');
+  if (storedCatData) {
+    const parsedData = JSON.parse(storedCatData);
+
+    for (let i = 0; i < cats.length; i += 1) {
+      cats[i].isAdopted = parsedData[i].isAdopted;
+    }
+  } else {
+    for (let i = 0; i < catsToCreate.length; i += 1) {
+      cats.push(catsToCreate[i]);
+    }
+
+    localStorage.setItem('catData', JSON.stringify(cats));
+  }
+}
+
+initializeCatData();
+
+
+  const catHTML = `
+<style>
+  .encadrement {
+    border: 4px solid white;
+    padding: 10px;
+    text-align: center;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .col-md-3 {
+    flex: 0 0 30%; 
+  }
+</style>
+
+<div class="container mt-3">
+  <div class="row justify-content-center">
+    ${cats
+      .map(
+        (cat, index) => `
+          <div class="col-md-3">
+            <div class="encadrement">
+              <h4>${cat.name}</h4>
+              <img src="${cat.picture}" alt="Photo de ${cat.name}" style="width: 40%; height: 40%;">
+              <br>
+              <p>Bonus click : ${cat.bonusClick}
+              <br>
+              Bonus apparition client : ${cat.bonusAppearing}</p>
+
+              <p>Cout adoption : ${cat.price} CatCoins</p>
+
+              ${(() => {
+                if (cat.isAdopted && cat.isActive) {
+                  return `<button id="cat-activation${index}" style="padding: 10px; font-size: 16px;">Désactiver !</button>`;
+                } 
+                if (cat.isAdopted) {
+                  return `<button id="cat-is-active${index}" style="padding: 10px; font-size: 16px;">Activer!</button>`;
+                } 
+                  return `<button id="cat-not-adopted${index}" style="padding: 10px; font-size: 16px;">Adopter !</button>`;
+                
+              })()}
+                      </div>
+
+          </div>`
+
+      )
+      .join('')}
+  </div>
+</div>
+`;
 
 const MenuCat = () => {
   const main = document.querySelector('main');
   document.title = 'Neko café';
 
   const menuCat = `
-        <div style="height: 100vh; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: cover; background-repeat: no-repeat; background-position: center;">
-          <div style="height:100%; width:100%;">
+  <div style="height: 100%; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: contain; background-repeat: repeat; background-position: center;">
+  <div style="height:100%; width:100%;">
           <div class="container mt-5">
           <div class="row justify-content-center">
           <div class="col-md-3">
@@ -73,12 +160,19 @@ const MenuCat = () => {
             <div style="position: absolute; top: 5%; right: 0; transform: translateY(-50%);">
               <img src="${quitImg}" alt="Bouton quitter" id="quit-button" style="width: 50px">
             </div>
+            <div style="position: absolute; top: 30%; right: 14%; background-color: #fff; color: #ffc0CB ;font-size: 25px;;">
+            ${user.money} CatCoins
+            </div>
             <div style="display: flex; justify-content: center;"> 
               ${catHTML}
             </div>
           </div>  
         </div>`;
   main.innerHTML = menuCat;
+
+
+
+
 
   const coffeeButton = document.querySelector('#coffee-button');
   coffeeButton?.addEventListener('click', redirectToMenuCoffee);
