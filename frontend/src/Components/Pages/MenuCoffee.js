@@ -128,7 +128,7 @@ const coffeeHTML = `
                 <h4 id="level-display-${index}">Niveau ${cof.level}</h4>
                 <img src="${cof.picture}" alt="Photo de ${cof.name}" style="width: 60px; height: 60px;">
                 <h2>${cof.name}</h2>
-                <p id="price-display-${index}">Cout amélioration : ${cof.price} Catcoins</p>
+                <p id="price-display-${index}">Cout amélioration : ${cof.price} CatCoins</p>
                 <button id="coffee-upgrade-${index}" class="coffee-upgrade-button" style="padding: 10px; font-size: 16px;">améliorer !</button>
               </div>
             </div>`
@@ -176,7 +176,7 @@ const MenuCoffee = () => {
 
     if (levelDisplay && priceDisplay) {
       levelDisplay.textContent = `Niveau ${cof.level}`;
-      priceDisplay.textContent = `Cout amélioration : ${cof.price} Catcoins`;
+      priceDisplay.textContent = `Cout amélioration : ${cof.price} CatCoins`;
     }
   });
 
@@ -197,8 +197,8 @@ const MenuCoffee = () => {
           const moneyDisplay = document.getElementById(`money-display`);
 
           levelDisplay.textContent = `Niveau ${selectedCoffee.level}`;
-          priceDisplay.textContent = `Cout amélioration : ${selectedCoffee.price} Catcoins`;
-          moneyDisplay.textContent = `${user.money} Catcoins`;
+          priceDisplay.textContent = `Cout amélioration : ${selectedCoffee.price} CatCoins`;
+          moneyDisplay.textContent = `${user.money} CatCoins`;
 
 
           localStorage.setItem('coffeeData', JSON.stringify(coffee));
