@@ -42,6 +42,12 @@ function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, 
         this.isAdopted=true;
         user.money -=this.price;
       } 
+    },
+    desactiver(){
+      this.isActive=false;
+    },
+    activer(){
+      this.isActive=true;
     }
   }
 }
@@ -50,13 +56,18 @@ const cats = []
 
 for (let i = 0; i < catsToCreate.length; i += 1) {
   cats.push(catsToCreate[i]);
+
 }
+console.log(cats);
 
 function initializeCatData() {
   const storedCatData = localStorage.getItem('catData');
 
   if (storedCatData) {
     const parsedData = JSON.parse(storedCatData);
+    console.log(parsedData);
+    console.log(storedCatData);
+
 
     for (let i = 0; i < cats.length; i += 1) {
       cats[i].isAdopted = parsedData[i].isAdopted;
@@ -122,10 +133,10 @@ initializeCatData();
 
               ${(() => {
                 if (cat.isAdopted && cat.isActive) {
-                  return `<button id="cat-activation${index}" style="padding: 10px; font-size: 16px;">Désactiver !</button>`;
+                  return `<button id="cat-disable${index}" style="padding: 10px; font-size: 16px;">Désactiver !</button>`;
                 } 
                 if (cat.isAdopted) {
-                  return `<button id="cat-is-active${index}" style="padding: 10px; font-size: 16px;">Activer!</button>`;
+                  return `<button id="cat-activating${index}" style="padding: 10px; font-size: 16px;">Activer!</button>`;
                 } 
                   return `<button id="cat-not-adopted${index}" style="padding: 10px; font-size: 16px;">Adopter !</button>`;
                 
@@ -170,8 +181,29 @@ const MenuCat = () => {
         </div>`;
   main.innerHTML = menuCat;
 
+  cats.forEach((cat, index) => {
+    const adoptButton = document.querySelector(`#cat-not-adopted${index}`);
+    const activateButton = document.querySelector(`#cat-activating${index}`);
+    const desactivateButton = document.querySelector(`#cat-disable${index}`);
 
+    if (adoptButton) {
+      adoptButton.addEventListener('click', () => {
+       cat.adopter();
+      });
+    }
 
+    if (activateButton) {
+      activateButton.addEventListener('click', () => {
+        cat.activer();
+      });
+    }
+
+    if (desactivateButton) {
+      desactivateButton.addEventListener('click', () => {
+        cat.desactiver();
+      });
+    }
+  });
 
 
   const coffeeButton = document.querySelector('#coffee-button');
