@@ -58,30 +58,41 @@ for (let i = 0; i < catsToCreate.length; i += 1) {
   cats.push(catsToCreate[i]);
 
 }
+console.log("CAAAAAAAAAAAAAAAATS");
 console.log(cats);
 
 function initializeCatData() {
+
   const storedCatData = localStorage.getItem('catData');
 
   if (storedCatData) {
     const parsedData = JSON.parse(storedCatData);
+    console.log("AAAAAAAAAAAAAAAAAAAAAAH parsedata")
     console.log(parsedData);
     console.log(storedCatData);
 
-
+    console.log(cats);
     for (let i = 0; i < cats.length; i += 1) {
+      console.log("Before Update - Cat:", cats[i]); // Add this line to check the cat object before the update
+      console.log("Parsed Data - Cat:", parsedData[i]); // Add this line to check the parsed data for the cat
+
       cats[i].isAdopted = parsedData[i].isAdopted;
+      console.log("After Update - Cat:", cats[i]); // Add this line to check the cat object after the update
+
     }
   } else {
     for (let i = 0; i < catsToCreate.length; i += 1) {
       cats.push(catsToCreate[i]);
     }
 
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAh");
+    console.log(cats);
     localStorage.setItem('catData', JSON.stringify(cats));
   }
 }
 
 initializeCatData();
+console.log(cats);
 
 
   const catHTML = `
