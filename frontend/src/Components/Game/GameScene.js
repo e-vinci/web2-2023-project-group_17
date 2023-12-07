@@ -246,7 +246,7 @@ class GameScene extends Phaser.Scene {
       backgroundColor: '#fff',
 
     });
-    this.moneyText.setPosition(880, 50);
+    this.moneyText.setPosition(850, 50);
 
 
     this.scoreText = this.add.text(20, 20, `score : ${this.score}`, {
@@ -255,9 +255,9 @@ class GameScene extends Phaser.Scene {
       backgroundColor: '#fff',
 
     });
-    this.moneyText.setPosition(880, 50);
+    this.moneyText.setPosition(850, 50);
     this.moneySound = this.sound.add('moneySound')
-    this.scoreText.setPosition(730, 50);
+    this.scoreText.setPosition(525, 50);
 
     window.addEventListener('beforeunload', this.handleBeforeUnload.bind(this));
 

@@ -51,6 +51,7 @@ function createCoffee(name, picture, basePrice) {
         user.money -= this.price;
         this.level += 1;
         this.price = basePrice * ((this.level * 5) / 2);
+        user.score+=this.price;
       }
     },
   };

@@ -14,7 +14,6 @@ import cat8Icon from '../../img/cat8_icon.png';
 
 
 import Navigate from '../Router/Navigate';
-// eslint-disable-next-line no-unused-vars
 import { user } from '../Game/GameScene';
 
 
@@ -41,6 +40,16 @@ function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, 
       if(user.money>=this.price){
         this.isAdopted=true;
         user.money -=this.price;
+        user.score+=this.price;
+
+        const storedCatData = JSON.parse(localStorage.getItem('catData'));
+        const updatedCatData = storedCatData.map((catData) => {
+          if (catData.name === this.name) {
+            return { ...catData, isAdopted: true };
+          }
+          return catData;
+        });
+        localStorage.setItem('catData', JSON.stringify(updatedCatData));
       } 
     },
     desactiver(){
@@ -67,18 +76,16 @@ function initializeCatData() {
 
   if (storedCatData) {
     const parsedData = JSON.parse(storedCatData);
+    
     console.log("AAAAAAAAAAAAAAAAAAAAAAH parsedata")
     console.log(parsedData);
     console.log(storedCatData);
 
     console.log(cats);
     for (let i = 0; i < cats.length; i += 1) {
-      console.log("Before Update - Cat:", cats[i]); // Add this line to check the cat object before the update
-      console.log("Parsed Data - Cat:", parsedData[i]); // Add this line to check the parsed data for the cat
-
-      cats[i].isAdopted = parsedData[i].isAdopted;
-      console.log("After Update - Cat:", cats[i]); // Add this line to check the cat object after the update
-
+      console.log("Before Update - Cat:", cats[i]); 
+      console.log("Parsed Data - Cat:", parsedData[i]); 
+      console.log("After Update - Cat:", cats[i]); 
     }
   } else {
     for (let i = 0; i < catsToCreate.length; i += 1) {
@@ -93,6 +100,33 @@ function initializeCatData() {
 
 initializeCatData();
 console.log(cats);
+
+function generateCatHTML(cat, index) {
+  return `
+    <div class="col-md-3">
+      <div class="encadrement">
+        <h4>${cat.name}</h4>
+        <img src="${cat.picture}" alt="Photo de ${cat.name}" style="width: 40%; height: 40%;">
+        <br>
+        <p>Bonus click : ${cat.bonusClick}
+        <br>
+        Bonus apparition client : ${cat.bonusAppearing}</p>
+
+        <p>Cout adoption : ${cat.price} CatCoins</p>
+
+        ${(() => {
+          if (cat.isAdopted && cat.isActive) {
+            return `<button id="cat-disable${index}" style="padding: 10px; font-size: 16px;">Désactiver !</button>`;
+          } 
+          if (cat.isAdopted) {
+            return `<button id="cat-activating${index}" style="padding: 10px; font-size: 16px;">Activer!</button>`;
+          } 
+          return `<button id="cat-not-adopted${index}" style="padding: 10px; font-size: 16px;">Adopter !</button>`;
+        })()}
+      </div>
+    </div>`;
+}
+
 
 
   const catHTML = `
@@ -127,71 +161,12 @@ console.log(cats);
 </style>
 
 <div class="container mt-3">
-  <div class="row justify-content-center">
-    ${cats
-      .map(
-        (cat, index) => `
-          <div class="col-md-3">
-            <div class="encadrement">
-              <h4>${cat.name}</h4>
-              <img src="${cat.picture}" alt="Photo de ${cat.name}" style="width: 40%; height: 40%;">
-              <br>
-              <p>Bonus click : ${cat.bonusClick}
-              <br>
-              Bonus apparition client : ${cat.bonusAppearing}</p>
-
-              <p>Cout adoption : ${cat.price} CatCoins</p>
-
-              ${(() => {
-                if (cat.isAdopted && cat.isActive) {
-                  return `<button id="cat-disable${index}" style="padding: 10px; font-size: 16px;">Désactiver !</button>`;
-                } 
-                if (cat.isAdopted) {
-                  return `<button id="cat-activating${index}" style="padding: 10px; font-size: 16px;">Activer!</button>`;
-                } 
-                  return `<button id="cat-not-adopted${index}" style="padding: 10px; font-size: 16px;">Adopter !</button>`;
-                
-              })()}
-                      </div>
-
-          </div>`
-
-      )
-      .join('')}
+    <div class="row justify-content-center">
+      ${cats.map((cat, index) => generateCatHTML(cat, index)).join('')}
+    </div>
   </div>
-</div>
 `;
-
-const MenuCat = () => {
-  const main = document.querySelector('main');
-  document.title = 'Neko café';
-
-  const menuCat = `
-  <div style="height: 100%; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: contain; background-repeat: repeat; background-position: center;">
-  <div style="height:100%; width:100%;">
-          <div class="container mt-5">
-          <div class="row justify-content-center">
-          <div class="col-md-3">
-            <img src="${catPinkButton}" alt="Bouton 1" id="cat-button">
-          </div>
-          <div class="col-md-3">
-            <img src="${coffeePinkButton}" alt="Bouton 2" id="coffee-button">
-          </div>
-          </div>
-          </div>
-            <div style="position: absolute; top: 5%; right: 0; transform: translateY(-50%);">
-              <img src="${quitImg}" alt="Bouton quitter" id="quit-button" style="width: 50px">
-            </div>
-            <div style="position: absolute; top: 30%; right: 14%; background-color: #fff; color: #ffc0CB ;font-size: 25px;;">
-            ${user.money} CatCoins
-            </div>
-            <div style="display: flex; justify-content: center;"> 
-              ${catHTML}
-            </div>
-          </div>  
-        </div>`;
-  main.innerHTML = menuCat;
-
+function registerCatEventListeners() {
   cats.forEach((cat, index) => {
     const adoptButton = document.querySelector(`#cat-not-adopted${index}`);
     const activateButton = document.querySelector(`#cat-activating${index}`);
@@ -199,23 +174,116 @@ const MenuCat = () => {
 
     if (adoptButton) {
       adoptButton.addEventListener('click', () => {
-       cat.adopter();
+        cat.adopter();
+        console.log('adopté!');
+        console.log(cat.isAdopted);
+        console.log(cat.isActive);
+        const moneyDisplay = document.getElementById(`money-display`);
+        moneyDisplay.textContent = `${user.money} CatCoins`;
+        const newCatContainer = document.createElement('div');
+        newCatContainer.className = 'row justify-content-center';
+        newCatContainer.innerHTML = cats.map((c, idx) => generateCatHTML(c, idx)).join('');
+
+        const oldCatContainer = document.querySelector('.row.justify-content-center');
+        oldCatContainer.parentNode.replaceChild(newCatContainer, oldCatContainer);
+
+
+        registerCatEventListeners();
       });
     }
 
-    if (activateButton) {
-      activateButton.addEventListener('click', () => {
-        cat.activer();
-      });
-    }
+  if (activateButton) {
+    activateButton.addEventListener('click', () => {
+      cat.activer();
+      console.log('activé!');
+      console.log(cat.isActive);
+      generateMenuCat();
+      const newCatContainer = document.createElement('div');
+newCatContainer.className = 'row justify-content-center';
+newCatContainer.innerHTML = cats.map((c, idx) => generateCatHTML(c, idx)).join('');
 
-    if (desactivateButton) {
-      desactivateButton.addEventListener('click', () => {
-        cat.desactiver();
-      });
-    }
+const oldCatContainer = document.querySelector('.row.justify-content-center');
+oldCatContainer.parentNode.replaceChild(newCatContainer, oldCatContainer);
+registerCatEventListeners();
+
+    });
+  }
+
+  if (desactivateButton) {
+    desactivateButton.addEventListener('click', () => {
+      cat.desactiver();
+      console.log('désactivé!');
+      console.log(cat.isActive);
+      generateMenuCat();
+      const newCatContainer = document.createElement('div');
+      newCatContainer.className = 'row justify-content-center';
+      newCatContainer.innerHTML = cats.map((c, idx) => generateCatHTML(c, idx)).join('');
+      
+      const oldCatContainer = document.querySelector('.row.justify-content-center');
+      oldCatContainer.parentNode.replaceChild(newCatContainer, oldCatContainer);
+      registerCatEventListeners();
+
+    });
+  }
+});
+}
+  function generateMenuCat(){
+    const menuCat = `
+    <div style="height: 100%; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: contain; background-repeat: repeat; background-position: center;">
+      <div style="height:100%; width:100%;">
+        <div class="container mt-5">
+          <div class="row justify-content-center">
+            <div class="col-md-3">
+              <img src="${catPinkButton}" alt="Bouton 1" id="cat-button">
+            </div>
+            <div class="col-md-3">
+              <img src="${coffeePinkButton}" alt="Bouton 2" id="coffee-button">
+            </div>
+          </div>
+        </div>
+        <div style="position: absolute; top: 5%; right: 0; transform: translateY(-50%);">
+          <img src="${quitImg}" alt="Bouton quitter" id="quit-button" style="width: 50px">
+        </div>
+        <div id='money-display' style="position: absolute; top: 30%; right: 14%; background-color: #fff; color: #ffc0CB ;font-size: 25px;">
+          ${user.money} CatCoins
+        </div>
+        <div style="display: flex; justify-content: center;"> 
+          ${catHTML}
+        </div>
+      </div>  
+    </div>
+  `;
+
+  const main = document.querySelector('main');
+  main.innerHTML = menuCat;
+
+  // Re-register event listeners for buttons
+  const coffeeButton = document.querySelector('#coffee-button');
+  coffeeButton?.addEventListener('click', redirectToMenuCoffee);
+  coffeeButton?.addEventListener('mouseover', () => {
+    coffeeButton.src = coffeePurpleButton;
+  });
+  coffeeButton?.addEventListener('mouseout', () => {
+    coffeeButton.src = coffeePinkButton;
   });
 
+  const catButton = document.querySelector('#cat-button');
+  catButton?.addEventListener('click', redirectToMenuCat);
+  catButton.src = catPurpleButton;
+
+  const quitButton = document.querySelector('#quit-button');
+  quitButton?.addEventListener('click', redirectToMenu);
+
+  registerCatEventListeners();
+}
+
+
+const MenuCat = () => {
+  document.title = 'Neko café';
+
+  generateMenuCat();
+
+  registerCatEventListeners();
 
   const coffeeButton = document.querySelector('#coffee-button');
   coffeeButton?.addEventListener('click', redirectToMenuCoffee);
@@ -232,6 +300,8 @@ const MenuCat = () => {
   const quitButton = document.querySelector('#quit-button');
   quitButton?.addEventListener('click',redirectToMenu);
 };
+
+
 
 function redirectToMenuCat() {
   Navigate('/menucat');
