@@ -9,7 +9,7 @@ const router = express.Router();
 
 /**
  * set the score of the specified user to the new score
- * @param {midlleware} authorize this middleware verify if the request is authorized before allowing it to proceed
+ * @param authorize this middleware verify if the request is authorized before allowing it to proceed
  */
 // eslint-disable-next-line consistent-return
 router.post('/set', authorize, (req, res) => {
@@ -32,7 +32,7 @@ router.post('/set', authorize, (req, res) => {
 });
 /**
  * get the Score of the specified user
- * @param {midlleware} authorize this middleware verify if the request is authorized before allowing it to proceed
+ * @param authorize this middleware verify if the request is authorized before allowing it to proceed
  * @returns the score at wich he user is or 0 if the user has never played
  */
 // eslint-disable-next-line consistent-return
