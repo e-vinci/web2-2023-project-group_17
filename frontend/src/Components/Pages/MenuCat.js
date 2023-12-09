@@ -81,6 +81,10 @@ function initializeCatData() {
     console.log(parsedData);
     console.log(storedCatData);
 
+    for (let i = 0; i < cats.length; i += 1) {
+      cats[i].isAdopted = parsedData[i].isAdopted;
+      cats[i].isActive = parsedData[i].isActive;
+    }
     console.log(cats);
     for (let i = 0; i < cats.length; i += 1) {
       console.log("Before Update - Cat:", cats[i]); 
@@ -101,8 +105,10 @@ function initializeCatData() {
 initializeCatData();
 console.log(cats);
 
+
 function generateCatHTML(cat, index) {
   return `
+  
     <div class="col-md-3">
       <div class="encadrement">
         <h4>${cat.name}</h4>
@@ -166,6 +172,7 @@ function generateCatHTML(cat, index) {
     </div>
   </div>
 `;
+
 function registerCatEventListeners() {
   cats.forEach((cat, index) => {
     const adoptButton = document.querySelector(`#cat-not-adopted${index}`);
@@ -186,7 +193,6 @@ function registerCatEventListeners() {
 
         const oldCatContainer = document.querySelector('.row.justify-content-center');
         oldCatContainer.parentNode.replaceChild(newCatContainer, oldCatContainer);
-
 
         registerCatEventListeners();
       });
@@ -228,8 +234,9 @@ registerCatEventListeners();
 });
 }
   function generateMenuCat(){
+    
     const menuCat = `
-    <div style="height: 100%; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: contain; background-repeat: repeat; background-position: center;">
+     <div style="height: 100%; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: contain; background-repeat: repeat; background-position: center;">
       <div style="height:100%; width:100%;">
         <div class="container mt-5">
           <div class="row justify-content-center">
