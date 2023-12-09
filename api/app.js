@@ -5,11 +5,10 @@ const logger = require('morgan');
 const cors = require('cors');
 
 const corsOptions = {
-  origin: ['http://localhost:8080', 'https://e-baron.github.io'],
+    origin: ['http://localhost:8080', 'https://e-baron.github.io'],
 };
 
 const usersRouter = require('./routes/users');
-const pizzaRouter = require('./routes/pizzas');
 const authsRouter = require('./routes/auths');
 
 const app = express();
@@ -18,28 +17,27 @@ const app = express();
 const expiryDateIn3Months = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 3);
 
 app.use(
-  session({
-    secret: 'NekoCafe', // need to be changed it's for test
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      expires: expiryDateIn3Months,
-    },
-  }),
+    session({
+        secret: 'NekoCafe', // need to be changed it's for test
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            expires: expiryDateIn3Months,
+        },
+    }),
 );
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
 app.use(cors(corsOptions));
 
 app.use('/users', usersRouter);
-app.use('/pizzas', pizzaRouter);
 app.use('/auths', authsRouter);
 
 module.exports = app;

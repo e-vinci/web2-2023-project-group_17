@@ -1,46 +1,50 @@
 const express = require('express');
-const { register, login } = require('../models/users');
+const path = require("node:path");
+const {register, login} = require('../models/auth');
+const {parse} = require("../utils/json");
 
 const router = express.Router();
+const jsonDbPath = path.join(__dirname, '/../data/users.json');
 
-/* Register a user */
+/**
+ * Register a new user
+ * @returns the json file of the newly registered user or an error
+ */
 router.post('/register', async (req, res) => {
-  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
-  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
+    const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
+    const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
 
-  if (!username || !password) return res.sendStatus(400); // 400 Bad Request
+    if (!username || !password) return res.status(400).json({error: 'Username or password missing !'}); // Bad Request
 
-  const authenticatedUser = await register(username, password);
+    const users = parse(jsonDbPath);
 
-  if (!authenticatedUser) return res.sendStatus(409); // 409 Conflict
+    if (password.length < 4) return res.status(400).json({error: 'Password too short'});
 
-  req.session.username = authenticatedUser.username;
-  req.session.token = authenticatedUser.token;
+    // eslint-disable-next-line consistent-return
+    users.forEach((user) => {
+        if (user.username === username) return res.status(409).json({error: 'Username already exists !'}); // Conflict
+    });
 
-  return res.json(authenticatedUser);
+    const authenticatedUser = await register(username, password);
+
+    if (authenticatedUser) return res.json(authenticatedUser);
 });
 
-/* Login a user */
+/**
+ * Log a user in
+ * @returns the json file of the logged user or an error
+ */
 router.post('/login', async (req, res) => {
-  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
-  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
+    const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
+    const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
 
-  if (!username || !password) return res.sendStatus(400); // 400 Bad Reques
+    if (!username || !password) return res.status(400).json({error: 'Username or password missing !'}); // Bad Request
 
-  const authenticatedUser = await login(username, password);
+    const authenticatedUser = await login(username, password);
 
-  if (!authenticatedUser) return res.sendStatus(401); // 401 Unauthorized
+    if (!authenticatedUser) return res.status(401).json({error: 'Wrong username or password !'}); // Unauthorized
 
-  req.session.username = authenticatedUser.username;
-  req.session.token = authenticatedUser.token;
-
-  return res.json(authenticatedUser);
-});
-
-/* Logout a user */
-router.get('/logout', (req, res) => {
-  req.session = null;
-  return res.sendStatus(200);
+    return res.json(authenticatedUser);
 });
 
 module.exports = router;
