@@ -38,12 +38,10 @@ async function login(username, password) {
         {expiresIn: lifetimeJwt},
     );
 
-    const authenticatedUser = {
+    return {
         username,
         token,
     };
-
-    return authenticatedUser;
 }
 
 /**
@@ -63,13 +61,11 @@ async function register(username, password) {
         jwtSecret,
         {expiresIn: lifetimeJwt},
     );
-    const authenticatedUser = {
+    return {
         username,
         token,
     };
-
-    return authenticatedUser;
-};
+}
 
 /**
  * search a user from the database by username
@@ -82,7 +78,7 @@ function readOneUserFromUsername(username) {
     if (indexOfUserFound < 0) return undefined;
 
     return users[indexOfUserFound];
-};
+}
 
 /**
  * Creates a new user
@@ -117,8 +113,7 @@ function getNextId() {
     const lastIndex = auth?.length !== 0 ? auth.length - 1 : undefined;
     if (lastIndex === undefined) return 1;
     const lastId = auth[lastIndex]?.id;
-    const nextId = lastId + 1;
-    return nextId;
+    return lastId + 1;
 }
 
 module.exports = {
