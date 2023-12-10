@@ -1,5 +1,5 @@
 ### Register the user - OK
-POST {{baseUrl}}/auths/login
+POST {{ baseUrl }}/auths/login
 Content-Type: application/json
 
 {
@@ -8,32 +8,32 @@ Content-Type: application/json
 }
 
 ### check his score when never played- OK
-POST {{baseUrl}}/users/get
+POST {{ baseUrl }}/users/get
 Content-Type: application/json
-Authorization: {{userToken}}
+Authorization: {{ userToken }}
 
 ### set his new score - OK
-POST {{baseUrl}}/users/set
+POST {{ baseUrl }}/users/set
 Content-Type: application/json
-Authorization: {{userToken}}
+Authorization: {{ userToken }}
 
 {
   "score": 400
 }
 
 ### check his score after played- OK
-POST {{baseUrl}}/users/get
+POST {{ baseUrl }}/users/get
 Content-Type: application/json
-Authorization: {{userToken}}
+Authorization: {{ userToken }}
 
 
 ### set his new score with score missing - KO
-POST {{baseUrl}}/users/set
+POST {{ baseUrl }}/users/set
 Content-Type: application/json
-Authorization: {{userToken}}
+Authorization: {{ userToken }}
 
 ### get the leaderboard - OK
-GET {{baseUrl}}/users/scores
+GET {{ baseUrl }}/users/scores
 Content-Type: application/json
 
 
