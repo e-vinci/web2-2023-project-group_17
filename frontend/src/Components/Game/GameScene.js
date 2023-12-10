@@ -134,6 +134,7 @@ class GameScene extends Phaser.Scene {
     buttonHome.on('pointerdown', () => {
       this.gameSave();
       clearAuthenticatedUser();
+      this.goToHomePage();
     });
     buttonHome.on('pointerover', () => {
       buttonHome.setTexture('hoveredButtonHome');
