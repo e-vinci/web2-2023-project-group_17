@@ -1,50 +1,50 @@
 const express = require('express');
-const path = require("node:path");
-const {authorize} = require('../utils/auths');
-const {parse, serialize} = require("../utils/json");
+const path = require('node:path');
+const { authorize } = require('../utils/auths');
+const { parse, serialize } = require('../utils/json');
 
 const jsonDbPath = path.join(__dirname, '/../data/highScores.json');
 const router = express.Router();
 
 router.post('/set', authorize, (req, res) => {
-    const {username, body: {score}} = req.user;
+  const { username, body: { score } } = req.user;
 
-    if (!username) return res.status(400).json({error: 'Username missing !'});
-    if (!score) return res.status(400).json({error: 'Score missing !'});
+  if (!username) return res.status(400).json({ error: 'Username missing !' });
+  if (!score) return res.status(400).json({ error: 'Score missing !' });
 
-    const highScores = parse(jsonDbPath);
-    const userScore = highScores.find(highScore => highScore.username === username);
+  const highScores = parse(jsonDbPath);
+  const userScore = highScores.find((highScore) => highScore.username === username);
 
-    if (userScore && userScore.score < score) userScore.score = score;
+  if (userScore && userScore.score < score) userScore.score = score;
 
-    serialize(jsonDbPath, highScores);
-    return res.sendStatus(200);
+  serialize(jsonDbPath, highScores);
+  return res.sendStatus(200);
 });
 
 router.post('/get', authorize, (req, res) => {
-    const {username} = req.user;
+  const { username } = req.user;
 
-    if (!username) return res.status(400).json({error: 'Username missing !'});
+  if (!username) return res.status(400).json({ error: 'Username missing !' });
 
-    const highScores = parse(jsonDbPath);
-    let userScore = highScores.find(highScore => highScore.username === username);
+  const highScores = parse(jsonDbPath);
+  let userScore = highScores.find((highScore) => highScore.username === username);
 
-    if (!userScore) {
-        userScore = {username, score: 0};
-        highScores.push(userScore);
-        serialize(jsonDbPath, highScores);
-    }
+  if (!userScore) {
+    userScore = { username, score: 0 };
+    highScores.push(userScore);
+    serialize(jsonDbPath, highScores);
+  }
 
-    return res.status(200).json(userScore);
+  return res.status(200).json(userScore);
 });
 
 router.get('/scores', (req, res) => {
-    const scores = parse(jsonDbPath);
+  const scores = parse(jsonDbPath);
 
-    if (!scores) return res.status(404).json({error: 'No leaderboard found'});
+  if (!scores) return res.status(404).json({ error: 'No leaderboard found' });
 
-    scores.sort((a, b) => b.score - a.score);
-    return res.status(200).json(scores);
+  scores.sort((a, b) => b.score - a.score);
+  return res.status(200).json(scores);
 });
 
 module.exports = router;

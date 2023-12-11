@@ -1,7 +1,7 @@
 const express = require('express');
-const path = require("node:path");
-const {register, login} = require('../models/auth');
-const {parse} = require("../utils/json");
+const path = require('node:path');
+const { register, login } = require('../models/auth');
+const { parse } = require('../utils/json');
 
 const router = express.Router();
 const jsonDbPath = path.join(__dirname, '/../data/users.json');
@@ -10,24 +10,25 @@ const jsonDbPath = path.join(__dirname, '/../data/users.json');
  * Register a new user
  * @returns the json file of the newly registered user or an error
  */
+// eslint-disable-next-line consistent-return
 router.post('/register', async (req, res) => {
-    const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
-    const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
+  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
+  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
 
-    if (!username || !password) return res.status(400).json({error: 'Username or password missing !'}); // Bad Request
+  if (!username || !password) return res.status(400).json({ error: 'Username or password missing !' }); // Bad Request
 
-    const users = parse(jsonDbPath);
+  const users = parse(jsonDbPath);
 
-    if (password.length < 4) return res.status(400).json({error: 'Password too short'});
+  if (password.length < 4) return res.status(400).json({ error: 'Password too short' });
 
-    // eslint-disable-next-line consistent-return
-    users.forEach((user) => {
-        if (user.username === username) return res.status(409).json({error: 'Username already exists !'}); // Conflict
-    });
+  // eslint-disable-next-line consistent-return
+  users.forEach((user) => {
+    if (user.username === username) return res.status(409).json({ error: 'Username already exists !' }); // Conflict
+  });
 
-    const authenticatedUser = await register(username, password);
+  const authenticatedUser = await register(username, password);
 
-    if (authenticatedUser) return res.json(authenticatedUser);
+  if (authenticatedUser) return res.json(authenticatedUser);
 });
 
 /**
@@ -35,16 +36,16 @@ router.post('/register', async (req, res) => {
  * @returns the json file of the logged user or an error
  */
 router.post('/login', async (req, res) => {
-    const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
-    const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
+  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
+  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
 
-    if (!username || !password) return res.status(400).json({error: 'Username or password missing !'}); // Bad Request
+  if (!username || !password) return res.status(400).json({ error: 'Username or password missing !' }); // Bad Request
 
-    const authenticatedUser = await login(username, password);
+  const authenticatedUser = await login(username, password);
 
-    if (!authenticatedUser) return res.status(401).json({error: 'Wrong username or password !'}); // Unauthorized
+  if (!authenticatedUser) return res.status(401).json({ error: 'Wrong username or password !' }); // Unauthorized
 
-    return res.json(authenticatedUser);
+  return res.json(authenticatedUser);
 });
 
 module.exports = router;
