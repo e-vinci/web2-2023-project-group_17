@@ -67,7 +67,6 @@ function initializeCoffeeData() {
   const storedCoffeeData = localStorage.getItem('coffeeData');
 
   if (storedCoffeeData) {
-    // Si des données sont stockées, chargez-les dans le tableau coffee
     const parsedData = JSON.parse(storedCoffeeData);
 
     for (let i = 0; i < coffee.length; i += 1) {
@@ -75,7 +74,6 @@ function initializeCoffeeData() {
       coffee[i].price = parsedData[i].price;
     }
   } else {
-    // Sinon, initialisez le tableau coffee et stockez-le dans le localStorage
     for (let i = 0; i < coffeeToCreate.length; i += 1) {
       coffee.push(coffeeToCreate[i]);
       coffee[i].setPrice();
