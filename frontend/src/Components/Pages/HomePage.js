@@ -5,10 +5,25 @@ import connexionIcone from '../../img/connexion_icone.png';
 import meilleursScoresIcone from '../../img/meilleursScores_icone.png';
 import nvCompteIcone from '../../img/nouveauCompte_icone.png';
 import tutorielIcone from '../../img/tutoriel_icone.png';
+import connexionIconeHover from '../../img/loginIcon_hover.png';
+import meilleursScoresIconeHover from '../../img/leaderboardIcon_hover.png';
+import nvCompteIconeHover from '../../img/registerIcon_hover.png';
+import tutorielIconeHover from '../../img/tutorialIcon_hover.png';
+import { isAuthenticated } from '../../utils/auths';
+
+
+
+
 import Navigate from '../Router/Navigate';
 
 
 const HomePage = () => {
+  
+  if (isAuthenticated()) {
+    Navigate('/game');
+    return;
+  }
+
   const main = document.querySelector('main');
   document.title='Neko café'
 
@@ -42,18 +57,45 @@ const HomePage = () => {
   main.innerHTML = homePage;
 
 // adding event listeners to the buttons so they redirect to their page
+// and making them change color when hovering over them
   const connexionButton = document.querySelector('#connexion-button');
   connexionButton?.addEventListener('click', redirectToLogin);
+  connexionButton?.addEventListener('mouseover', () => {
+    connexionButton.src = connexionIconeHover;
+  });
+  connexionButton?.addEventListener('mouseout', () => {
+    connexionButton.src = connexionIcone;
+  });
+
 
   const leaderboardButton = document.querySelector('#leaderboard-button');
   leaderboardButton?.addEventListener('click', redirectToLeaderboard);
+  leaderboardButton?.addEventListener('mouseover', () => {
+    leaderboardButton.src = meilleursScoresIconeHover;
+  });
+  leaderboardButton?.addEventListener('mouseout', () => {
+    leaderboardButton.src = meilleursScoresIcone;
+  });
 
   const registerButton = document.querySelector('#register-button');
   registerButton?.addEventListener('click', redirectToRegister);
+  registerButton?.addEventListener('mouseover', () => {
+    registerButton.src = nvCompteIconeHover;
+  });
+  registerButton?.addEventListener('mouseout', () => {
+    registerButton.src = nvCompteIcone;
+  });
 
   const tutorielButton = document.querySelector('#tutoriel-button');
   tutorielButton?.addEventListener('click', redirectToTutoriel);
+  tutorielButton?.addEventListener('mouseover', () => {
+    tutorielButton.src = tutorielIconeHover;
+  });
+  tutorielButton?.addEventListener('mouseout', () => {
+    tutorielButton.src = tutorielIcone;
+  });
 };
+
 
 // functions to redirect to another page when clicking a button
 function redirectToLogin() {

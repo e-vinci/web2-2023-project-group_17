@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 .bg-pink {
   background-color: rgb(255, 235, 240) !important;
 }
@@ -11,15 +12,16 @@ img {
 .logo-move{
   display: flex;
   width: 18%;
-  margin-bottom: 25%;
+  margin-bottom: 20%;
   margin-left: 24%;
   
 }
 
 .icon-move{
   display: flex;
-  margin-bottom: -12%;
+  margin-bottom: -15%;
   margin-left: -58%;
 
 }
+
 

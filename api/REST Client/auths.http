@@ -1,38 +1,62 @@
-@baseUrl = http://localhost:3000
-
-### Try to login an unknow user
-POST {{baseUrl}}/auths/login
-Content-Type: application/json
-
-{
-    "username":"unknown",
-    "password":"admin"
-}
-
-### Login the default admin
-POST {{baseUrl}}/auths/login
-Content-Type: application/json
-
-{
-    "username":"admin",
-    "password":"admin"
-}
-
-
-### Create the manager user
+### Register an unknown user - OK
 POST {{baseUrl}}/auths/register
 Content-Type: application/json
 
 {
-    "username":"manager",
-    "password":"manager"
+  "username": "User1",
+  "password": "1234"
 }
 
-### Login the manager user
+### Register an already existing user - KO
+POST {{baseUrl}}/auths/register
+Content-Type: application/json
+
+{
+  "username": "User1",
+  "password": "1234"
+}
+
+### Register with invalid username - KO
+POST {{baseUrl}}/auths/register
+Content-Type: application/json
+
+{
+  "username": "",
+  "password": "1234"
+}
+
+### Register with invalid password - KO
+POST {{baseUrl}}/auths/register
+Content-Type: application/json
+
+{
+  "username": "User1",
+  "password": ""
+}
+
+### Register with invalid data - KO
+POST {{baseUrl}}/auths/register
+Content-Type: application/json
+
+{
+  "username": "",
+  "password": ""
+}
+
+### Login an unknown user - KO
 POST {{baseUrl}}/auths/login
 Content-Type: application/json
 
 {
-    "username":"manager",
-    "password":"manager"
+  "username": "nobody",
+  "password": "nobody"
+}
+
+### Login default user - OK
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+  "username": "User1",
+  "password": "1234"
 }
