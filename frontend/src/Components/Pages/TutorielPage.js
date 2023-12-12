@@ -11,14 +11,14 @@ const TutorielPage = () => {
   document.title = 'Neko café';
 
   const tutorielPage = `
-    <div style="height: 100vh; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: cover; background-repeat: no-repeat; background-position: center;">
+    <div style="height: 100vh; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: cover; background-repeat: repeat; background-position: center;">
       <div style="position: absolute; width: 15%; top: 0; left: 0;">
         <img src="${homepageIcone}" alt="homepage-icon" id="homepage-button">
-      </div>  
+      </div> 
         <div style="position: absolute; bottom: 0; left: 10%;">
           <img src="${characterImg}" alt="character-image" style="width: 400px;">
         </div>
-        <div  style="position: absolute; width: 980px; heigth: 100px; z-index: 1; top: 50%; left: 70%; transform: translate(-50%, -50%);">
+        <div  style="position: absolute; width: 985px; heigth: 100px; z-index: 1; top: 53%; left: 70%; transform: translate(-50%, -50%);">
           <img src="${bubbleImg}" alt="bubble image" style="width: 100%;">
         </div>
         <div style="font-family: 'Press Start 2P', cursive; position: absolute; z-index: 2; padding: 20px;  top: 45%; left: 65%; transform: translate(-50%, -50%); text-align: left;">
@@ -36,10 +36,10 @@ const TutorielPage = () => {
            <b> Améliorations des boissons et des chats: </b> Utilisez vos CatCoins dans l'onglet "Menu".Cela attirera plus de clients;)
           </p>
           <p style="font-size: 0.7em">
-            <b> Tableau de classement: </b> Votre score est calculé sur base de l'argent gagné.
+            <b> Meilleurs scores:  </b> Votre score est calculé sur base de l'argent gagné.
           </p>
       </div>
-    </div>
+  </div>
   `;
 
   main.innerHTML = tutorielPage;
