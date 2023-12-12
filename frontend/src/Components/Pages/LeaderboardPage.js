@@ -1,5 +1,4 @@
 import Navigate from "../Router/Navigate";
-import {getAutenticatedUser} from "../../utils/auths";
 
 const buildTab = (scores) => {
     const headHtml =`<tr>
@@ -37,19 +36,6 @@ const LeaderboardPage = async () => {
     const title = document.createElement("h1")
     title.innerText = "Meilleurs scores"
     main.appendChild(title)
-    if (getAutenticatedUser()) {
-        const result = await fetch(`${process.env.API_BASE_URL}/users/get`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `${getAutenticatedUser().token}`,
-            },
-        });
-        const userScore = await result.json();
-        const userScoreHtml = document.createElement("p")
-        userScoreHtml.innerText = `Votre score : ${userScore.score}`
-        main.appendChild(userScoreHtml)
-    }
 
     const result = await fetch(`${process.env.API_BASE_URL}/users/scores`, {
         method: 'GET',
