@@ -16,17 +16,6 @@ import cat8Icon from '../../img/cat8_icon.png';
 import Navigate from '../Router/Navigate';
 import { user } from '../Game/GameScene';
 
-
-const catsToCreate = [
-createCat('Salem', 0, 0, cat3Icon, true, 0, true),
-createCat('Rusty', 2, 0, cat7Icon, false, 100, false),
-createCat('Kali', 0, 2, cat1Icon, false, 400, false),
-createCat('Atchoum', 2, 2, cat2Icon, false, 5000, false),
-createCat('Bubbles', 5, 0, cat4Icon, false, 1000, false),
-createCat('Pinkie', 0, 5, cat8Icon, false, 10000, false),
-]
-
-
 function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, isActive){
   return{
     name,
@@ -39,17 +28,8 @@ function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, 
     adopter(){
       if(user.money>=this.price){
         this.isAdopted=true;
-        user.money -=this.price;
+        user.money-=this.price;
         user.score+=this.price;
-
-        const storedCatData = JSON.parse(localStorage.getItem('catData'));
-        const updatedCatData = storedCatData.map((catData) => {
-          if (catData.name === this.name) {
-            return { ...catData, isAdopted: true };
-          }
-          return catData;
-        });
-        localStorage.setItem('catData', JSON.stringify(updatedCatData));
       } 
     },
     desactiver(){
@@ -61,14 +41,21 @@ function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, 
   }
 }
 
+const catsToCreate = [
+  createCat('Salem', 0, 0, cat3Icon, true, 0, true),
+  createCat('Rusty', 2, 0, cat7Icon, false, 100, false),
+  createCat('Kali', 0, 2, cat1Icon, false, 400, false),
+  createCat('Atchoum', 2, 2, cat2Icon, false, 5000, false),
+  createCat('Bubbles', 5, 0, cat4Icon, false, 1000, false),
+  createCat('Pinkie', 0, 5, cat8Icon, false, 10000, false),
+  ]
+
 const cats = []
 
 for (let i = 0; i < catsToCreate.length; i += 1) {
   cats.push(catsToCreate[i]);
 
 }
-console.log("CAAAAAAAAAAAAAAAATS");
-console.log(cats);
 
 function initializeCatData() {
 
@@ -76,35 +63,20 @@ function initializeCatData() {
 
   if (storedCatData) {
     const parsedData = JSON.parse(storedCatData);
-    
-    console.log("AAAAAAAAAAAAAAAAAAAAAAH parsedata")
-    console.log(parsedData);
-    console.log(storedCatData);
 
     for (let i = 0; i < cats.length; i += 1) {
       cats[i].isAdopted = parsedData[i].isAdopted;
       cats[i].isActive = parsedData[i].isActive;
     }
-    console.log(cats);
-    for (let i = 0; i < cats.length; i += 1) {
-      console.log("Before Update - Cat:", cats[i]); 
-      console.log("Parsed Data - Cat:", parsedData[i]); 
-      console.log("After Update - Cat:", cats[i]); 
-    }
   } else {
     for (let i = 0; i < catsToCreate.length; i += 1) {
       cats.push(catsToCreate[i]);
     }
-
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAh");
-    console.log(cats);
     localStorage.setItem('catData', JSON.stringify(cats));
   }
 }
 
 initializeCatData();
-console.log(cats);
-
 
 function generateCatHTML(cat, index) {
   return `
@@ -135,7 +107,7 @@ function generateCatHTML(cat, index) {
 
 
 
-  const catHTML = `
+const catHTML = `
 <style>
   .encadrement {
     border: 4px solid white;
@@ -182,9 +154,6 @@ function registerCatEventListeners() {
     if (adoptButton) {
       adoptButton.addEventListener('click', () => {
         cat.adopter();
-        console.log('adopté!');
-        console.log(cat.isAdopted);
-        console.log(cat.isActive);
         const moneyDisplay = document.getElementById(`money-display`);
         moneyDisplay.textContent = `${user.money} CatCoins`;
         const newCatContainer = document.createElement('div');
@@ -201,8 +170,6 @@ function registerCatEventListeners() {
   if (activateButton) {
     activateButton.addEventListener('click', () => {
       cat.activer();
-      console.log('activé!');
-      console.log(cat.isActive);
       generateMenuCat();
       const newCatContainer = document.createElement('div');
 newCatContainer.className = 'row justify-content-center';
@@ -218,8 +185,6 @@ registerCatEventListeners();
   if (desactivateButton) {
     desactivateButton.addEventListener('click', () => {
       cat.desactiver();
-      console.log('désactivé!');
-      console.log(cat.isActive);
       generateMenuCat();
       const newCatContainer = document.createElement('div');
       newCatContainer.className = 'row justify-content-center';
