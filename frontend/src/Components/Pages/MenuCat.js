@@ -11,10 +11,10 @@ import cat4Icon from '../../img/cat4_icon.png';
 import cat7Icon from '../../img/cat7_icon.png';
 import cat8Icon from '../../img/cat8_icon.png';
 
-
-
 import Navigate from '../Router/Navigate';
 import { user } from '../Game/GameScene';
+
+const cats = []
 
 function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, isActive){
   return{
@@ -30,13 +30,16 @@ function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, 
         this.isAdopted=true;
         user.money-=this.price;
         user.score+=this.price;
+        localStorage.setItem('catData', JSON.stringify(cats));
       } 
     },
     desactiver(){
       this.isActive=false;
+      localStorage.setItem('catData', JSON.stringify(cats));
     },
     activer(){
       this.isActive=true;
+      localStorage.setItem('catData', JSON.stringify(cats));
     }
   }
 }
@@ -49,21 +52,15 @@ const catsToCreate = [
   createCat('Bubbles', 5, 0, cat4Icon, false, 1000, false),
   createCat('Pinkie', 0, 5, cat8Icon, false, 10000, false),
   ]
-
-const cats = []
-
 for (let i = 0; i < catsToCreate.length; i += 1) {
   cats.push(catsToCreate[i]);
-
 }
-
 function initializeCatData() {
 
   const storedCatData = localStorage.getItem('catData');
 
   if (storedCatData) {
     const parsedData = JSON.parse(storedCatData);
-
     for (let i = 0; i < cats.length; i += 1) {
       cats[i].isAdopted = parsedData[i].isAdopted;
       cats[i].isActive = parsedData[i].isActive;
@@ -156,6 +153,7 @@ function registerCatEventListeners() {
         cat.adopter();
         const moneyDisplay = document.getElementById(`money-display`);
         moneyDisplay.textContent = `${user.money} CatCoins`;
+        // TODO : vérifier
         const newCatContainer = document.createElement('div');
         newCatContainer.className = 'row justify-content-center';
         newCatContainer.innerHTML = cats.map((c, idx) => generateCatHTML(c, idx)).join('');
@@ -163,21 +161,18 @@ function registerCatEventListeners() {
         const oldCatContainer = document.querySelector('.row.justify-content-center');
         oldCatContainer.parentNode.replaceChild(newCatContainer, oldCatContainer);
 
-        registerCatEventListeners();
       });
     }
 
   if (activateButton) {
     activateButton.addEventListener('click', () => {
       cat.activer();
-      generateMenuCat();
       const newCatContainer = document.createElement('div');
-newCatContainer.className = 'row justify-content-center';
-newCatContainer.innerHTML = cats.map((c, idx) => generateCatHTML(c, idx)).join('');
+      newCatContainer.className = 'row justify-content-center';
+      newCatContainer.innerHTML = cats.map((c, idx) => generateCatHTML(c, idx)).join('');
 
-const oldCatContainer = document.querySelector('.row.justify-content-center');
-oldCatContainer.parentNode.replaceChild(newCatContainer, oldCatContainer);
-registerCatEventListeners();
+      const oldCatContainer = document.querySelector('.row.justify-content-center');
+      oldCatContainer.parentNode.replaceChild(newCatContainer, oldCatContainer);
 
     });
   }
@@ -185,51 +180,49 @@ registerCatEventListeners();
   if (desactivateButton) {
     desactivateButton.addEventListener('click', () => {
       cat.desactiver();
-      generateMenuCat();
       const newCatContainer = document.createElement('div');
       newCatContainer.className = 'row justify-content-center';
       newCatContainer.innerHTML = cats.map((c, idx) => generateCatHTML(c, idx)).join('');
       
       const oldCatContainer = document.querySelector('.row.justify-content-center');
       oldCatContainer.parentNode.replaceChild(newCatContainer, oldCatContainer);
-      registerCatEventListeners();
 
     });
   }
 });
 }
-  function generateMenuCat(){
-    
-    const menuCat = `
-     <div style="height: 100%; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: contain; background-repeat: repeat; background-position: center;">
-      <div style="height:100%; width:100%;">
-        <div class="container mt-5">
-          <div class="row justify-content-center">
-            <div class="col-md-3">
-              <img src="${catPinkButton}" alt="Bouton 1" id="cat-button">
-            </div>
-            <div class="col-md-3">
-              <img src="${coffeePinkButton}" alt="Bouton 2" id="coffee-button">
-            </div>
+function generateMenuCat(){
+  
+  const menuCat = `
+    <div style="height: 100%; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: contain; background-repeat: repeat; background-position: center;">
+    <div style="height:100%; width:100%;">
+      <div class="container mt-5">
+        <div class="row justify-content-center">
+          <div class="col-md-3">
+            <img src="${catPinkButton}" alt="Bouton 1" id="cat-button">
+          </div>
+          <div class="col-md-3">
+            <img src="${coffeePinkButton}" alt="Bouton 2" id="coffee-button">
           </div>
         </div>
-        <div style="position: absolute; top: 5%; right: 0; transform: translateY(-50%);">
-          <img src="${quitImg}" alt="Bouton quitter" id="quit-button" style="width: 50px">
-        </div>
-        <div id='money-display' style="position: absolute; top: 30%; right: 14%; background-color: #fff; color: #ffc0CB ;font-size: 25px;">
-          ${user.money} CatCoins
-        </div>
-        <div style="display: flex; justify-content: center;"> 
-          ${catHTML}
-        </div>
-      </div>  
-    </div>
+      </div>
+      <div style="position: absolute; top: 5%; right: 0; transform: translateY(-50%);">
+        <img src="${quitImg}" alt="Bouton quitter" id="quit-button" style="width: 50px">
+      </div>
+      <div id='money-display' style="position: absolute; top: 30%; right: 14%; background-color: #fff; color: #ffc0CB ;font-size: 25px;">
+        ${user.money} CatCoins
+      </div>
+      <div style="display: flex; justify-content: center;"> 
+        ${catHTML}
+      </div>
+    </div>  
+  </div>
   `;
 
   const main = document.querySelector('main');
   main.innerHTML = menuCat;
 
-  // Re-register event listeners for buttons
+  // register event listeners for buttons
   const coffeeButton = document.querySelector('#coffee-button');
   coffeeButton?.addEventListener('click', redirectToMenuCoffee);
   coffeeButton?.addEventListener('mouseover', () => {
@@ -245,8 +238,6 @@ registerCatEventListeners();
 
   const quitButton = document.querySelector('#quit-button');
   quitButton?.addEventListener('click', redirectToMenu);
-
-  registerCatEventListeners();
 }
 
 
@@ -256,21 +247,6 @@ const MenuCat = () => {
   generateMenuCat();
 
   registerCatEventListeners();
-
-  const coffeeButton = document.querySelector('#coffee-button');
-  coffeeButton?.addEventListener('click', redirectToMenuCoffee);
-  coffeeButton?.addEventListener('mouseover', () => {
-    coffeeButton.src = coffeePurpleButton;
-  });
-  coffeeButton?.addEventListener('mouseout', () => {
-    coffeeButton.src = coffeePinkButton;
-  });
-  const catButton = document.querySelector('#cat-button');
-  catButton?.addEventListener('click', redirectToMenuCat);
-  catButton.src = catPurpleButton;
-  
-  const quitButton = document.querySelector('#quit-button');
-  quitButton?.addEventListener('click',redirectToMenu);
 };
 
 
@@ -285,4 +261,5 @@ function redirectToMenu() {
   Navigate('/game');
 }
 
+export { cats };
 export default MenuCat;
