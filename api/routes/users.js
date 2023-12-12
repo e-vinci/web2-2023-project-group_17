@@ -7,15 +7,21 @@ const jsonDbPath = path.join(__dirname, '/../data/highScores.json');
 const router = express.Router();
 
 router.post('/set', authorize, (req, res) => {
-  const { username, body: { score } } = req.user;
+  const { username } = req.user;
+  const { score } = req.body;
 
   if (!username) return res.status(400).json({ error: 'Username missing !' });
   if (!score) return res.status(400).json({ error: 'Score missing !' });
 
   const highScores = parse(jsonDbPath);
-  const userScore = highScores.find((highScore) => highScore.username === username);
+  // find user score or get a new one
+  let userScore = highScores.find((highScore) => highScore.username === username);
 
   if (userScore && userScore.score < score) userScore.score = score;
+  else if (!userScore) {
+    userScore = { username, score };
+    highScores.push(userScore);
+  }
 
   serialize(jsonDbPath, highScores);
   return res.sendStatus(200);
