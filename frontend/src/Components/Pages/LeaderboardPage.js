@@ -1,29 +1,7 @@
 import Navigate from "../Router/Navigate";
+import {getAutenticatedUser} from "../../utils/auths";
 
-const scores = [
-    {
-        user : "player 1",
-        score : 200
-    },
-    {
-        user : "player 2",
-        score : 3
-    },
-    {
-        user : "player 3",
-        score : 210
-    },
-    {
-        user : "player 4",
-        score : 20
-    },
-    {
-        user : "player 5",
-        score : 400
-    }
-]
-
-const buildTab = () => {
+const buildTab = (scores) => {
     const headHtml =`<tr>
         <th>Pseudo</th>
         <th>Score</th>
@@ -36,15 +14,14 @@ const buildTab = () => {
     tabThead.innerHTML = headHtml
 
     const tabBody = tab.createTBody()
-    scores.sort((a, b) => b.score-a.score)
-    scores.forEach((info) => {
+    scores.forEach((player) => {
         const row = document.createElement("tr")
         const cellUser = document.createElement("td")
-        cellUser.innerText = `${info.user}`
+        cellUser.innerText = `${player.username}`
         row.appendChild(cellUser)
 
         const cellScore = document.createElement("td")
-        cellScore.innerText = `${info.score}`
+        cellScore.innerText = `${player.score}`
         row.appendChild(cellScore)
 
         tabBody.appendChild(row)
@@ -53,11 +30,36 @@ const buildTab = () => {
     return tab
 }
 
-const LeaderboardPage = () => {
+const LeaderboardPage = async () => {
     const main = document.querySelector("main");
     main.innerHTML = ``
 
-    main.appendChild(buildTab());
+    const title = document.createElement("h1")
+    title.innerText = "Meilleurs scores"
+    main.appendChild(title)
+    if (getAutenticatedUser()) {
+        const result = await fetch(`${process.env.API_BASE_URL}/users/get`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${getAutenticatedUser().token}`,
+            },
+        });
+        const userScore = await result.json();
+        const userScoreHtml = document.createElement("p")
+        userScoreHtml.innerText = `Votre score : ${userScore.score}`
+        main.appendChild(userScoreHtml)
+    }
+
+    const result = await fetch(`${process.env.API_BASE_URL}/users/scores`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const scores = await result.json();
+
+    main.appendChild(buildTab(scores));
 
     const btnGame = document.createElement("button")
     btnGame.innerText = "Retournez au jeu"
@@ -68,7 +70,7 @@ const LeaderboardPage = () => {
         event.preventDefault()
         Navigate('/game')
     }))
-  };
+};
   
   export default LeaderboardPage;
   
