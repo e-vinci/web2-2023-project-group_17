@@ -48,7 +48,7 @@ const catsToCreate = [
   createCat('Salem', 0, 0, cat3Icon, true, 0, true),
   createCat('Rusty', 2, 0, cat7Icon, false, 100, false),
   createCat('Kali', 0, 2, cat1Icon, false, 400, false),
-  createCat('Atchoum', 2, 2, cat2Icon, false, 5000, false),
+  createCat('Atchoum', 2, 2, cat2Icon, false, 500, false),
   createCat('Bubbles', 5, 0, cat4Icon, false, 1000, false),
   createCat('Pinkie', 0, 5, cat8Icon, false, 10000, false),
   ]
@@ -173,7 +173,7 @@ function registerCatEventListeners() {
 
       const oldCatContainer = document.querySelector('.row.justify-content-center');
       oldCatContainer.parentNode.replaceChild(newCatContainer, oldCatContainer);
-
+      
     });
   }
 

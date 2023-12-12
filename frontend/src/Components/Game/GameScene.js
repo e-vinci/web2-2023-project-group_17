@@ -16,21 +16,28 @@ import menuButton from '../../img/menuIcon.png';
 import pnj1 from '../../assets/Girl-Sheet.png';
 import music from '../../assets/bgMusic.mp3';
 import moneySound from '../../assets/sounds/moneySound.mp3.mp3';
+import catBubble from '../../assets/ghost.png';
+import catRusty from '../../assets/red.png';
+import catKali from '../../assets/seal_point_sitting.png';
+import catPinkie from '../../assets/cotton_candy_pink.png';
 
 
 document.title='Neko café'
 
 
-
+const cats = [];
 const user = getAutenticatedUser();
 const IDLE_KEY = 'idle';
 const MOVE_RIGHT_KEY = 'walkRight';
 const MOVE_LEFT_KEY = 'walkLeft';
-const SITTING_BLACK_CAT = 'blackSitting';
-const SITTING_BROWN_CAT = 'brownSitting';
+const SALEM_ANIM = 'salemAnim';
+const ATCHOUM_ANIM = 'atchoumAnim';
 const BUNNY_IDLE = 'bunnyIdle';
 const PNJ1_ANIM = 'pnj1Anim';
-
+const BUBBLE_ANIM = 'bubbleAnim';
+const RUSTY_ANIM = 'redAnim';
+const KALI_ANIM = 'kaliAnim';
+const PINKIE_ANIM = 'pinkieAnim'
 
 class GameScene extends Phaser.Scene {
   constructor() {
@@ -47,6 +54,7 @@ class GameScene extends Phaser.Scene {
     this.client1=undefined;
     this.client2 = undefined;
     this.client3 = undefined;
+    this.cats=[];
   }
 
 
@@ -72,13 +80,13 @@ class GameScene extends Phaser.Scene {
     this.load.image('menuButton', menuButton);
     this.load.image('hoveredButtonMenu', hoveredMenu);
 
-    this.load.spritesheet(SITTING_BLACK_CAT, catSittingBlackv2, {
+    this.load.spritesheet(SALEM_ANIM, catSittingBlackv2, {
       frameWidth: 32,
       frameHeight: 22,
     });
 
 
-    this.load.spritesheet(SITTING_BROWN_CAT, catSittingBrown, {
+    this.load.spritesheet(ATCHOUM_ANIM, catSittingBrown, {
       frameWidth: 32,
       frameHeight: 21,
     });
@@ -93,6 +101,25 @@ class GameScene extends Phaser.Scene {
       frameHeight: 24,
     });
 
+    this.load.spritesheet(BUBBLE_ANIM, catBubble, {
+      frameWidth: 32,
+      frameHeight: 21,
+    });
+
+    this.load.spritesheet(RUSTY_ANIM, catRusty, {
+      frameWidth: 32,
+      frameHeight: 24,
+    });
+
+    this.load.spritesheet(KALI_ANIM, catKali, {
+      frameWidth: 32,
+      frameHeight: 21,
+    });
+
+    this.load.spritesheet(PINKIE_ANIM, catPinkie, {
+      frameWidth: 31,
+      frameHeight: 23,
+    });
     
     this.load.audio('moneySound', [moneySound]);
   
@@ -161,30 +188,32 @@ class GameScene extends Phaser.Scene {
       buttonMenu.setTexture('menuButton');
     });
 
-
+    this.initializeCatData();
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    this.cat1 = this.createCatOne();
-    this.cat1.play('sitting');
-    this.cat1.setInteractive();
-    this.cat2 = this.createCatTwo();
-    this.cat2.play('sittingBrown');
-    this.cat2.setInteractive();
-
-    this.cat1.on('pointerdown', () => {
-      this.touchCat();
+    cats.forEach(cat => {
+      if (cat.isActive === true && this.cat1===undefined) {
+        this.cat1=this.createCatOne(cat.name);
+      }else if (cat.isActive === true && this.cat1!==undefined){
+        this.cat2 = this.createCatTwo(cat.name);
+      }
     });
 
-    this.cat2.on('pointerdown', () => {
-      this.touchCat();
-    });
 
-    // Cat name
-    this.cat1Name = this.add.text(this.cat1.x + 10, this.cat1.y - 20, 'Salem', {
+    if(this.cat1){
+      this.cat1.setInteractive();
+
+      // make the cat generate money
+      this.cat1.on('pointerdown', () => {
+      this.touchCat();});
+
+       // display cats name
+      this.cat1Name = this.add.text(this.cat1.x + 10, this.cat1.y - 20, this.cat1.name, {
       fontSize: '15px',
       fill: 'white',
       backgroundColor: 'pink',
     });
+
     this.cat1Name.setOrigin(0.5, 1);
     this.cat1Name.setVisible(false);
 
@@ -195,22 +224,32 @@ class GameScene extends Phaser.Scene {
     this.cat1.on('pointerout', () => {
       this.cat1Name.setVisible(false);
     });
+    
+    }
 
-    this.cat2Name = this.add.text(this.cat2.x - 10, this.cat2.y - 20, 'Coco', {
-      fontSize: '15px',
-      fill: 'white',
-      backgroundColor: 'pink',
-    });
-    this.cat2Name.setOrigin(0.5, 1);
-    this.cat2Name.setVisible(false);
 
-    this.cat2.on('pointerover', () => {
-      this.cat2Name.setVisible(true);
-    });
+    if(this.cat2){
+      this.cat2.setInteractive();
 
-    this.cat2.on('pointerout', () => {
+      this.cat2.on('pointerdown', () => {
+        this.touchCat();
+      });
+      this.cat2Name = this.add.text(this.cat2.x - 10, this.cat2.y - 20, this.cat2.name, {
+        fontSize: '15px',
+        fill: 'white',
+        backgroundColor: 'pink',
+      });
+      this.cat2Name.setOrigin(0.5, 1);
       this.cat2Name.setVisible(false);
-    });
+  
+      this.cat2.on('pointerover', () => {
+        this.cat2Name.setVisible(true);
+      });
+  
+      this.cat2.on('pointerout', () => {
+        this.cat2Name.setVisible(false);
+      });
+    }
 
     this.bunny=this.createBunny();
     this.bunny.play('bunnyIdle');
@@ -337,35 +376,167 @@ class GameScene extends Phaser.Scene {
     return player;
   }
 
-  createCatOne() {
-    const cat = this.add.sprite(480, 400, SITTING_BLACK_CAT);
+  createCatOne(name) {
+    const cat = this.add.sprite(480, 400, SALEM_ANIM);
+    cat.name=name;
 
     cat.setScale(2);
 
+    if(name==="Salem"){
+      this.anims.create({
+        key: 'salemAnim',
+        frames: this.anims.generateFrameNumbers(SALEM_ANIM, { start: 3, end: 0 }),
+        frameRate: 4,
+        repeat: -1,
+        yoyo: true,
+        repeatDelay: 4500,
+      });
+      cat.anims.play('salemAnim', true);
+    }
+
+    if(name==="Rusty"){
     this.anims.create({
-      key: 'sitting',
-      frames: this.anims.generateFrameNumbers(SITTING_BLACK_CAT, { start: 0, end: 14 }),
-      frameRate: 4,
+      key: 'redAnim',
+      frames: this.anims.generateFrameNumbers(RUSTY_ANIM, { start: 0, end: 4 }),
+      frameRate: 3,
       repeat: -1,
-      repeatDelay: 500,
+      yoyo: true,
+      repeatDelay: 1500,
     });
+    cat.anims.play('redAnim', true);
+  }
+
+  if(name==="Bubbles"){
+    this.anims.create({
+      key: 'bubblesAnim',
+      frames: this.anims.generateFrameNumbers(BUBBLE_ANIM, { start: 4, end: 1 }),
+      frameRate: 3,
+      repeat: -1,
+      yoyo: true,
+      repeatDelay: 1500,
+    });
+    cat.anims.play('bubblesAnim', true);
+  }
+  
+  if(name==="Kali"){
+    this.anims.create({
+      key: 'kaliAnim',
+      frames: this.anims.generateFrameNumbers(KALI_ANIM, { start: 0, end: 2 }),
+      frameRate: 1,
+      repeat: -1,
+      yoyo: true,
+      repeatDelay: 1500,
+    });
+    cat.anims.play('kaliAnim', true);
+  }
+
+  if(name==="Atchoum"){
+    this.anims.create({
+      key: 'atchoumAnim',
+      frames: this.anims.generateFrameNumbers(ATCHOUM_ANIM, { start: 2, end: 0 }),
+      frameRate: 2,
+      repeat: -1,
+      yoyo: true,
+      repeatDelay: 2000,
+    });
+    cat.anims.play('atchoumAnim', true);
+  }
+
+  if(name==="Pinkie"){
+    this.anims.create({
+      key: 'pinkieAnim',
+      frames: this.anims.generateFrameNumbers(PINKIE_ANIM, { start: 4, end: 0 }),
+      frameRate: 3,
+      repeat: -1,
+      yoyo: true,
+      repeatDelay: 2000,
+    });
+    cat.anims.play('pinkieAnim', true);
+  }
+  
 
     return cat;
   }
 
-  createCatTwo() {
-    const cat = this.add.sprite(1080, 400, SITTING_BROWN_CAT);
+  createCatTwo(name) {
+    const cat = this.add.sprite(1080, 400, ATCHOUM_ANIM);
+    cat.name=name;
 
     cat.setScale(2);
 
+    if(name==="Salem"){
+      this.anims.create({
+        key: 'salemAnim',
+        frames: this.anims.generateFrameNumbers(SALEM_ANIM, { start: 3, end: 0 }),
+        frameRate: 4,
+        repeat: -1,
+        yoyo: true,
+        repeatDelay: 4500,
+      });
+      cat.anims.play('salemAnim', true);
+    }
+
+
+    if(name==="Rusty"){
     this.anims.create({
-      key: 'sittingBrown',
-      frames: this.anims.generateFrameNumbers(SITTING_BROWN_CAT, { start: 0, end: 2 }),
+      key: 'redAnim',
+      frames: this.anims.generateFrameNumbers(RUSTY_ANIM, { start: 0, end: 4 }),
+      frameRate: 3,
+      repeat: -1,
+      yoyo: true,
+      repeatDelay: 1500,
+    });
+    cat.anims.play('redAnim', true);
+  }
+
+  if(name==="Bubbles"){
+    this.anims.create({
+      key: 'bubblesAnim',
+      frames: this.anims.generateFrameNumbers(BUBBLE_ANIM, { start: 4, end: 1 }),
+      frameRate: 3,
+      repeat: -1,
+      yoyo: true,
+      repeatDelay: 1500,
+    });
+    cat.anims.play('bubblesAnim', true);
+  }
+  
+  if(name==="Kali"){
+    this.anims.create({
+      key: 'kaliAnim',
+      frames: this.anims.generateFrameNumbers(KALI_ANIM, { start: 0, end: 2 }),
       frameRate: 1,
       repeat: -1,
+      yoyo: true,
+      repeatDelay: 1500,
+    });
+    cat.anims.play('kaliAnim', true);
+  }
+
+  if(name==="Atchoum"){
+    this.anims.create({
+      key: 'atchoumAnim',
+      frames: this.anims.generateFrameNumbers(ATCHOUM_ANIM, { start: 2, end: 0 }),
+      frameRate: 2,
+      repeat: -1,
+      yoyo: true,
       repeatDelay: 2000,
     });
+    cat.anims.play('atchoumAnim', true);
+  }
 
+  if(name==="Pinkie"){
+    this.anims.create({
+      key: 'pinkieAnim',
+      frames: this.anims.generateFrameNumbers(PINKIE_ANIM, { start: 4, end: 0 }),
+      frameRate: 3,
+      repeat: -1,
+      yoyo: true,
+      repeatDelay: 2000,
+    });
+    cat.anims.play('pinkieAnim', true);
+  }
+  
     return cat;
   }
 
@@ -514,27 +685,6 @@ createClientTwo(){
   const client = this.add.sprite(760, 590, 'pnj1');
   client.setScale(3);
 
-    this.anims.create({
-    key: 'pnj1Anim',
-    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 0, end: 3 }),
-    frameRate: 3,
-    repeat: -1,
-  });
-
-  this.anims.create({
-    key: 'pnj1walkLeft',
-    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 4, end: 7}),
-    frameRate: 3,
-    repeat: -1,
-  });
-
-  this.anims.create({
-    key: 'pnj1walkRight',
-    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 8, end: 11}),
-    frameRate: 3,
-    repeat: -1,
-  });
-
   client.anims.play('pnj1Anim', true);
 
   this.tweens.add({
@@ -605,27 +755,6 @@ createClientThree(){
   const client = this.add.sprite(760, 590, 'pnj1');
   client.setScale(3);
 
-    this.anims.create({
-    key: 'pnj1Anim',
-    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 0, end: 3 }),
-    frameRate: 3,
-    repeat: -1,
-  });
-
-  this.anims.create({
-    key: 'pnj1walkLeft',
-    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 4, end: 7}),
-    frameRate: 3,
-    repeat: -1,
-  });
-
-  this.anims.create({
-    key: 'pnj1walkRight',
-    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 8, end: 11}),
-    frameRate: 3,
-    repeat: -1,
-  });
-
   client.anims.play('pnj1Anim', true);
 
   this.tweens.add({
@@ -691,6 +820,31 @@ createClientThree(){
   return client;
 
 }
+
+// eslint-disable-next-line class-methods-use-this
+initializeCatData() {
+  const storedCatData = localStorage.getItem('catData');
+
+  if (storedCatData) {
+    const parsedData = JSON.parse(storedCatData);
+
+    cats.length = 0;
+
+    for (let i = 0; i < parsedData.length; i += 1) {
+      cats.push({
+        isAdopted: parsedData[i].isAdopted,
+        isActive: parsedData[i].isActive,
+        name: parsedData[i].name,
+        bonusClick: parsedData[i].bonusClick,
+        bonusAppearing: parsedData[i].bonusAppearing
+      });
+    }
+  }
+
+  console.log(cats);
+}
+
+
 
 }
 export {user}
