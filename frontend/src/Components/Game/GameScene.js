@@ -228,6 +228,7 @@ class GameScene extends Phaser.Scene {
     }
 
 
+
     if(this.cat2){
       this.cat2.setInteractive();
 
@@ -254,9 +255,18 @@ class GameScene extends Phaser.Scene {
     this.bunny=this.createBunny();
     this.bunny.play('bunnyIdle');
 
-    
+    let delayApparition = 0;
+
+    if(this.cat1 && this.cat2){
+      delayApparition = this.calculateDelay(this.cat1.name, this.cat2.name);
+    }else if(this.cat1 && !this.cat2){
+      delayApparition = this.calculateDelay(this.cat1.name, null);
+    }else{
+      delayApparition=7500;
+    }
+
      this.time.addEvent({
-      delay: 7000,
+      delay: delayApparition,
       callback: () => {
       if(this.client1===undefined || this.client1.alpha===0){
         this.client1 = this.createClient();
@@ -848,6 +858,25 @@ initializeCatData() {
   console.log(cats);
 }
 
+// eslint-disable-next-line class-methods-use-this
+calculateDelay(catName1, catName2){
+  let delay=7500;
+  let bonus=0;
+
+  const cat1 = cats.find(cat => cat.name === catName1);
+  const cat2 = cats.find(cat => cat.name === catName2);
+
+if(cat1){
+  bonus+=cat1.bonusAppearing;
+}
+if(cat2){
+  bonus+=cat2.bonusAppearing;
+}
+
+delay-=bonus*100*1.8;
+
+  return delay;
+}
 
 
 }
