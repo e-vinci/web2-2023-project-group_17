@@ -205,7 +205,7 @@ class GameScene extends Phaser.Scene {
 
       // make the cat generate money
       this.cat1.on('pointerdown', () => {
-      this.touchCat();});
+      this.touchCat(this.cat1.name);});
 
        // display cats name
       this.cat1Name = this.add.text(this.cat1.x + 10, this.cat1.y - 20, this.cat1.name, {
@@ -232,7 +232,7 @@ class GameScene extends Phaser.Scene {
       this.cat2.setInteractive();
 
       this.cat2.on('pointerdown', () => {
-        this.touchCat();
+        this.touchCat(this.cat2.name);
       });
       this.cat2Name = this.add.text(this.cat2.x - 10, this.cat2.y - 20, this.cat2.name, {
         fontSize: '15px',
@@ -254,9 +254,7 @@ class GameScene extends Phaser.Scene {
     this.bunny=this.createBunny();
     this.bunny.play('bunnyIdle');
 
-    // TODO mettre en commentaire dans la version finale
-   this.client1 = this.createClient();
-
+    
      this.time.addEvent({
       delay: 7000,
       callback: () => {
@@ -540,9 +538,15 @@ class GameScene extends Phaser.Scene {
     return cat;
   }
 
-touchCat(){
-  // TODO a changer :)
-  this.money += 1;
+touchCat(catName){
+  const touchedCat = cats.find(cat => cat.name === catName);
+
+  if(touchedCat.bonusClick===0){
+    this.money += 1;
+  }else{
+    this.money+=touchedCat.bonusClick;
+  }
+  
   this.moneyText.setText(`CatCoins : ${this.money}`);
   this.moneySound.play();
 }
