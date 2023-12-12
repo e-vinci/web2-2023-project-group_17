@@ -1,7 +1,12 @@
 import backgroundImg from '../../img/background_clouds.png';
 import loginTxt from '../../img/login_txt.png';
 
-import { setAutenticatedUser, getAutenticatedUser ,isAuthenticated, logout } from '../../utils/auths';
+import {
+  setAutenticatedUser,
+  getAutenticatedUser,
+  isAuthenticated,
+  clearAuthenticatedUser
+} from '../../utils/auths';
 import { clearPage } from '../../utils/render';
 import Navigate from '../Router/Navigate';
 
@@ -142,18 +147,20 @@ async function onLogin(event) {
   }else if (!response.ok) {throw new Error(`fetch error : ${response.status} : ${response.statusText}`);}
 
   const responseJson = await response.json();
-  const authenticatedUser = getAutenticatedUser();
+  const authenticatedUser = getAutenticatedUser() === undefined ? {"username": "", "token": ""} : getAutenticatedUser() ;
+
   authenticatedUser.username = responseJson.username;
   authenticatedUser.token = responseJson.token;
 
   setAutenticatedUser(authenticatedUser);
 
   redirectToGame();
-};
+}
 
 async function onLogout(event) {
   event.preventDefault();
-  logout();
+  clearAuthenticatedUser();
+  Navigate('/');
 }
 
 function redirectToGame() {

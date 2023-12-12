@@ -1,7 +1,7 @@
 import backgroundImg from '../../img/background_clouds.png';
 import registerTxt from '../../img/register_txt.png';
 
-import { setAutenticatedUser, isAuthenticated, logout } from '../../utils/auths';
+import {setAutenticatedUser, isAuthenticated, clearAuthenticatedUser} from '../../utils/auths';
 import { clearPage } from '../../utils/render';
 import Navigate from '../Router/Navigate';
 
@@ -165,7 +165,7 @@ async function onRegister(event) {
 
 async function onLogout(event) {
   event.preventDefault();
-  logout();
+  clearAuthenticatedUser();
 }
 
 function redirectToGame() {
