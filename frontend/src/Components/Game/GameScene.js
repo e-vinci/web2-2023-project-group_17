@@ -194,7 +194,7 @@ class GameScene extends Phaser.Scene {
     cats.forEach(cat => {
       if (cat.isActive === true && this.cat1===undefined) {
         this.cat1=this.createCatOne(cat.name);
-      }else if (cat.isActive === true && this.cat1!==undefined){
+      }else if (cat.isActive === true && this.cat1!==undefined && this.cat2===undefined){
         this.cat2 = this.createCatTwo(cat.name);
       }
     });

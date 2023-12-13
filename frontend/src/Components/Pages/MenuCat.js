@@ -38,8 +38,19 @@ function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, 
       localStorage.setItem('catData', JSON.stringify(cats));
     },
     activer(){
+      let catsActive=0;
+
+      cats.forEach(cat => {
+        if(cat.isActive){
+          catsActive+=1;
+        }
+      });
+
+      if(catsActive<2){
       this.isActive=true;
       localStorage.setItem('catData', JSON.stringify(cats));
+      }
+
     }
   }
 }
