@@ -154,6 +154,8 @@ const catHTML = `
 `;
 
 function registerCatEventListeners() {
+  const catContainer = document.querySelector('.row.justify-content-center');
+
   cats.forEach((cat, index) => {
     const adoptButton = document.querySelector(`#cat-not-adopted${index}`);
     const activateButton = document.querySelector(`#cat-activating${index}`);
@@ -164,13 +166,8 @@ function registerCatEventListeners() {
         cat.adopter();
         const moneyDisplay = document.getElementById(`money-display`);
         moneyDisplay.textContent = `${user.money} CatCoins`;
-        // TODO : vérifier
-        const newCatContainer = document.createElement('div');
-        newCatContainer.className = 'row justify-content-center';
-        newCatContainer.innerHTML = cats.map((c, idx) => generateCatHTML(c, idx)).join('');
-
-        const oldCatContainer = document.querySelector('.row.justify-content-center');
-        oldCatContainer.parentNode.replaceChild(newCatContainer, oldCatContainer);
+       
+        updateCatContainer(catContainer);
 
       });
     }
@@ -178,29 +175,26 @@ function registerCatEventListeners() {
   if (activateButton) {
     activateButton.addEventListener('click', () => {
       cat.activer();
-      const newCatContainer = document.createElement('div');
-      newCatContainer.className = 'row justify-content-center';
-      newCatContainer.innerHTML = cats.map((c, idx) => generateCatHTML(c, idx)).join('');
-
-      const oldCatContainer = document.querySelector('.row.justify-content-center');
-      oldCatContainer.parentNode.replaceChild(newCatContainer, oldCatContainer);
       
+      updateCatContainer(catContainer);
+
     });
   }
 
   if (desactivateButton) {
     desactivateButton.addEventListener('click', () => {
       cat.desactiver();
-      const newCatContainer = document.createElement('div');
-      newCatContainer.className = 'row justify-content-center';
-      newCatContainer.innerHTML = cats.map((c, idx) => generateCatHTML(c, idx)).join('');
       
-      const oldCatContainer = document.querySelector('.row.justify-content-center');
-      oldCatContainer.parentNode.replaceChild(newCatContainer, oldCatContainer);
+      updateCatContainer(catContainer);
 
     });
   }
 });
+}
+
+function updateCatContainer(container) {
+  // eslint-disable-next-line no-param-reassign
+  container.innerHTML = cats.map((cat, index) => generateCatHTML(cat, index)).join('');
 }
 function generateMenuCat(){
   
@@ -223,7 +217,7 @@ function generateMenuCat(){
       <div id='money-display' style="position: absolute; top: 30%; right: 14%; background-color: #fff; color: #ffc0CB ;font-size: 25px;">
         ${user.money} CatCoins
       </div>
-      <div style="display: flex; justify-content: center;"> 
+      <div id='catHtml' style="display: flex; justify-content: center;"> 
         ${catHTML}
       </div>
     </div>  
