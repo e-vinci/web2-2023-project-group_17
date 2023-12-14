@@ -255,6 +255,27 @@ class GameScene extends Phaser.Scene {
     this.bunny=this.createBunny();
     this.bunny.play('bunnyIdle');
 
+    this.anims.create({
+      key: 'pnj1Anim',
+      frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 0, end: 3 }),
+      frameRate: 3,
+      repeat: -1,
+    });
+  
+    this.anims.create({
+      key: 'pnj1walkLeft',
+      frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 4, end: 7}),
+      frameRate: 3,
+      repeat: -1,
+    });
+  
+    this.anims.create({
+      key: 'pnj1walkRight',
+      frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 8, end: 11}),
+      frameRate: 3,
+      repeat: -1,
+    });
+
     let delayApparition = 0;
 
     if(this.cat1 && this.cat2){
@@ -609,26 +630,7 @@ createClient(){
   const client = this.add.sprite(760, 590, 'pnj1');
   client.setScale(3);
 
-    this.anims.create({
-    key: 'pnj1Anim',
-    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 0, end: 3 }),
-    frameRate: 3,
-    repeat: -1,
-  });
-
-  this.anims.create({
-    key: 'pnj1walkLeft',
-    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 4, end: 7}),
-    frameRate: 3,
-    repeat: -1,
-  });
-
-  this.anims.create({
-    key: 'pnj1walkRight',
-    frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 8, end: 11}),
-    frameRate: 3,
-    repeat: -1,
-  });
+    
 
   client.anims.play('pnj1Anim', true);
 
