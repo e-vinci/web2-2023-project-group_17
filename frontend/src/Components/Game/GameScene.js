@@ -80,6 +80,7 @@ class GameScene extends Phaser.Scene {
     this.load.image('menuButton', menuButton);
     this.load.image('hoveredButtonMenu', hoveredMenu);
 
+    // load all the sprites animations
     this.load.spritesheet(SALEM_ANIM, catSittingBlackv2, {
       frameWidth: 32,
       frameHeight: 22,
@@ -136,7 +137,6 @@ class GameScene extends Phaser.Scene {
     const backgroundMusic = this.sound.add('bgMusic', { loop: true, volume: 0.5 });
     backgroundMusic.play();
 
-
     const map = this.add.image(0, 0, 'map').setOrigin(-0.45, -0.1);
     map.setScale(0.39);
 
@@ -144,6 +144,7 @@ class GameScene extends Phaser.Scene {
     const bounds = new Phaser.Geom.Rectangle(370, 230, 770, 350);
     this.physics.world.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
     
+    // making it so the player can't leave the bounds and making them invisible
      const boundsInterior = this.createBounds();
      boundsInterior.setAlpha(0);
 
@@ -152,12 +153,13 @@ class GameScene extends Phaser.Scene {
     // graphics.lineStyle(2, 0xff0000); 
     // graphics.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);
 
-    // bouton home
+    //  home button
     const buttonHome = this.add.image(20, 30, 'homeButton');
     buttonHome.setScale(0.09, 0.09);
     buttonHome.setOrigin(-0.8, -1);
     buttonHome.setInteractive();
 
+    // making the home button save the game and logout the player
     buttonHome.on('pointerdown', () => {
       this.gameSave();
       logout();
@@ -170,12 +172,13 @@ class GameScene extends Phaser.Scene {
       buttonHome.setTexture('homeButton');
     });
 
-    // bouton menu
+    // menu button
     const buttonMenu = this.add.image(20, 30, 'menuButton');
     buttonMenu.setScale(0.09, 0.09);
     buttonMenu.setOrigin(-0.8, -2.3);
     buttonMenu.setInteractive();
 
+    // making the menu button save the game and redirect to the menu page
     buttonMenu.on('pointerdown', () => {
       this.gameSave();
       Navigate('/menucoffee');
@@ -188,9 +191,11 @@ class GameScene extends Phaser.Scene {
       buttonMenu.setTexture('menuButton');
     });
 
+    // initialize the cats data so it shows the right ones
     this.initializeCatData();
     this.cursors = this.input.keyboard.createCursorKeys();
 
+    // for each cat, displays the ones that are active if there's one
     cats.forEach(cat => {
       if (cat.isActive === true && this.cat1===undefined) {
         this.cat1=this.createCatOne(cat.name);
@@ -207,7 +212,7 @@ class GameScene extends Phaser.Scene {
       this.cat1.on('pointerdown', () => {
       this.touchCat(this.cat1.name);});
 
-       // display cats name
+       // display cat's name
       this.cat1Name = this.add.text(this.cat1.x + 10, this.cat1.y - 20, this.cat1.name, {
       fontSize: '15px',
       fill: 'white',
@@ -228,13 +233,14 @@ class GameScene extends Phaser.Scene {
     }
 
 
-
     if(this.cat2){
       this.cat2.setInteractive();
 
+      // make the cat generate money
       this.cat2.on('pointerdown', () => {
         this.touchCat(this.cat2.name);
       });
+      // display cat's name
       this.cat2Name = this.add.text(this.cat2.x - 10, this.cat2.y - 20, this.cat2.name, {
         fontSize: '15px',
         fill: 'white',
@@ -252,9 +258,11 @@ class GameScene extends Phaser.Scene {
       });
     }
 
+    // creating the bunny
     this.bunny=this.createBunny();
     this.bunny.play('bunnyIdle');
 
+    // creating the differents client's animations
     this.anims.create({
       key: 'pnj1Anim',
       frames: this.anims.generateFrameNumbers(PNJ1_ANIM, { start: 0, end: 3 }),
@@ -276,6 +284,7 @@ class GameScene extends Phaser.Scene {
       repeat: -1,
     });
 
+    // calculating the delay of clients apparition based on active cats bonus
     let delayApparition = 0;
 
     if(this.cat1 && this.cat2){
@@ -286,6 +295,7 @@ class GameScene extends Phaser.Scene {
       delayApparition=7500;
     }
 
+    // making a client appear every delayApparition time
      this.time.addEvent({
       delay: delayApparition,
       callback: () => {
@@ -303,11 +313,12 @@ class GameScene extends Phaser.Scene {
       loop: true 
     });
 
+    // creating the player and making it so they can't cross the bounds
     this.player = this.createPlayer();
     
     this.physics.add.collider(this.player, boundsInterior);
 
-
+    // displaying player's money
     this.moneyText = this.add.text(20, 20, `CatCoins : ${this.money}`, {
       fontSize: '25px',
       fill: '#ffc0CB',
@@ -316,7 +327,7 @@ class GameScene extends Phaser.Scene {
     });
     this.moneyText.setPosition(850, 50);
 
-
+    // displaying player's score
     this.scoreText = this.add.text(20, 20, `score : ${this.score}`, {
       fontSize: '25px',
       fill: '#ffc0CB',
@@ -327,6 +338,7 @@ class GameScene extends Phaser.Scene {
     this.moneySound = this.sound.add('moneySound')
     this.scoreText.setPosition(525, 50);
 
+    // saving the game if its left
     window.addEventListener('beforeunload', this.handleBeforeUnload.bind(this));
 
   }
@@ -337,6 +349,7 @@ class GameScene extends Phaser.Scene {
 
 
   update() {
+    // player's movements
     this.player.setVelocityX(0);
     this.player.setVelocityY(0);
     if (this.cursors.left.isDown && this.cursors.up.isDown) {
@@ -375,19 +388,20 @@ class GameScene extends Phaser.Scene {
 
   }
 
+  // creating the player
   createPlayer() {
     const player = this.physics.add.sprite(750, 520, IDLE_KEY);
     player.setScale(3.2);
     player.setCollideWorldBounds(true);
     player.body.setAllowGravity(false);
 
+    // creating the different animations
     this.anims.create({
       key: 'left',
       frames: this.anims.generateFrameNumbers(MOVE_LEFT_KEY, { start: 0, end: 7 }),
       frameRate: 10,
       repeat: -1,
     });
-
 
     this.anims.create({
       key: 'right',
@@ -405,12 +419,14 @@ class GameScene extends Phaser.Scene {
     return player;
   }
 
+  // creating the first cat
   createCatOne(name) {
     const cat = this.add.sprite(480, 400, SALEM_ANIM);
     cat.name=name;
 
     cat.setScale(2);
 
+    // picking which animation to create and display depending on the cat given
     if(name==="Salem"){
       this.anims.create({
         key: 'salemAnim',
@@ -487,12 +503,14 @@ class GameScene extends Phaser.Scene {
     return cat;
   }
 
+    // creating the second cat
   createCatTwo(name) {
     const cat = this.add.sprite(1080, 400, ATCHOUM_ANIM);
     cat.name=name;
 
     cat.setScale(2);
 
+    // picking which animation to create and display depending on the cat given
     if(name==="Salem"){
       this.anims.create({
         key: 'salemAnim',
@@ -569,19 +587,22 @@ class GameScene extends Phaser.Scene {
     return cat;
   }
 
+  // increases player's money when they touch a cat 
 touchCat(catName){
   const touchedCat = cats.find(cat => cat.name === catName);
 
+  // choosing the amount depending on the cat's bonus
   if(touchedCat.bonusClick===0){
     this.money += 1;
   }else{
     this.money+=touchedCat.bonusClick;
   }
-  
+  // update the display of the player's money
   this.moneyText.setText(`CatCoins : ${this.money}`);
   this.moneySound.play();
 }
 
+// creating the bunny and its animation
 createBunny(){
   const bunny = this.add.sprite(857, 290, BUNNY_IDLE);
  
@@ -597,7 +618,7 @@ createBunny(){
     return bunny;
   }
 
-    // function to save the player data
+    // function to save the player's data
     gameSave() {
       user.money = this.money
       user.score = this.score
@@ -609,6 +630,7 @@ createBunny(){
     Navigate('/');
   }
 
+  // creating bounds interior to the game scene
   createBounds() {
     const bounds = this.physics.add.staticGroup();
 
@@ -616,6 +638,7 @@ createBunny(){
       .create(10, 10)
       .refreshBody();
 
+    // creating all the different bounds
     bounds.create(535, 470, 'bounds').setDisplaySize(80, 40).setSize(90,40);
     bounds.create(975, 470, 'bounds').setDisplaySize(80, 40).setSize(90,40);
     bounds.create(720, 350, 'bounds').setDisplaySize(250, 40).setSize(340,40);
@@ -625,13 +648,13 @@ createBunny(){
     return bounds;
   }
 
+  // creating the first client
 // eslint-disable-next-line class-methods-use-this
 createClient(){
   const client = this.add.sprite(760, 590, 'pnj1');
   client.setScale(3);
 
-    
-
+// creating a predefined path 
   client.anims.play('pnj1Anim', true);
 
   this.tweens.add({
@@ -678,6 +701,7 @@ createClient(){
                     ease: 'Linear',
                     duration: 2000,
                     onComplete: () => {
+                      // makes the client invisible when its done with the path
                         client.setAlpha(0);
                       
                     }
@@ -697,12 +721,14 @@ createClient(){
   return client;
 }
 
+// creating the second client
 createClientTwo(){
   const client = this.add.sprite(760, 590, 'pnj1');
   client.setScale(3);
 
   client.anims.play('pnj1Anim', true);
 
+  // creating a predefined path 
   this.tweens.add({
     targets: client,
     x: 760,
@@ -747,6 +773,7 @@ createClientTwo(){
                     ease: 'Linear',
                     duration: 2000,
                     onComplete: () => {
+                       // makes the client invisible when its done with the path
                         client.setAlpha(0);
                       
                     }
@@ -767,12 +794,13 @@ createClientTwo(){
   
 }
 
+// create a third client
 createClientThree(){
   const client = this.add.sprite(760, 590, 'pnj1');
   client.setScale(3);
 
   client.anims.play('pnj1Anim', true);
-
+// create a predefined path
   this.tweens.add({
     targets: client,
     x: 760,
@@ -817,6 +845,7 @@ createClientThree(){
                     ease: 'Linear',
                     duration: 2000,
                     onComplete: () => {
+                       // makes the client invisible when its done with the path
                         client.setAlpha(0);
                       
                     }
@@ -839,6 +868,7 @@ createClientThree(){
 
 // eslint-disable-next-line class-methods-use-this
 initializeCatData() {
+  // taking cats from the localstorages and pushing the needed infos in an array
   const storedCatData = localStorage.getItem('catData');
 
   if (storedCatData) {
@@ -856,10 +886,9 @@ initializeCatData() {
       });
     }
   }
-
-  console.log(cats);
 }
 
+// calculating the delay between each clients apparition depending on the active cats
 // eslint-disable-next-line class-methods-use-this
 calculateDelay(catName1, catName2){
   let delay=7500;
@@ -868,6 +897,7 @@ calculateDelay(catName1, catName2){
   const cat1 = cats.find(cat => cat.name === catName1);
   const cat2 = cats.find(cat => cat.name === catName2);
 
+  // if the cat exists, check its bonus
 if(cat1){
   bonus+=cat1.bonusAppearing;
 }
