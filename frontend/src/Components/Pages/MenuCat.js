@@ -147,14 +147,14 @@ const catHTML = `
 </style>
 
 <div class="container mt-3">
-    <div class="row justify-content-center">
+    <div id="catContainer" class="row justify-content-center">
       ${cats.map((cat, index) => generateCatHTML(cat, index)).join('')}
     </div>
   </div>
 `;
 
 function registerCatEventListeners() {
-  const catContainer = document.querySelector('.row.justify-content-center');
+  const catContainer = document.querySelector('#catContainer');
 
   cats.forEach((cat, index) => {
     const adoptButton = document.querySelector(`#cat-not-adopted${index}`);
@@ -168,7 +168,7 @@ function registerCatEventListeners() {
         moneyDisplay.textContent = `${user.money} CatCoins`;
        
         updateCatContainer(catContainer);
-
+        
       });
     }
 
@@ -195,9 +195,10 @@ function registerCatEventListeners() {
 function updateCatContainer(container) {
   // eslint-disable-next-line no-param-reassign
   container.innerHTML = cats.map((cat, index) => generateCatHTML(cat, index)).join('');
+  registerCatEventListeners();
 }
 function generateMenuCat(){
-  
+  registerCatEventListeners()
   const menuCat = `
     <div style="height: 100%; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: contain; background-repeat: repeat; background-position: center;">
     <div style="height:100%; width:100%;">
