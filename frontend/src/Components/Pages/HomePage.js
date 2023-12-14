@@ -19,6 +19,7 @@ import Navigate from '../Router/Navigate';
 
 const HomePage = () => {
   
+  // if the player is still connected, redirect them to gamePage
   if (isAuthenticated()) {
     Navigate('/game');
     return;
@@ -28,7 +29,7 @@ const HomePage = () => {
   document.title='Neko café'
 
  
-
+// creating the html with the different buttons
   const homePage = `
   <div style="height: 100vh; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: cover; background-repeat: no-repeat; background-position: center;">
     <div style="height:100%; width:100%;">
@@ -56,7 +57,7 @@ const HomePage = () => {
   `
   main.innerHTML = homePage;
 
-// adding event listeners to the buttons so they redirect to their page
+// adding event listeners to the buttons so they redirect to their respective page
 // and making them change color when hovering over them
   const connexionButton = document.querySelector('#connexion-button');
   connexionButton?.addEventListener('click', redirectToLogin);
