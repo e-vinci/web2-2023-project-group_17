@@ -8,7 +8,7 @@ const LeaderboardPage = async () => {
     main.innerHTML = '';
     const leaderPage = document.createElement("div");
 
-    leaderPage.setAttribute("class", "ld")
+    leaderPage.setAttribute("class", "ldb")
 
 
     const btnGame = document.createElement("img");
