@@ -15,7 +15,6 @@ const LeaderboardPage = async () => {
     main.style.overflowY = 'scroll';
 
 
-
     const btnGame = document.createElement("img");
     btnGame.src = homepageIcon;
     btnGame.style.width = '240px';
@@ -24,7 +23,6 @@ const LeaderboardPage = async () => {
     btnGame.style.position = 'fixed';
     btnGame.style.top = '20px';
     btnGame.style.left = '20px';
-
 
 
     main.appendChild(btnGame);
