@@ -166,6 +166,7 @@ async function onRegister(event) {
 async function onLogout(event) {
   event.preventDefault();
   clearAuthenticatedUser();
+  Navigate('/');
 }
 
 function redirectToGame() {
