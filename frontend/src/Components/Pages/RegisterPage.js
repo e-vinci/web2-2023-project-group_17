@@ -54,7 +54,7 @@ function renderLoginForm(){
   const section = document.createElement('section');
   section.className = 'section';
   section.style.position = 'absolute';
-  section.style.top = '15%';
+  section.style.top = '8%';
 
   const title = document.createElement('div');
   title.style.backgroundSize = 'cover';
