@@ -1,5 +1,3 @@
-import Navigate from '../Components/Router/Navigate';
-
 const STORE_NAME = 'users';
 let currentUser = JSON.parse(localStorage.getItem(STORE_NAME)) ?? undefined;
 const getAutenticatedUser = () => {
@@ -26,17 +24,4 @@ const clearAuthenticatedUser = () => {
     currentUser = undefined;
 };
 
-const logout = async () => {
-    currentUser = undefined;
-    const response = await fetch(`${process.env.API_BASE_URL}/auths/logout`, {
-    method: 'GET',
-    mode: 'cors',
-    credentials: 'include',
-    });
-
-    if (!response.ok) {throw new Error(`fetch error : ${response.status} : ${response.statusText}`);}
-
-    Navigate('/');
-};
-
-export { isAuthenticated, getAutenticatedUser, setAutenticatedUser, clearAuthenticatedUser, logout};
+export { isAuthenticated, getAutenticatedUser, setAutenticatedUser, clearAuthenticatedUser};

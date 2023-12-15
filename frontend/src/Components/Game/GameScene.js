@@ -10,7 +10,7 @@ import hoveredAccueil from '../../img/hovered_accueil.png';
 import catSittingBrown from '../../assets/brown_v2.png';
 import bunnyIdle from '../../assets/bunny.png';
 import catSittingBlackv2 from '../../assets/black_sitting_v2.png';
-import { getAutenticatedUser, setAutenticatedUser, logout } from '../../utils/auths';
+import {clearAuthenticatedUser, getAutenticatedUser, setAutenticatedUser} from '../../utils/auths';
 import hoveredMenu from '../../img/hoveredMenuIcon.png';
 import menuButton from '../../img/menuIcon.png';
 import pnj1 from '../../assets/Girl-Sheet.png';
@@ -162,7 +162,8 @@ class GameScene extends Phaser.Scene {
     // making the home button save the game and logout the player
     buttonHome.on('pointerdown', () => {
       this.gameSave();
-      logout();
+      clearAuthenticatedUser();
+      this.goToHomePage();
     });
     buttonHome.on('pointerover', () => {
       buttonHome.setTexture('hoveredButtonHome');

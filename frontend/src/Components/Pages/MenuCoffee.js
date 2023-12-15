@@ -130,6 +130,7 @@ const coffeeHTML = `
                 <img src="${cof.picture}" alt="Photo de ${cof.name}" style="width: 60px; height: 60px;">
                 <h2>${cof.name}</h2>
                 <p id="price-display-${index}">Cout amélioration : ${cof.price} CatCoins</p>
+
                 <button id="coffee-upgrade-${index}" class="coffee-upgrade-button" style="padding: 10px; font-size: 16px;">améliorer !</button>
               </div>
             </div>`
@@ -170,7 +171,6 @@ const MenuCoffee = () => {
         </div>`;
   main.innerHTML = menuCoffee;
 
-
   coffee.forEach((cof, index) => {
     const levelDisplay = document.getElementById(`level-display-${index}`);
     const priceDisplay = document.getElementById(`price-display-${index}`);
@@ -200,7 +200,6 @@ const MenuCoffee = () => {
           levelDisplay.textContent = `Niveau ${selectedCoffee.level}`;
           priceDisplay.textContent = `Cout amélioration : ${selectedCoffee.price} CatCoins`;
           moneyDisplay.textContent = `${user.money} CatCoins`;
-
 
           localStorage.setItem('coffeeData', JSON.stringify(coffee));
         } 

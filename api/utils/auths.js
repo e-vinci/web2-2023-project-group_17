@@ -1,34 +1,32 @@
 const jwt = require('jsonwebtoken');
-const { readOneUserFromUsername } = require('../models/users');
+const { readOneUserFromUsername } = require('../models/auth');
 
-const jwtSecret = 'ilovemypizza!'; // need to be changed
+const jwtSecret = 'NekoCafe';
 
+/**
+ *  verifiy if the user who emit the request has the write to do so
+ * @returns allow the request to proceed or return an error if the user is unallowed
+ */
 const authorize = (req, res, next) => {
-  const { token } = req.session;
-  if (!token) return res.sendStatus(401);
+  const token = req.get('authorization');
+
+  if (!token) return res.sendStatus(401); // unauthorized
 
   try {
     const decoded = jwt.verify(token, jwtSecret);
-    console.log('decoded', decoded);
     const { username } = decoded;
 
     const existingUser = readOneUserFromUsername(username);
 
-    if (!existingUser) return res.sendStatus(401);
+    if (!existingUser) return res.sendStatus(401); // unauthorized
 
-    req.user = existingUser; // request.user object is available in all other middleware functions
+    req.user = existingUser;
     return next();
   } catch (err) {
+    // eslint-disable-next-line
     console.error('authorize: ', err);
-    return res.sendStatus(401);
+    return res.sendStatus(401); // unauthorized
   }
 };
 
-const isAdmin = (req, res, next) => {
-  const { username } = req.user;
-
-  if (username !== 'admin') return res.sendStatus(403);
-  return next();
-};
-
-module.exports = { authorize, isAdmin };
+module.exports = { authorize };
