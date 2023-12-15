@@ -21,7 +21,7 @@ const TutorielPage = () => {
         <div  style="position: absolute; width: 985px; heigth: 100px; z-index: 1; top: 53%; left: 70%; transform: translate(-50%, -50%);">
           <img src="${bubbleImg}" alt="bubble image" style="width: 100%;">
         </div>
-        <div style="font-family: 'Press Start 2P', cursive; position: absolute; z-index: 2; padding: 20px;  top: 45%; left: 65%; transform: translate(-50%, -50%); text-align: left;">
+        <div style="font-family: 'Press Start 2P', cursive; position: absolute; z-index: 2; padding: 20px;  top: 46%; left: 65%; transform: translate(-50%, -50%); text-align: left;">
           <h6 style="font-size: 1em; text-align: center;"> Bienvenue au Neko Café! </h6> 
               <p style="font-size: 0.7em"> 
                 <b> But du jeu : </b> Gagner de l'argent en vendant des cafés et en cliquant sur des chats.
