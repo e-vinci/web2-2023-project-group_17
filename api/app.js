@@ -5,7 +5,7 @@ const logger = require('morgan');
 const cors = require('cors');
 
 const corsOptions = {
-  origin: ['http://localhost:8080','http://localhost:3000', 'https://e-baron.github.io', 'https://ysaline-degols-vinci.github.io/NekoCafe', 'https://ysaline-degols-vinci.github.io'],
+  origin: ['http://localhost:8080', 'http://localhost:3000', 'https://e-baron.github.io', 'https://ysaline-degols-vinci.github.io/NekoCafe', 'https://ysaline-degols-vinci.github.io'],
   credentials: true,
 };
 
