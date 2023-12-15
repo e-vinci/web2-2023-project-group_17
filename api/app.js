@@ -7,7 +7,6 @@ const cors = require('cors');
 const corsOptions = {
   origin: ['http://localhost:8080', 'https://e-baron.github.io', 'https://ysaline-degols-vinci.github.io/NekoCafe', 'https://ysaline-degols-vinci.github.io'],
   credentials: true,
-
 };
 
 const usersRouter = require('./routes/users');

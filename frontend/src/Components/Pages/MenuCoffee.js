@@ -51,6 +51,7 @@ function createCoffee(name, picture, basePrice) {
         user.money -= this.price;
         this.level += 1;
         this.price = basePrice * ((this.level * 5) / 2);
+        user.score+=this.price;
       }
     },
   };
@@ -67,6 +68,7 @@ function initializeCoffeeData() {
   const storedCoffeeData = localStorage.getItem('coffeeData');
 
   if (storedCoffeeData) {
+    // Si des données sont stockées, chargez-les dans le tableau coffee
     const parsedData = JSON.parse(storedCoffeeData);
 
     for (let i = 0; i < coffee.length; i += 1) {
@@ -74,6 +76,7 @@ function initializeCoffeeData() {
       coffee[i].price = parsedData[i].price;
     }
   } else {
+    // Sinon, initialisez le tableau coffee et stockez-le dans le localStorage
     for (let i = 0; i < coffeeToCreate.length; i += 1) {
       coffee.push(coffeeToCreate[i]);
       coffee[i].setPrice();
@@ -126,7 +129,8 @@ const coffeeHTML = `
                 <h4 id="level-display-${index}">Niveau ${cof.level}</h4>
                 <img src="${cof.picture}" alt="Photo de ${cof.name}" style="width: 60px; height: 60px;">
                 <h2>${cof.name}</h2>
-                <p id="price-display-${index}">Cout amélioration : ${cof.price} Catcoins</p>
+                <p id="price-display-${index}">Cout amélioration : ${cof.price} CatCoins</p>
+
                 <button id="coffee-upgrade-${index}" class="coffee-upgrade-button" style="padding: 10px; font-size: 16px;">améliorer !</button>
               </div>
             </div>`
@@ -157,6 +161,9 @@ const MenuCoffee = () => {
         <div style="position: absolute; top: 5%; right: 0; transform: translateY(-50%);">
           <img src="${quitImg}" alt="Bouton quitter" id="quit-button" style="width: 50px">
         </div>
+        <div id="money-display" style="position: absolute; top: 30%; right: 14%; background-color: #fff; color: #ffc0CB ;font-size: 25px;;">
+        ${user.money} CatCoins
+        </div>
         <div style="display: flex; justify-content: center;"> 
           ${coffeeHTML}
         </div>
@@ -170,7 +177,7 @@ const MenuCoffee = () => {
 
     if (levelDisplay && priceDisplay) {
       levelDisplay.textContent = `Niveau ${cof.level}`;
-      priceDisplay.textContent = `Cout amélioration : ${cof.price} Catcoins`;
+      priceDisplay.textContent = `Cout amélioration : ${cof.price} CatCoins`;
     }
   });
 
@@ -188,8 +195,11 @@ const MenuCoffee = () => {
           selectedCoffee.levelUp();
           const levelDisplay = document.getElementById(`level-display-${index}`);
           const priceDisplay = document.getElementById(`price-display-${index}`);
+          const moneyDisplay = document.getElementById(`money-display`);
+
           levelDisplay.textContent = `Niveau ${selectedCoffee.level}`;
-          priceDisplay.textContent = `Cout amélioration : ${selectedCoffee.price} Catcoins`;
+          priceDisplay.textContent = `Cout amélioration : ${selectedCoffee.price} CatCoins`;
+          moneyDisplay.textContent = `${user.money} CatCoins`;
 
           localStorage.setItem('coffeeData', JSON.stringify(coffee));
         } 
