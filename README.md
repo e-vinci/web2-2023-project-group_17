@@ -1,3 +1,4 @@
+[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=12401523&assignment_repo_type=AssignmentRepo)
 # Projet Web2 2023
 ## Introduction
 - Ce boilerplate vous offre l'architecture de base de votre frontend et de votre API pour développer un projet qui vous tient à coeur et qui répond aux exigences résumées ci-dessous (et détaillées dans le template du rapport de projet). 
@@ -63,3 +64,15 @@
 
 ## Revues de projets par les pairs
 - Une fois votre projet soumis, vous devrez réaliser un minimum de 5 revues qui vous seront attribuées automatiquement via le site du cours.
+
+## Crédits aux artistes
+- Nourritures : https://luminleveret.itch.io/desserts
+- Boissons : https://www.freepik.com/free-vector/drinks-icons-pixel-art_29012370.htm
+- Personnage principal : https://butterymilk.itch.io/tiny-wonder-forest
+- Chats sur le jeu : https://pop-shop-packs.itch.io/cats-pixel-asset-pack
+- Clients : https://immunitys.itch.io/pixel-top-down-character
+- Boutons, background, scène de jeu, logo, icones des chats : https://github.com/Ysaline-Degols-Vinci
+- Musique du jeu : https://youtu.be/ox_T5Ia_Y0A?si=KqO8Oz8tcvAFuw0m
+- Son CatCoin : https://www.youtube.com/watch?v=88Icb7OKexU
+  
+![nekoCafe](https://github.com/e-vinci/web2-2023-project-group_17/assets/128386131/bfa2119b-de3d-4327-b450-d97999e3b8f8)
