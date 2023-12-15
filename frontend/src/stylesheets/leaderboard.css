@@ -1,52 +1,54 @@
+
 main {
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 100vh;
-    width: 100vw;
-    overflow-y: scroll;
-}
+        background-image: url('../img/background_clouds.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 100vh;
+        width: 100vw;
+        overflow-y: scroll;
+    }
 
-img {
-    width: 240px;
-    height: 180px;
-    cursor: pointer;
-    position: fixed;
-    top: 20px;
-    left: 20px;
-}
+.ld img {
+        width: 240px;
+        height: 180px;
+        cursor: pointer;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+    }
 
-h1 {
-    text-align: center;
-    font-size: 3rem;
-    color: white;
-    text-shadow: 2px 2px 2px black;
-    margin-bottom: 50px;
-    padding-top: 30px;
-}
+.ld h1 {
+        text-align: center;
+        font-size: 3rem;
+        color: white;
+        text-shadow: 2px 2px 2px black;
+        margin-bottom: 50px;
+        padding-top: 30px;
+    }
 
-table {
-    background-color: rgba(230, 230, 230, 0.5);
-    border: 5px solid white;
-    border-radius: 10px;
-    border-collapse: inherit;
-    margin: auto;
-    width: 60%;
-    text-align: center;
-    font-size: 1.5rem;
-    table-layout: fixed;
-    margin-bottom: 50px;
-}
+.ld table {
+        background-color: rgba(230, 230, 230, 0.5);
+        border: 5px solid white;
+        border-radius: 10px;
+        border-collapse: inherit;
+        margin: auto;
+        width: 60%;
+        text-align: center;
+        font-size: 1.5rem;
+        table-layout: fixed;
+        margin-bottom: 50px;
+    }
 
-table th {
-    border-right: rgba(255, 255, 255, 0.5) dashed 1px;
-    border-top: rgba(255, 255, 255, 0.5) solid 1px;
-    padding-bottom: 20px;
-    padding-top: 20px;
-}
+.ld table th {
+        border-right: rgba(255, 255, 255, 0.5) dashed 1px;
+        border-top: rgba(255, 255, 255, 0.5) solid 1px;
+        padding-bottom: 20px;
+        padding-top: 20px;
+    }
 
-table td {
-    border-top: rgba(255, 255, 255, 0.5) solid 1px;
-    padding-bottom: 20px;
-    padding-top: 20px;
-}
+.ld table td {
+        border-top: rgba(255, 255, 255, 0.5) solid 1px;
+        padding-bottom: 20px;
+        padding-top: 20px;
+    }

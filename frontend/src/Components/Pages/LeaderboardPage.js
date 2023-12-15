@@ -1,5 +1,4 @@
 import Navigate from "../Router/Navigate";
-import backgroundImg from '../../img/background_clouds.png';
 import homepageIcon from '../../img/accueil_button.png';
 import homepageIconHover from '../../img/hovered_accueil.png';
 import '../../stylesheets/leaderboard.css';
@@ -7,14 +6,17 @@ import '../../stylesheets/leaderboard.css';
 const LeaderboardPage = async () => {
     const main = document.querySelector("main");
     main.innerHTML = '';
-    main.style.backgroundImage = `url(${backgroundImg})`;
+    const leaderPage = document.createElement("div");
+
+    leaderPage.setAttribute("class", "ld")
+
 
     const btnGame = document.createElement("img");
     btnGame.src = homepageIcon;
 
 
 
-    main.appendChild(btnGame);
+    leaderPage.appendChild(btnGame);
 
     btnGame.addEventListener("mouseover", (() => {
         btnGame.src = homepageIconHover
@@ -30,7 +32,7 @@ const LeaderboardPage = async () => {
     const title = document.createElement("h1");
     title.innerText = "Meilleurs scores";
 
-    main.appendChild(title);
+    leaderPage.appendChild(title);
 
     const result = await fetch(`${process.env.API_BASE_URL}/users/scores`, {
         method: 'GET',
@@ -48,12 +50,13 @@ const LeaderboardPage = async () => {
     table.appendChild(header);
     scores.forEach(score => {
         const row = document.createElement('tr');
-        row.innerHTML = `<th style="border-right: rgba(255, 255, 255, 0.5) dashed 1px; border-top: rgba(255, 255, 255, 0.5) solid 1px; padding-bottom: 20px; padding-top: 20px">${score.username}</td>
-                         <td style="border-top: rgba(255, 255, 255, 0.5) solid 1px; padding-bottom: 20px; padding-top:20px ;">${score.score}</td>`;
+        row.innerHTML = `<th >${score.username}</td>
+                         <td >${score.score}</td>`;
         table.appendChild(row);
     });
 
-    main.appendChild(table);
+    leaderPage.appendChild(table);
+    main.appendChild(leaderPage);
 };
 
 export default LeaderboardPage;
