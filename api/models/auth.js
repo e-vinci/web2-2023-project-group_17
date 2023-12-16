@@ -16,6 +16,8 @@ const defaultUsers = [
     id: 1,
     username: 'monad',
     password: bcrypt.hashSync('monad', saltRounds),
+    score: 0,
+    money: 10000,
   },
 ];
 
@@ -41,6 +43,8 @@ async function login(username, password) {
   return {
     username,
     token,
+    score: userFound.score,
+    money: userFound.money,
   };
 }
 
@@ -54,7 +58,7 @@ async function register(username, password) {
   const userFound = readOneUserFromUsername(username);
   if (userFound) return undefined;
 
-  await createOneUser(username, password);
+  const createdUser = await createOneUser(username, password);
 
   const token = jwt.sign(
     { username },
@@ -64,6 +68,8 @@ async function register(username, password) {
   return {
     username,
     token,
+    score: createdUser.score,
+    money: createdUser.money,
   };
 }
 
@@ -95,6 +101,8 @@ async function createOneUser(username, password) {
     id: getNextId(),
     username,
     password: hashedPassword,
+    score: 0,
+    money: 0,
   };
 
   auth.push(createdUser);

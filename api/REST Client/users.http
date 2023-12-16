@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### check his score when never played- OK
-POST {{baseUrl}}/users/get
+GET {{baseUrl}}/users/get
 Content-Type: application/json
 Authorization: {{userToken}}
 
@@ -18,11 +18,12 @@ Content-Type: application/json
 Authorization: {{userToken}}
 
 {
-  "score": 400
+  "score":10000,
+  "money":10000
 }
 
 ### check his score after played- OK
-POST {{baseUrl}}/users/get
+GET {{baseUrl}}/users/get
 Content-Type: application/json
 Authorization: {{userToken}}
 

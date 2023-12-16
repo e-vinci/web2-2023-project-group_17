@@ -19,6 +19,11 @@ const LeaderboardPage = async () => {
   
 
     leaderPage.setAttribute("class", "ldb")
+    leaderPage.style.height = '100vh';
+    leaderPage.style.backgroundImage = `url('${backgroundImg}')`;
+    leaderPage.style.backgroundSize = 'cover';
+    leaderPage.style.backgroundRepeat = 'no-repeat';
+    leaderPage.style.backgroundPosition = 'center';
 
 
     const btnGame = document.createElement("img");

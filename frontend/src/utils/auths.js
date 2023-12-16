@@ -1,4 +1,4 @@
-const STORE_NAME = 'users';
+const STORE_NAME = 'user';
 let currentUser = JSON.parse(localStorage.getItem(STORE_NAME)) ?? undefined;
 const getAutenticatedUser = () => {
     if (currentUser !== undefined) {return currentUser;}
