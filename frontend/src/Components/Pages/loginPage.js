@@ -144,13 +144,16 @@ async function onLogin(event) {
     errorMessage401.innerHTML = 'Your password is incorrect';
     errorMessage401.className = 'font-mono text-red';
     errorArea.appendChild(errorMessage401);
+    throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
   }else if (!response.ok) {throw new Error(`fetch error : ${response.status} : ${response.statusText}`);}
 
   const responseJson = await response.json();
-  const authenticatedUser = getAutenticatedUser() === undefined ? {"username": "", "token": ""} : getAutenticatedUser() ;
+  const authenticatedUser = getAutenticatedUser() === undefined ? {"username": "", "token": "", "score": "", "money": ""} : getAutenticatedUser() ;
 
   authenticatedUser.username = responseJson.username;
   authenticatedUser.token = responseJson.token;
+  authenticatedUser.score = responseJson.score;
+  authenticatedUser.money = responseJson.money;
 
   setAutenticatedUser(authenticatedUser);
 

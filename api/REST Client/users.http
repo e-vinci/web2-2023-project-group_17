@@ -8,12 +8,12 @@ Content-Type: application/json
 }
 
 ### check his score when never played- OK
-POST {{baseUrl}}/users/get
+GET {{baseUrl}}/users/get
 Content-Type: application/json
 Authorization: {{userToken}}
 
 ### set his new score - OK
-POST {{baseUrl}}/users/set
+POST /users/set
 Content-Type: application/json
 Authorization: {{userToken}}
 
@@ -22,7 +22,7 @@ Authorization: {{userToken}}
 }
 
 ### check his score after played- OK
-POST {{baseUrl}}/users/get
+GET {{baseUrl}}/users/get
 Content-Type: application/json
 Authorization: {{userToken}}
 
