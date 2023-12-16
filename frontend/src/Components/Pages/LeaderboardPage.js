@@ -2,6 +2,8 @@ import Navigate from "../Router/Navigate";
 import homepageIcon from '../../img/accueil_button.png';
 import homepageIconHover from '../../img/hovered_accueil.png';
 import '../../stylesheets/leaderboard.css';
+import backgroundImg from '../../img/background_clouds.png';
+
 
 const LeaderboardPage = async () => {
     const main = document.querySelector("main");
@@ -9,6 +11,11 @@ const LeaderboardPage = async () => {
     const leaderPage = document.createElement("div");
 
     leaderPage.setAttribute("class", "ldb")
+    leaderPage.style.height = '100vh';
+    leaderPage.style.backgroundImage = `url('${backgroundImg}')`;
+    leaderPage.style.backgroundSize = 'cover';
+    leaderPage.style.backgroundRepeat = 'no-repeat';
+    leaderPage.style.backgroundPosition = 'center';
 
 
     const btnGame = document.createElement("img");
