@@ -5,6 +5,7 @@ import '../../stylesheets/leaderboard.css';
 
 const LeaderboardPage = async () => {
     const main = document.querySelector("main");
+    main.classList.add("leaderboard-main"); 
     main.innerHTML = '';
     const leaderPage = document.createElement("div");
 
