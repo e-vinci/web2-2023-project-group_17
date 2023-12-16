@@ -47,11 +47,11 @@ function createCoffee(name, picture, basePrice) {
       }
     },
     levelUp() {
-      if (user.money >= this.price) {
-        user.money -= this.price;
+      if (user().money >= this.price) {
+        user().money -= this.price;
         this.level += 1;
         this.price = basePrice * ((this.level * 5) / 2);
-        user.score+=this.price;
+        user().score+=this.price;
       }
     },
   };
@@ -162,7 +162,7 @@ const MenuCoffee = () => {
           <img src="${quitImg}" alt="Bouton quitter" id="quit-button" style="width: 50px">
         </div>
         <div id="money-display" style="position: absolute; top: 30%; right: 14%; background-color: #fff; color: #ffc0CB ;font-size: 25px;;">
-        ${user.money} CatCoins
+        ${user().money} CatCoins
         </div>
         <div style="display: flex; justify-content: center;"> 
           ${coffeeHTML}
@@ -191,7 +191,7 @@ const MenuCoffee = () => {
       // eslint-disable-next-line no-restricted-globals
       if (!isNaN(index) && index >= 0 && index < coffee.length) {
         const selectedCoffee = coffee[index];
-        if (user.money >= selectedCoffee.price) {
+        if (user().money >= selectedCoffee.price) {
           selectedCoffee.levelUp();
           const levelDisplay = document.getElementById(`level-display-${index}`);
           const priceDisplay = document.getElementById(`price-display-${index}`);
@@ -199,7 +199,7 @@ const MenuCoffee = () => {
 
           levelDisplay.textContent = `Niveau ${selectedCoffee.level}`;
           priceDisplay.textContent = `Cout amélioration : ${selectedCoffee.price} CatCoins`;
-          moneyDisplay.textContent = `${user.money} CatCoins`;
+          moneyDisplay.textContent = `${user().money} CatCoins`;
 
           localStorage.setItem('coffeeData', JSON.stringify(coffee));
         } 

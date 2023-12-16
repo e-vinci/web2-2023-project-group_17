@@ -9,9 +9,11 @@ const router = express.Router();
 router.post('/set', authorize, (req, res) => {
   const { username } = req.user;
   const { score } = req.body;
+  const { money } = req.body;
 
   if (!username) return res.status(400).json({ error: 'Username missing !' });
   if (!score) return res.status(400).json({ error: 'Score missing !' });
+  if (!money || money < 0) return res.status(400).json({ error: 'Money missing !' });
 
   const users = parse(jsonDbPath);
   // find user score or get a new one
@@ -22,6 +24,7 @@ router.post('/set', authorize, (req, res) => {
     userScore = { username, score };
     users.push(userScore);
   }
+  userScore.money = money;
 
   serialize(jsonDbPath, users);
   return res.sendStatus(200);

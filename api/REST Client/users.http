@@ -13,12 +13,13 @@ Content-Type: application/json
 Authorization: {{userToken}}
 
 ### set his new score - OK
-POST /users/set
+POST {{baseUrl}}/users/set
 Content-Type: application/json
 Authorization: {{userToken}}
 
 {
-  "score": 400
+  "score":10000,
+  "money":10000
 }
 
 ### check his score after played- OK
