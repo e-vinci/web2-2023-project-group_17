@@ -7,8 +7,16 @@ import backgroundImg from '../../img/background_clouds.png';
 
 const LeaderboardPage = async () => {
     const main = document.querySelector("main");
+    main.setAttribute("id", "leaderboard-main"); 
     main.innerHTML = '';
     const leaderPage = document.createElement("div");
+
+    leaderPage.style.height = '100vh';
+    leaderPage.style.backgroundImage = `url('${backgroundImg}')`;
+    leaderPage.style.backgroundSize = 'cover';
+    leaderPage.style.backgroundRepeat = 'no-repeat';
+    leaderPage.style.backgroundPosition = 'center';
+  
 
     leaderPage.setAttribute("class", "ldb")
     leaderPage.style.height = '100vh';
