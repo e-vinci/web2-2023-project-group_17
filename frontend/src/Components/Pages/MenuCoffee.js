@@ -16,9 +16,8 @@ import coffeePinkButton from '../../img/cafespinkbutton.png';
 import catPurpleButton from '../../img/chatspurplebutton.png';
 import coffeePurpleButton from '../../img/cafespurplebutton.png';
 
-import { user } from '../Game/GameScene';
-
 import Navigate from '../Router/Navigate';
+import {getAutenticatedUser} from "../../utils/auths";
 
 // create a list of coffee to create
 const coffeeToCreate = [
@@ -55,7 +54,8 @@ function createCoffee(name, picture, basePrice) {
       }
     },
     levelUp() {
-      let score = parseFloat(user.score);
+      const user = getAutenticatedUser();
+      let {score} = user;
       if (user.money >= this.price) {
         user.money -= this.price;
         score+=this.price;
@@ -79,9 +79,8 @@ for (let i = 0; i < coffeeToCreate.length; i += 1) {
  */
 function initializeCoffeeData() {
   const storedCoffeeData = localStorage.getItem('coffeeData');
-
-  if (storedCoffeeData) {
-    // if data exists, parse it from JSON and set the coffee properties accordingly
+  // si storedCoffeeData est null, alors il n'y a pas de données stockées
+  if (storedCoffeeData !== [{}]) {
     const parsedData = JSON.parse(storedCoffeeData);
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < coffee.length; i++) {
@@ -100,7 +99,6 @@ function initializeCoffeeData() {
   }
 }
 
-initializeCoffeeData();
 
 const coffeeHTML = `
 <style>
@@ -160,8 +158,9 @@ const MenuCoffee = () => {
   const main = document.querySelector('main');
   document.title = 'Neko café';
   initializeCoffeeData();
+  const user = getAutenticatedUser();
 
-  const menuCoffee = `
+  main.innerHTML = `
       <div style="height: 100%; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: contain; background-repeat: repeat; background-position: center;">
       <div style="height:100%; width:100%;">
         <div class="container mt-5">
@@ -185,7 +184,6 @@ const MenuCoffee = () => {
         </div>
         </div>  
         </div>`;
-  main.innerHTML = menuCoffee;
 
   coffee.forEach((cof, index) => {
     const levelDisplay = document.getElementById(`level-display-${index}`);
@@ -218,7 +216,7 @@ const MenuCoffee = () => {
           moneyDisplay.textContent = `${user.money} CatCoins`;
 
           localStorage.setItem('coffeeData', JSON.stringify(coffee));
-        } 
+        }
       }
     });
   });

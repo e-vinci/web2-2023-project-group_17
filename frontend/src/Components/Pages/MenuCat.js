@@ -12,7 +12,7 @@ import cat7Icon from '../../img/cat7_icon.png';
 import cat8Icon from '../../img/cat8_icon.png';
 
 import Navigate from '../Router/Navigate';
-import { user } from '../Game/GameScene';
+import {getAutenticatedUser} from "../../utils/auths";
 
 const cats = []
 
@@ -36,12 +36,13 @@ function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, 
     isAdopted,
     isActive,
     price,
-    adopter() {
-      if (user.money >= this.price) {
-        this.isAdopted = true;
-        user.money -= this.price;
-        user.score += this.price;
-        localStorage.setItem("catData", JSON.stringify(cats));
+    adopter(){
+      const user = getAutenticatedUser();
+      if(user.money>=this.price){
+        this.isAdopted=true;
+        user.money-=this.price;
+        user.score+=this.price;
+        localStorage.setItem('catData', JSON.stringify(cats));
       }
     },
     desactiver() {
@@ -82,7 +83,7 @@ for (let i = 0; i < catsToCreate.length; i += 1) {
 function initializeCatData() {
   const storedCatData = localStorage.getItem("catData");
 
-  if (storedCatData) {
+  if (storedCatData !== [{}]) {
     const parsedData = JSON.parse(storedCatData);
 
     // eslint-disable-next-line no-plusplus
@@ -91,16 +92,9 @@ function initializeCatData() {
       cats[i].isActive = parsedData[i].isActive;
     }
   } else {
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < catsToCreate.length; i++) {
-      cats.push(catsToCreate[i]);
-    }
-
-    localStorage.setItem("catData", JSON.stringify(cats));
+    localStorage.setItem('catData', JSON.stringify(cats));
   }
 }
-
-initializeCatData();
 
 function generateCatHTML(cat, index) {
   return `
@@ -181,6 +175,7 @@ function registerCatEventListeners() {
       adoptButton.addEventListener('click', () => {
         cat.adopter();
         const moneyDisplay = document.getElementById(`money-display`);
+        const user = getAutenticatedUser();
         moneyDisplay.textContent = `${user.money} CatCoins`;
        
         updateCatContainer(catContainer);
@@ -219,6 +214,7 @@ function updateCatContainer(container) {
 }
 function generateMenuCat(){
   registerCatEventListeners()
+  const user = getAutenticatedUser();
   const menuCat = `
     <div style="height: 100%; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: contain; background-repeat: repeat; background-position: center;">
     <div style="height:100%; width:100%;">
@@ -272,9 +268,15 @@ function generateMenuCat(){
 const MenuCat = () => {
   document.title = 'Neko café';
 
+  initializeCatData();
+
   generateMenuCat();
 
   registerCatEventListeners();
+
+  const catContainer = document.querySelector('#catContainer');
+
+  updateCatContainer(catContainer)
 };
 
 

@@ -37,4 +37,85 @@ Authorization: {{userToken}}
 GET {{baseUrl}}/users/scores
 Content-Type: application/json
 
+### get users cats - OK
+GET {{baseUrl}}/users/cats
+Content-Type: application/json
+Authorization: {{userToken}}
+
+### get users coffees- OK
+GET {{baseUrl}}/users/coffees
+Content-Type: application/json
+Authorization: {{userToken}}
+
+### set users coffees- OK
+POST {{baseUrl}}/users/coffees
+Content-Type: application/json
+Authorization: {{userToken}}
+
+{
+  "state":
+[
+  {
+    "name": "Meowcha Latte",
+    "picture": "/2a5669c177321388dccd.png",
+    "level": 10,
+    "price": 125
+  },
+  {
+    "name": "Purrista Blend",
+    "picture": "/b10983e7cb59528b806a.png",
+    "level": 0,
+    "price": 10
+  },
+  {
+    "name": "Pancat Stacks",
+    "picture": "/e42ec34828ecc93359e0.png",
+    "level": 0,
+    "price": 15
+  },
+  {
+    "name": "Tiramisu Tabby Treat",
+    "picture": "/2fda355efa67dbfa6b3a.png",
+    "level": 0,
+    "price": 20
+  },
+  {
+    "name": "Purrfectly Sweet Cookie Sundae",
+    "picture": "/94ede3199fc9ec37a01a.png",
+    "level": 0,
+    "price": 25
+  },
+  {
+    "name": "Red Velvet Kitty Cake",
+    "picture": "/dbb2026456fe389b6ba5.png",
+    "level": 0,
+    "price": 30
+  },
+  {
+    "name": "Lemon Mew Cheesecake",
+    "picture": "/db31f4cdd6876f43e3f6.png",
+    "level": 0,
+    "price": 35
+  },
+  {
+    "name": "Cinnamon Swirl Whiskers",
+    "picture": "/378afc1a9b7dc3aa1d53.png",
+    "level": 0,
+    "price": 40
+  },
+  {
+    "name": "Meowy Christmas Log",
+    "picture": "/cca8d968eddbedec09a3.png",
+    "level": 0,
+    "price": 45
+  },
+  {
+    "name": "Catini Bliss",
+    "picture": "/45f9f4956277c3a557fc.png",
+    "level": 0,
+    "price": 50
+  }
+]
+}
+
 

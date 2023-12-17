@@ -26,7 +26,6 @@ document.title = 'Neko café'
 
 
 const cats = [];
-const user = getAutenticatedUser();
 const IDLE_KEY = 'idle';
 const MOVE_RIGHT_KEY = 'walkRight';
 const MOVE_LEFT_KEY = 'walkLeft';
@@ -46,8 +45,9 @@ class GameScene extends Phaser.Scene {
     this.cursors = undefined;
     this.cat1 = undefined;
     this.cat2 = undefined;
-    this.score = user?.score ?? 0;
-    this.money = user?.money ?? 0;
+    const user = getAutenticatedUser();
+    this.score = user.score ?? 0;
+    this.money = user.money ?? 0;
     this.bunny = undefined;
     this.moneyText = undefined;
     this.scoreText = undefined;
@@ -161,9 +161,10 @@ class GameScene extends Phaser.Scene {
 
     // making the home button save the game and logout the player
     buttonHome.on('pointerdown', () => {
-      this.gameSave();
-      clearAuthenticatedUser();
-      this.goToHomePage();
+      this.gameSave().then(() => {
+        clearAuthenticatedUser();
+        this.goToHomePage();
+      });
     });
     buttonHome.on('pointerover', () => {
       buttonHome.setTexture('hoveredButtonHome');
@@ -181,8 +182,9 @@ class GameScene extends Phaser.Scene {
 
     // making the menu button save the game and redirect to the menu page
     buttonMenu.on('pointerdown', () => {
-      this.gameSave();
-      Navigate('/menucoffee');
+      this.gameSave().then(() => {
+        Navigate('/menucoffee');
+      });
     });
     buttonMenu.on('pointerover', () => {
       buttonMenu.setTexture('hoveredButtonMenu');
@@ -345,7 +347,7 @@ class GameScene extends Phaser.Scene {
   }
 
   handleBeforeUnload() {
-    this.gameSave();
+    this.gameSave().then(r => r);
   }
 
 
@@ -621,9 +623,10 @@ class GameScene extends Phaser.Scene {
 
   // function to save the player's data
   async gameSave() {
-    
-    user.money=this.money;
-    user.score=this.score;
+
+    const user = getAutenticatedUser();
+    user.money = this.money;
+    user.score = this.score;
 
     await fetch(`${process.env.API_BASE_URL}/users/set`, {
       method: 'POST',
@@ -632,10 +635,37 @@ class GameScene extends Phaser.Scene {
         'Authorization': `${user.token}`,
       },
       body: JSON.stringify({
-        score: String(this.score),
+        score: this.score,
         money: this.money
       })
     });
+
+    // save the cat's data
+    const catsData = JSON.parse(localStorage.getItem('catData'));
+    await fetch(`${process.env.API_BASE_URL}/users/cats`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${user.token}`,
+      },
+      body: JSON.stringify({
+        state: catsData
+      })
+    });
+
+
+    // save the coffee's data
+    const coffeeData = JSON.parse(localStorage.getItem('coffeeData'));
+    await fetch(`${process.env.API_BASE_URL}/users/coffees`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${user.token}`,
+      },
+      body: JSON.stringify({
+        state: coffeeData
+      })
+    })
 
   }
 
@@ -928,5 +958,4 @@ class GameScene extends Phaser.Scene {
 
 }
 
-export {user}
 export default GameScene;
