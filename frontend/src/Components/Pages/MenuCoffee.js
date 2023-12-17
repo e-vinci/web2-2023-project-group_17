@@ -20,6 +20,7 @@ import { user } from '../Game/GameScene';
 
 import Navigate from '../Router/Navigate';
 
+// create a list of coffee to create
 const coffeeToCreate = [
   createCoffee('Meowcha Latte', meawchaImg, 5),
   createCoffee('Purrista Blend', purristaImg, 10),
@@ -33,6 +34,13 @@ const coffeeToCreate = [
   createCoffee('Catini Bliss', catiniImg, 50)
 ];
 
+/**
+ * Creates a coffee object with the specified properties
+ * @param {string} name - The name of the coffee
+ * @param {string} picture - The picture of the coffee
+ * @param {number} basePrice - The base price of the coffee
+ * @returns {object} The coffee object.
+ */
 function createCoffee(name, picture, basePrice) {
   return {
     name,
@@ -55,35 +63,39 @@ function createCoffee(name, picture, basePrice) {
         this.level += 1;
         this.price = basePrice * ((this.level * 5) / 2);
       }
-    },
+    }
   };
 }
 
 const coffee = []
-
+// iterate through the list of coffee to create
 for (let i = 0; i < coffeeToCreate.length; i += 1) {
   coffee.push(coffeeToCreate[i]);
   coffee[i].setPrice();
 }
 
+/**
+ * initializes the coffee data by getting the data from local storage or creating new coffee objects if no data exists
+ */
 function initializeCoffeeData() {
   const storedCoffeeData = localStorage.getItem('coffeeData');
 
   if (storedCoffeeData) {
-    // Si des données sont stockées, chargez-les dans le tableau coffee
+    // if data exists, parse it from JSON and set the coffee properties accordingly
     const parsedData = JSON.parse(storedCoffeeData);
-
-    for (let i = 0; i < coffee.length; i += 1) {
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < coffee.length; i++) {
       coffee[i].level = parsedData[i].level;
       coffee[i].price = parsedData[i].price;
     }
   } else {
-    // Sinon, initialisez le tableau coffee et stockez-le dans le localStorage
-    for (let i = 0; i < coffeeToCreate.length; i += 1) {
+    // if no data exists, create new coffee objects and set their properties
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < coffeeToCreate.length; i++) {
       coffee.push(coffeeToCreate[i]);
       coffee[i].setPrice();
     }
-
+    // store the coffee data in local storage
     localStorage.setItem('coffeeData', JSON.stringify(coffee));
   }
 }
@@ -141,7 +153,9 @@ const coffeeHTML = `
     </div>
   </div>
 `;
-
+/**
+ * create the menu for the coffee upgrade
+ */
 const MenuCoffee = () => {
   const main = document.querySelector('main');
   document.title = 'Neko café';
@@ -208,7 +222,7 @@ const MenuCoffee = () => {
       }
     });
   });
-
+  
   const coffeeButton = document.querySelector('#coffee-button');
   coffeeButton?.addEventListener('click', redirectToMenuCoffee);
   coffeeButton?.addEventListener('click', redirectToMenuCoffee);
@@ -228,12 +242,23 @@ const MenuCoffee = () => {
 
 
 
+/**
+ * Redirects the user to the menu for the cat.
+ */
 function redirectToMenuCat() {
   Navigate('/menucat');
 }
+
+/**
+ * Redirects the user to the menu for the coffee.
+ */
 function redirectToMenuCoffee() {
   Navigate('/menucoffee');
 }
+
+/**
+ * Redirects the user to the game.
+ */
 function redirectToMenu() {
   Navigate('/game');
 }

@@ -6,6 +6,9 @@ import homepageIconeHover from '../../img/hovered_accueil.png';
 
 import Navigate from '../Router/Navigate';
 
+/*
+ * The main function to create the tutoriel page
+ */
 const TutorielPage = () => {
   const main = document.querySelector('main');
   document.title = 'Neko café';
@@ -54,6 +57,9 @@ const TutorielPage = () => {
   });
 };
 
+/**
+ * Redirect the user to the homepage
+ */
 function redirectToHomepage() {
   Navigate('/');
 }

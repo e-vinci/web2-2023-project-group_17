@@ -1,5 +1,10 @@
 const STORE_NAME = 'user';
 let currentUser = JSON.parse(localStorage.getItem(STORE_NAME)) ?? undefined;
+
+/**
+ * get the current authenticated user
+ * @returns {currentUser} - the current authenticated user
+ */
 const getAutenticatedUser = () => {
     if (currentUser !== undefined) {return currentUser;}
 
@@ -10,6 +15,10 @@ const getAutenticatedUser = () => {
     return currentUser;
 };
 
+/**
+ * define the current authenticated user.
+ * @param {authenticatedUser} authenticatedUser 
+ */
 const setAutenticatedUser = (authenticatedUser) => {
     const serializedUser = JSON.stringify(authenticatedUser);
     localStorage.setItem(STORE_NAME, serializedUser);
@@ -17,8 +26,15 @@ const setAutenticatedUser = (authenticatedUser) => {
     currentUser = authenticatedUser;
 };
 
+/**
+ * check if the user is authenticated.
+ * @returns boolean if the user is authenticated
+ */
 const isAuthenticated = () => currentUser !== undefined;
 
+/**
+ * clear the current authenticated user.
+ */
 const clearAuthenticatedUser = () => {
     localStorage.removeItem(STORE_NAME);
     currentUser = undefined;
