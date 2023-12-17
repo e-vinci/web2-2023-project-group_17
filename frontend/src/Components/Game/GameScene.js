@@ -26,7 +26,7 @@ document.title = 'Neko café'
 
 
 const cats = [];
-const user = () => getAutenticatedUser();
+const user = getAutenticatedUser();
 const IDLE_KEY = 'idle';
 const MOVE_RIGHT_KEY = 'walkRight';
 const MOVE_LEFT_KEY = 'walkLeft';
@@ -46,8 +46,8 @@ class GameScene extends Phaser.Scene {
     this.cursors = undefined;
     this.cat1 = undefined;
     this.cat2 = undefined;
-    this.score = user()?.score ?? 0;
-    this.money = user()?.money ?? 0;
+    this.score = user?.score ?? 0;
+    this.money = user?.money ?? 0;
     this.bunny = undefined;
     this.moneyText = undefined;
     this.scoreText = undefined;
@@ -621,15 +621,18 @@ class GameScene extends Phaser.Scene {
 
   // function to save the player's data
   async gameSave() {
+    
+    user.money=this.money;
+    user.score=this.score;
 
     await fetch(`${process.env.API_BASE_URL}/users/set`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `${user().token}`,
+        'Authorization': `${user.token}`,
       },
       body: JSON.stringify({
-        score: this.score,
+        score: String(this.score),
         money: this.money
       })
     });

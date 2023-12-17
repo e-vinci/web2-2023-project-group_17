@@ -26,10 +26,10 @@ function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, 
     isActive,
     price,
     adopter(){
-      if(user().money>=this.price){
+      if(user.money>=this.price){
         this.isAdopted=true;
-        user().money-=this.price;
-        user().score+=this.price;
+        user.money-=this.price;
+        user.score+=this.price;
         localStorage.setItem('catData', JSON.stringify(cats));
       } 
     },
@@ -165,7 +165,7 @@ function registerCatEventListeners() {
       adoptButton.addEventListener('click', () => {
         cat.adopter();
         const moneyDisplay = document.getElementById(`money-display`);
-        moneyDisplay.textContent = `${user().money} CatCoins`;
+        moneyDisplay.textContent = `${user.money} CatCoins`;
        
         updateCatContainer(catContainer);
         
@@ -216,7 +216,7 @@ function generateMenuCat(){
         <img src="${quitImg}" alt="Bouton quitter" id="quit-button" style="width: 50px">
       </div>
       <div id='money-display' style="position: absolute; top: 30%; right: 14%; background-color: #fff; color: #ffc0CB ;font-size: 25px;">
-        ${user().money} CatCoins
+        ${user.money} CatCoins
       </div>
       <div id='catHtml' style="display: flex; justify-content: center;"> 
         ${catHTML}
