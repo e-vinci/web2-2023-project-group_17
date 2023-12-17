@@ -11,19 +11,14 @@ const LeaderboardPage = async () => {
     main.innerHTML = '';
     const leaderPage = document.createElement("div");
 
-    leaderPage.style.height = '100vh';
+    leaderPage.style.height = '120vh';
     leaderPage.style.backgroundImage = `url('${backgroundImg}')`;
     leaderPage.style.backgroundSize = 'cover';
-    leaderPage.style.backgroundRepeat = 'no-repeat';
+    leaderPage.style.backgroundRepeat = 'repeat';
     leaderPage.style.backgroundPosition = 'center';
   
 
     leaderPage.setAttribute("class", "ldb")
-    leaderPage.style.height = '100vh';
-    leaderPage.style.backgroundImage = `url('${backgroundImg}')`;
-    leaderPage.style.backgroundSize = 'cover';
-    leaderPage.style.backgroundRepeat = 'no-repeat';
-    leaderPage.style.backgroundPosition = 'center';
 
 
     const btnGame = document.createElement("img");
