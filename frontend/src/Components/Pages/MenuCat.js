@@ -16,8 +16,6 @@ import {getAutenticatedUser} from "../../utils/auths";
 
 const cats = []
 
-const user = getAutenticatedUser();
-
 function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, isActive){
   return{
     name,
@@ -28,6 +26,7 @@ function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, 
     isActive,
     price,
     adopter(){
+      const user = getAutenticatedUser();
       if(user.money>=this.price){
         this.isAdopted=true;
         user.money-=this.price;
@@ -167,6 +166,7 @@ function registerCatEventListeners() {
       adoptButton.addEventListener('click', () => {
         cat.adopter();
         const moneyDisplay = document.getElementById(`money-display`);
+        const user = getAutenticatedUser();
         moneyDisplay.textContent = `${user.money} CatCoins`;
        
         updateCatContainer(catContainer);
@@ -201,6 +201,7 @@ function updateCatContainer(container) {
 }
 function generateMenuCat(){
   registerCatEventListeners()
+  const user = getAutenticatedUser();
   const menuCat = `
     <div style="height: 100%; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: contain; background-repeat: repeat; background-position: center;">
     <div style="height:100%; width:100%;">
