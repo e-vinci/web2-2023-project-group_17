@@ -157,12 +157,37 @@ async function onLogin(event) {
 
   setAutenticatedUser(authenticatedUser);
 
+  const catResponse = await fetch(`${process.env.API_BASE_URL}/users/cats`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `${authenticatedUser.token}`
+    },
+  });
+
+  if (!catResponse.ok) {throw new Error(`fetch error : ${catResponse.status} : ${catResponse.statusText}`);}
+  const catResponseJson = await catResponse.json();
+  localStorage.setItem('catData', JSON.stringify(catResponseJson));
+
+  const coffeeResponse = await fetch(`${process.env.API_BASE_URL}/users/coffees`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `${authenticatedUser.token}`
+    },
+  });
+
+  if (!coffeeResponse.ok) {throw new Error(`fetch error : ${coffeeResponse.status} : ${coffeeResponse.statusText}`);}
+  const coffeeResponseJson = await coffeeResponse.json();
+  localStorage.setItem('coffeeData', JSON.stringify(coffeeResponseJson));
+
   redirectToGame();
 }
 
 async function onLogout(event) {
   event.preventDefault();
   clearAuthenticatedUser();
+
   Navigate('/');
 }
 

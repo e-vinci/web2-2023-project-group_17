@@ -32,7 +32,7 @@ function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, 
         user.money-=this.price;
         user.score+=this.price;
         localStorage.setItem('catData', JSON.stringify(cats));
-      } 
+      }
     },
     desactiver(){
       this.isActive=false;
@@ -71,21 +71,16 @@ function initializeCatData() {
 
   const storedCatData = localStorage.getItem('catData');
 
-  if (storedCatData) {
+  if (storedCatData !== [{}]) {
     const parsedData = JSON.parse(storedCatData);
     for (let i = 0; i < cats.length; i += 1) {
       cats[i].isAdopted = parsedData[i].isAdopted;
       cats[i].isActive = parsedData[i].isActive;
     }
   } else {
-    for (let i = 0; i < catsToCreate.length; i += 1) {
-      cats.push(catsToCreate[i]);
-    }
     localStorage.setItem('catData', JSON.stringify(cats));
   }
 }
-
-initializeCatData();
 
 function generateCatHTML(cat, index) {
   return `
@@ -253,9 +248,15 @@ function generateMenuCat(){
 const MenuCat = () => {
   document.title = 'Neko café';
 
+  initializeCatData();
+
   generateMenuCat();
 
   registerCatEventListeners();
+
+  const catContainer = document.querySelector('#catContainer');
+
+  updateCatContainer(catContainer)
 };
 
 

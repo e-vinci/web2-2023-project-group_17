@@ -181,7 +181,7 @@ class GameScene extends Phaser.Scene {
     buttonMenu.setInteractive();
 
     // making the menu button save the game and redirect to the menu page
-    buttonMenu.on('pointerdown',  () => {
+    buttonMenu.on('pointerdown', () => {
       this.gameSave().then(() => {
         Navigate('/menucoffee');
       });
@@ -625,8 +625,8 @@ class GameScene extends Phaser.Scene {
   async gameSave() {
 
     const user = getAutenticatedUser();
-    user.money=this.money;
-    user.score=this.score;
+    user.money = this.money;
+    user.score = this.score;
 
     await fetch(`${process.env.API_BASE_URL}/users/set`, {
       method: 'POST',
@@ -639,6 +639,33 @@ class GameScene extends Phaser.Scene {
         money: this.money
       })
     });
+
+    // save the cat's data
+    const catsData = JSON.parse(localStorage.getItem('catData'));
+    await fetch(`${process.env.API_BASE_URL}/users/cats`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${user.token}`,
+      },
+      body: JSON.stringify({
+        state: catsData
+      })
+    });
+
+
+    // save the coffee's data
+    const coffeeData = JSON.parse(localStorage.getItem('coffeeData'));
+    await fetch(`${process.env.API_BASE_URL}/users/coffees`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${user.token}`,
+      },
+      body: JSON.stringify({
+        state: coffeeData
+      })
+    })
 
   }
 
@@ -930,4 +957,5 @@ class GameScene extends Phaser.Scene {
 
 
 }
+
 export default GameScene;

@@ -69,8 +69,9 @@ for (let i = 0; i < coffeeToCreate.length; i += 1) {
 
 function initializeCoffeeData() {
   const storedCoffeeData = localStorage.getItem('coffeeData');
-
-  if (storedCoffeeData) {
+  console.log(storedCoffeeData)
+  // si storedCoffeeData est null, alors il n'y a pas de données stockées
+  if (storedCoffeeData !== [{}]) {
     // Si des données sont stockées, chargez-les dans le tableau coffee
     const parsedData = JSON.parse(storedCoffeeData);
 
@@ -204,7 +205,7 @@ const MenuCoffee = () => {
           moneyDisplay.textContent = `${user.money} CatCoins`;
 
           localStorage.setItem('coffeeData', JSON.stringify(coffee));
-        } 
+        }
       }
     });
   });
