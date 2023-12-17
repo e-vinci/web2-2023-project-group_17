@@ -4,7 +4,9 @@ import homepageIconHover from '../../img/hovered_accueil.png';
 import '../../stylesheets/leaderboard.css';
 import backgroundImg from '../../img/background_clouds.png';
 
-
+/**
+ * get the leaderboard from the API and render it.
+ */
 const LeaderboardPage = async () => {
     const main = document.querySelector("main");
     main.setAttribute("id", "leaderboard-main"); 

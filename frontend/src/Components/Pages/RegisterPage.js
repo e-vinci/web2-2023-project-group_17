@@ -131,6 +131,10 @@ function renderLoginForm(){
 
 }
 
+/**
+ * Register a new user in the API and redirect the user to the game
+ * @param {event} event - the form submit event
+ */
 async function onRegister(event) {
   event.preventDefault();
 
@@ -189,12 +193,20 @@ async function onRegister(event) {
   redirectToGame();
 }
 
+/**
+ * clear the authenticated user and redirect the user to the homepage when the page is unloaded
+ * @param {event}
+ */
 async function onLogout(event) {
   event.preventDefault();
   clearAuthenticatedUser();
   Navigate('/');
 }
 
+
+/**
+ * Redirects the user to the game page
+ */
 function redirectToGame() {
   Navigate('/game')
 }

@@ -16,8 +16,19 @@ import {getAutenticatedUser} from "../../utils/auths";
 
 const cats = []
 
-function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, isActive){
-  return{
+/**
+ * Creates a cat object with the specified properties.
+ * @param {string} name - The name of the cat.
+ * @param {number} bonusAppearing - Bonus for the amount of clients appearing in the coffee.
+ * @param {number} bonusClick - Bonus for the amount of money gained when the cat is clicked.
+ * @param {string} picture - The URL of the picture of the cat.
+ * @param {boolean} isAdopted - Whether the cat has been adopted or not.
+ * @param {number} price - The price of the cat in CatCoins.
+ * @param {boolean} isActive - Whether the cat is currently active or not.
+ * @returns {object} The cat object.
+ */
+function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, isActive) {
+  return {
     name,
     bonusAppearing,
     bonusClick,
@@ -34,26 +45,25 @@ function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, 
         localStorage.setItem('catData', JSON.stringify(cats));
       }
     },
-    desactiver(){
-      this.isActive=false;
-      localStorage.setItem('catData', JSON.stringify(cats));
+    desactiver() {
+      this.isActive = false;
+      localStorage.setItem("catData", JSON.stringify(cats));
     },
-    activer(){
-      let catsActive=0;
+    activer() {
+      let catsActive = 0;
 
-      cats.forEach(cat => {
-        if(cat.isActive){
-          catsActive+=1;
+      cats.forEach((cat) => {
+        if (cat.isActive) {
+          catsActive += 1;
         }
       });
 
-      if(catsActive<2){
-      this.isActive=true;
-      localStorage.setItem('catData', JSON.stringify(cats));
+      if (catsActive < 2) {
+        this.isActive = true;
+        localStorage.setItem("catData", JSON.stringify(cats));
       }
-
     }
-  }
+  };
 }
 
 const catsToCreate = [
@@ -67,13 +77,17 @@ const catsToCreate = [
 for (let i = 0; i < catsToCreate.length; i += 1) {
   cats.push(catsToCreate[i]);
 }
+/**
+ * Initializes the cat data by retrieving data from local storage and populating the cats array with the appropriate data.
+ */
 function initializeCatData() {
-
-  const storedCatData = localStorage.getItem('catData');
+  const storedCatData = localStorage.getItem("catData");
 
   if (storedCatData !== [{}]) {
     const parsedData = JSON.parse(storedCatData);
-    for (let i = 0; i < cats.length; i += 1) {
+
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < cats.length; i++) {
       cats[i].isAdopted = parsedData[i].isAdopted;
       cats[i].isActive = parsedData[i].isActive;
     }
@@ -189,6 +203,10 @@ function registerCatEventListeners() {
 });
 }
 
+/**
+ * Update the HTML of the cat container.
+ * @param {container} container - conteiner to update.
+ */
 function updateCatContainer(container) {
   // eslint-disable-next-line no-param-reassign
   container.innerHTML = cats.map((cat, index) => generateCatHTML(cat, index)).join('');
@@ -244,7 +262,9 @@ function generateMenuCat(){
   quitButton?.addEventListener('click', redirectToMenu);
 }
 
-
+/**
+ * generates the menu for cats.
+ */
 const MenuCat = () => {
   document.title = 'Neko café';
 
@@ -261,15 +281,27 @@ const MenuCat = () => {
 
 
 
+/**
+ * Redirects the user to the menu for cats.
+ */
 function redirectToMenuCat() {
   Navigate('/menucat');
 }
+
+/**
+ * Redirects the user to the menu for coffee.
+ */
 function redirectToMenuCoffee() {
   Navigate('/menucoffee');
 }
+
+/**
+ * Redirects the user to the game.
+ */
 function redirectToMenu() {
   Navigate('/game');
 }
+
 
 export { cats };
 export default MenuCat;

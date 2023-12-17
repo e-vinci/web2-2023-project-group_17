@@ -10,6 +10,9 @@ import {
 import { clearPage } from '../../utils/render';
 import Navigate from '../Router/Navigate';
 
+/**
+ * Generate the login page.
+ */
 const LoginPage = () => {
   
   clearPage();
@@ -25,6 +28,10 @@ const LoginPage = () => {
   }
 };
 
+/**
+ * create the login form.
+ * @returns login form.
+ */
 function renderLoginForm(){
   const main = document.querySelector('main');
 
@@ -120,10 +127,12 @@ function renderLoginForm(){
   
   outerDiv.appendChild(section);  
   main.appendChild(outerDiv);
-  
-
 }
 
+/**
+ * verifies the login credentials with the API and login the user.
+ * @param {event} event 
+ */
 async function onLogin(event) {
   event.preventDefault();
 
@@ -184,6 +193,10 @@ async function onLogin(event) {
   redirectToGame();
 }
 
+/**
+ * clear the current user and redirect to the homePage.
+ * @param {event} event 
+ */
 async function onLogout(event) {
   event.preventDefault();
   clearAuthenticatedUser();
@@ -191,6 +204,9 @@ async function onLogout(event) {
   Navigate('/');
 }
 
+/**
+ * redirect to the game page
+ */
 function redirectToGame() {
   Navigate('/game')
 }

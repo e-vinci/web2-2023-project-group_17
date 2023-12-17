@@ -98,19 +98,30 @@ const HomePage = () => {
 };
 
 
-// functions to redirect to another page when clicking a button
+/**
+ * Redirects the user to the login page
+ */
 function redirectToLogin() {
   Navigate('/login');
 }
 
+/**
+ * Redirects the user to the register page
+ */
 function redirectToRegister() {
   Navigate('/register');
 }
 
+/**
+ * Redirects the user to the leaderboard page
+ */
 function redirectToLeaderboard() {
   Navigate('/leaderboard');
 }
 
+/**
+ * Redirects the user to the tutorial page
+ */
 function redirectToTutoriel() {
   Navigate('/tutoriel');
 }
