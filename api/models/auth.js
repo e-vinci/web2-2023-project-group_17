@@ -101,8 +101,8 @@ async function createOneUser(username, password) {
     id: getNextId(),
     username,
     password: hashedPassword,
-    score: 0,
-    money: 0,
+    score: 1,
+    money: 1,
   };
 
   auth.push(createdUser);

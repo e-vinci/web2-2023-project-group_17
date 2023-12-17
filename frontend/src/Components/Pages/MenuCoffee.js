@@ -16,9 +16,8 @@ import coffeePinkButton from '../../img/cafespinkbutton.png';
 import catPurpleButton from '../../img/chatspurplebutton.png';
 import coffeePurpleButton from '../../img/cafespurplebutton.png';
 
-import { user } from '../Game/GameScene';
-
 import Navigate from '../Router/Navigate';
+import {getAutenticatedUser} from "../../utils/auths";
 
 const coffeeToCreate = [
   createCoffee('Meowcha Latte', meawchaImg, 5),
@@ -32,6 +31,7 @@ const coffeeToCreate = [
   createCoffee('Meowy Christmas Log', chocologImg, 45),
   createCoffee('Catini Bliss', catiniImg, 50)
 ];
+
 
 function createCoffee(name, picture, basePrice) {
   return {
@@ -47,7 +47,8 @@ function createCoffee(name, picture, basePrice) {
       }
     },
     levelUp() {
-      let score = parseFloat(user.score);
+      const user = getAutenticatedUser();
+      let {score} = user;
       if (user.money >= this.price) {
         user.money -= this.price;
         score+=this.price;
@@ -88,7 +89,6 @@ function initializeCoffeeData() {
   }
 }
 
-initializeCoffeeData();
 
 const coffeeHTML = `
 <style>
@@ -146,8 +146,9 @@ const MenuCoffee = () => {
   const main = document.querySelector('main');
   document.title = 'Neko café';
   initializeCoffeeData();
+  const user = getAutenticatedUser();
 
-  const menuCoffee = `
+  main.innerHTML = `
       <div style="height: 100%; display: flex; align-items: center; justify-content: center; background-image: url('${backgroundImg}'); background-size: contain; background-repeat: repeat; background-position: center;">
       <div style="height:100%; width:100%;">
         <div class="container mt-5">
@@ -171,7 +172,6 @@ const MenuCoffee = () => {
         </div>
         </div>  
         </div>`;
-  main.innerHTML = menuCoffee;
 
   coffee.forEach((cof, index) => {
     const levelDisplay = document.getElementById(`level-display-${index}`);

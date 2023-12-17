@@ -12,9 +12,11 @@ import cat7Icon from '../../img/cat7_icon.png';
 import cat8Icon from '../../img/cat8_icon.png';
 
 import Navigate from '../Router/Navigate';
-import { user } from '../Game/GameScene';
+import {getAutenticatedUser} from "../../utils/auths";
 
 const cats = []
+
+const user = getAutenticatedUser();
 
 function createCat(name, bonusAppearing, bonusClick, picture, isAdopted, price, isActive){
   return{
